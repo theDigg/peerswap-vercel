@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Theme, createStyles, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 // import Typography from '@mui/material/Typography'
 import Radio from "@mui/material/Radio";
@@ -10,45 +10,7 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
-
-// tx = {
-//   type: 'swap',
-//   initiator: USER.address,
-//   tokenOffered: trade.tokenOffered,
-//   amountOffered: trade.amountOffered,
-//   maxTimeToSend: trade.maxTimeToSend,
-//   maxTimeToReceive: trade.maxTimeToReceive,
-//   fixed: trade.fixed,
-//   initiatorCollateral: trade.initiatorCollateral,
-// }
-
-// tx = {
-//   type: 'swap',
-//   initiator: USER.address,
-//   tokenRequested: trade.tokenRequested,
-//   amountRequested: trade.amountRequested,
-//   maxTimeToSend: trade.maxTimeToSend,
-//   maxTimeToReceive: trade.maxTimeToReceive,
-//   fixed: trade.fixed,
-//   initiatorCollateral: trade.initiatorCollateral,
-// }
-
-// tx = {
-//   type: 'swap',
-//   initiator: USER.address,
-//   tokenOffered: trade.tokenOffered,
-//   amountOffered: trade.amountOffered,
-//   tokenRequested: trade.tokenRequested,
-//   amountRequested: trade.amountRequested,
-//   initiatorChainAddress: trade.initiatorChainAddress,
-//   maxTimeToSend: trade.maxTimeToSend,
-//   maxTimeToReceive: trade.maxTimeToReceive,
-//   fixed: trade.fixed,
-//   initiatorCollateral: trade.initiatorCollateral,
-// }
-// tx.swapType = swapType
-// tx.timestamp = Date.now()
-// tx.swapId = crypto.hashObj(tx)
+import MuiDataGridDemo from '../components/DataGrid'
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -236,15 +198,16 @@ function RadioButtonsGroup() {
 
 export default function Test() {
   return (
-    <Box>
+    <Box sx={{ display: "flex", width: "100%" }}>
       <Box
+        component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: (theme) => theme.spacing(3),
         }}
       >
         <Offset />
-        <RadioButtonsGroup />
+        <MuiDataGridDemo />
       </Box>
     </Box>
   );

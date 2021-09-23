@@ -35,7 +35,7 @@ const StyledTextField = styled(TextField)`
   }
 ` as typeof TextField;
 
-async function _sleep(ms = 0): Promise<NodeJS.Timeout> {
+async function _sleep(ms = 0) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 

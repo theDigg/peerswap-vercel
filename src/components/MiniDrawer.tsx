@@ -24,7 +24,7 @@ import ReceiptIcon from '@mui/icons-material/Receipt'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import TuneIcon from '@mui/icons-material/Tune'
 import InfoIcon from '@mui/icons-material/Info'
-// import StyleIcon from '@mui/icons-material/Style'
+import StyleIcon from '@mui/icons-material/Style'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -163,6 +163,12 @@ const MiniDrawer = (props) => {
       icon: <InfoIcon />,
       show: true,
       onClick: () => history.push("/about"),
+    },
+    {
+      text: "Test",
+      icon: <StyleIcon />,
+      show: true,
+      onClick: () => history.push("/test"),
     },
     {
       text: "Sign out",

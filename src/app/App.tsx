@@ -15,6 +15,7 @@ import { setAccount } from '../features/account/accountSlice'
 import { setChats } from '../features/messages/messagesSlice'
 import { setMySwaps } from '../features/swaps/swapsSlice'
 import { setMyBids } from '../features/bids/bidsSlice'
+import Test from "../pages/Test"
 import {
   getAccountData,
   getChats,
@@ -100,17 +101,17 @@ function App() {
   }, 10000)
 
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-      <Box sx={{ display: 'flex' }}>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <Box sx={{ display: "flex" }}>
         <Drawer wallet={wallet} />
         <Switch>
           <React.Suspense fallback="Loading...">
             <Route path="/welcome">
               <LazyWelcome />
             </Route>
-            {/* <Route path="/test">
+            <Route path="/test">
               <Test />
-            </Route> */}
+            </Route>
             <Route path="/settings">
               <LazySettings />
             </Route>
@@ -174,7 +175,7 @@ function App() {
         </Switch>
       </Box>
     </ThemeProvider>
-  )
+  );
 }
 
 export default App

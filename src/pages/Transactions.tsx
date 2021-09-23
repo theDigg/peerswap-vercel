@@ -67,7 +67,7 @@
 // }
 
 import * as React from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGridPro, GridColDef, GridValueGetterParams } from "@mui/x-data-grid-pro";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -118,7 +118,7 @@ const rows = [
 export default function DataGridDemo() {
   return (
     <div style={{ height: 400, width: "100%" }}>
-      <DataGrid
+      <DataGridPro
         rows={rows}
         columns={columns}
         pageSize={5}

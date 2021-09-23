@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { StyledEngineProvider } from "@mui/material/styles";
 
 const defaultTheme = createTheme();
 const useStylesAntDesign = makeStyles(
@@ -336,24 +337,26 @@ export default function FullFeaturedDemo() {
   };
 
   return (
-    <div className={classes.root}>
-      <SettingsPanel
-        onApply={handleApplyClick}
-        size={size}
-        type={type}
-        theme={getActiveTheme()}
-      />
-      <DataGridPro
-        className={isAntDesign ? antDesignClasses.root : undefined}
-        {...data}
-        components={{
-          Toolbar: GridToolbar,
-        }}
-        loading={loading}
-        checkboxSelection
-        disableSelectionOnClick
-        {...pagination}
-      />
-    </div>
+    <StyledEngineProvider injectFirst>
+      <div className={classes.root}>
+        <SettingsPanel
+          onApply={handleApplyClick}
+          size={size}
+          type={type}
+          theme={getActiveTheme()}
+        />
+        <DataGridPro
+          className={isAntDesign ? antDesignClasses.root : undefined}
+          {...data}
+          components={{
+            Toolbar: GridToolbar,
+          }}
+          loading={loading}
+          checkboxSelection
+          disableSelectionOnClick
+          {...pagination}
+        />
+      </div>
+    </StyledEngineProvider>
   );
 }
