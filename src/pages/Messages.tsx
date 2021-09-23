@@ -328,9 +328,9 @@ function stringToColor(string: string) {
 function stringAvatar(name: string) {
   return {
     sx: {
-      bgcolor: stringToColor(name),
+      bgcolor: stringToColor(name.toUpperCase()),
     },
-    children: `${name[0]}}`,
+    children: `${name[0].toUpperCase()}`,
   };
 }
 

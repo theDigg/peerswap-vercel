@@ -149,7 +149,7 @@ const useStyles = makeStyles(
     root: {
       display: "flex",
       flexDirection: "column",
-      height: 600,
+      height: "80vh",
       width: "100%",
       "& .MuiFormGroup-options": {
         alignItems: "center",
@@ -337,26 +337,26 @@ export default function FullFeaturedDemo() {
   };
 
   return (
-    <StyledEngineProvider injectFirst>
-      <div className={classes.root}>
-        <SettingsPanel
-          onApply={handleApplyClick}
-          size={size}
-          type={type}
-          theme={getActiveTheme()}
-        />
-        <DataGridPro
-          className={isAntDesign ? antDesignClasses.root : undefined}
-          {...data}
-          components={{
-            Toolbar: GridToolbar,
-          }}
-          loading={loading}
-          checkboxSelection
-          disableSelectionOnClick
-          {...pagination}
-        />
-      </div>
-    </StyledEngineProvider>
+    // <StyledEngineProvider injectFirst>
+    <div className={classes.root}>
+      <SettingsPanel
+        onApply={handleApplyClick}
+        size={size}
+        type={type}
+        theme={getActiveTheme()}
+      />
+      <DataGridPro
+        className={isAntDesign ? antDesignClasses.root : undefined}
+        {...data}
+        components={{
+          Toolbar: GridToolbar,
+        }}
+        loading={loading}
+        checkboxSelection
+        disableSelectionOnClick
+        {...pagination}
+      />
+    </div>
+    // </StyledEngineProvider>
   );
 }
