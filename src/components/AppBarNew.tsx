@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../app/rootReducer'
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/rootReducer";
 import { styled, alpha } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,14 +13,18 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import Fab from '@mui/material/Fab'
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import Notification from "./Notification/Notification";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { withRouter } from 'react-router-dom'
-import { setWallet } from '../features/wallet/walletSlice'
-import { setTheme } from '../features/theme/themeSlice'
+import Avatar from "@mui/material/Avatar";
+import { Send as SendIcon } from "@mui/icons-material";
+import { withRouter } from "react-router-dom";
+import { setWallet } from "../features/wallet/walletSlice";
+import { setTheme } from "../features/theme/themeSlice";
 
 const drawerWidth = 240;
 
@@ -86,12 +90,32 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
+const notifications = [
+  { id: 0, color: "warning", message: "Someone has bid on your swap!" },
+  {
+    id: 1,
+    color: "success",
+    type: "info",
+    message: "Your swap is complete!",
+  },
+  {
+    id: 2,
+    color: "secondary",
+    type: "notification",
+    message: "This is just a simple notification",
+  },
+];
+
+export default function PrimarySearchAppBar({ open, handleDrawerOpen, history }) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
+  var [mailMenu, setMailMenu] = React.useState(null);
+  var [notificationsMenu, setNotificationsMenu] = React.useState(null);
+  var [isMailsUnread, setIsMailsUnread] = React.useState(true);
+  var [isNotificationsUnread, setIsNotificationsUnread] = React.useState(true);
   const { recentMessages } = useSelector((state: RootState) => state.messages);
   const { theme } = useSelector((state: RootState) => state.theme);
 
@@ -106,9 +130,16 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
+  const handleMenuClose = (route: string) => {
     setAnchorEl(null);
     handleMobileMenuClose();
+    history.push(route);
+  };
+
+  const handleMailMenuClose = (route: string) => {
+    setMailMenu(null);
+    handleMobileMenuClose();
+    history.push(route);
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -127,32 +158,24 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
       keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleThemeClick}>
-        <IconButton
-          aria-label="toggle-dark-theme"
-          aria-controls="toggle-dark-theme"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <Brightness4Icon />
-        </IconButton>
-        <p>Dark Mode</p>
+      <MenuItem onClick={() => handleMenuClose("/")}>Profile</MenuItem>
+      <MenuItem onClick={() => handleMenuClose("/settings")}>Settings</MenuItem>
+      <MenuItem onClick={() => handleMenuClose("/email")}>Email</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose("/");
+          dispatch(setWallet(null));
+        }}
+      >
+        Sign out
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
 
@@ -160,16 +183,10 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
@@ -184,21 +201,44 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
         </IconButton>
         <p>Dark Mode</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+      <MenuItem
+        onClick={(e) => {
+          setMailMenu(e.currentTarget);
+          setIsMailsUnread(false);
+        }}
+      >
+        <IconButton
+          aria-label="show new messages"
+          color="inherit"
+          aria-haspopup="true"
+          aria-controls="mail-menu"
+        >
+          <Badge
+            badgeContent={
+              isMailsUnread ? Object.keys(recentMessages).length : null
+            }
+            color="secondary"
+          >
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={(e) => {
+          setNotificationsMenu(e.currentTarget);
+          setIsNotificationsUnread(false);
+        }}
+      >
         <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
           color="inherit"
+          aria-haspopup="true"
+          aria-controls="mail-menu"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge
+            badgeContent={isNotificationsUnread ? notifications.length : null}
+            color="secondary"
+          >
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -206,7 +246,6 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          size="large"
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
@@ -214,7 +253,7 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Account</p>
       </MenuItem>
     </Menu>
   );
@@ -266,24 +305,43 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
             >
               <Brightness4Icon />
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+              <IconButton
+                aria-label="show new messages"
+                color="inherit"
+                aria-haspopup="true"
+                aria-controls="mail-menu"
+                onClick={(e) => {
+                  setMailMenu(e.currentTarget)
+                  setIsMailsUnread(false)
+                }}
+              >
+                <Badge
+                  badgeContent={
+                    isMailsUnread ? Object.keys(recentMessages).length : null
+                  }
+                  color="secondary"
+                >
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                color="inherit"
+                aria-haspopup="true"
+                aria-controls="mail-menu"
+                onClick={(e) => {
+                  setNotificationsMenu(e.currentTarget)
+                  setIsNotificationsUnread(false)
+                }}
+              >
+                <Badge
+                  badgeContent={
+                    isNotificationsUnread ? notifications.length : null
+                  }
+                  color="secondary"
+                >
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
             <IconButton
               size="large"
               edge="end"
@@ -310,8 +368,177 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
           </Box>
         </Toolbar>
       </AppBar>
+      <Menu
+        id="mail-menu"
+        open={Boolean(mailMenu)}
+        anchorEl={mailMenu}
+        onClose={() => setMailMenu(null)}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          mt: 7,
+          minWidth: 265,
+        }}
+        disableAutoFocusItem
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            padding: 2,
+          }}
+        >
+          <Typography variant="h4">New Messages</Typography>
+          <Typography
+            sx={{
+              fontSize: 16,
+              textDecoration: "none",
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            component="a"
+            color="secondary"
+          >
+            {Object.keys(recentMessages).length} New Messages
+          </Typography>
+        </Box>
+        {Object.keys(recentMessages).map((handle, id) => (
+          <MenuItem
+            key={id}
+            sx={{
+              height: "auto",
+              display: "flex",
+              alignItems: "center",
+              "&:hover, &:focus": {
+                backgroundColor: (theme) => theme.palette.background.default,
+              },
+            }}
+            onClick={() => handleMailMenuClose(`/messages/${handle}`)}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginRight: 2,
+              }}
+            >
+              <Avatar {...stringAvatar(handle)} />
+              <Typography>
+                {formatDate(new Date(recentMessages[handle].timestamp))}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginRight: 2,
+              }}
+            >
+              <Typography gutterBottom>{handle}</Typography>
+              <Typography>{recentMessages[handle].body}</Typography>
+            </Box>
+          </MenuItem>
+        ))}
+        <Fab
+          variant="extended"
+          color="primary"
+          aria-label="Add"
+          sx={{
+            margin: 4,
+            marginTop: 2,
+            marginBottom: 2,
+            textTransform: "none",
+          }}
+          onClick={() => history.push("/messages")}
+        >
+          Send New Message
+          <SendIcon
+            sx={{
+              marginLeft: 2,
+            }}
+          />
+        </Fab>
+      </Menu>
+      <Menu
+        id="notifications-menu"
+        open={Boolean(notificationsMenu)}
+        anchorEl={notificationsMenu}
+        onClose={() => setNotificationsMenu(null)}
+        sx={{
+          marginTop: 7,
+        }}
+        disableAutoFocusItem
+      >
+        {notifications.map((notification) => (
+          <MenuItem
+            key={notification.id}
+            onClick={() => setNotificationsMenu(null)}
+            sx={{
+              "&:hover, &:focus": {
+                bgcolor: (theme) => theme.palette.background.default,
+              },
+            }}
+          >
+            <Notification {...notification} typographyVariant="inherit" />
+          </MenuItem>
+        ))}
+      </Menu>
       {renderMobileMenu}
       {renderMenu}
     </Box>
+  );
+}
+
+function stringToColor(string: string) {
+  let hash = 0;
+  let i;
+
+  /* eslint-disable no-bitwise */
+  for (i = 0; i < string.length; i += 1) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  let color = "#";
+
+  for (i = 0; i < 3; i += 1) {
+    const value = (hash >> (i * 8)) & 0xff;
+    color += `00${value.toString(16)}`.substr(-2);
+  }
+  /* eslint-enable no-bitwise */
+
+  return color;
+}
+
+function stringAvatar(name: string) {
+  return {
+    sx: {
+      bgcolor: stringToColor(name.toUpperCase()),
+    },
+    children: `${name[0].toUpperCase()}`,
+  };
+}
+
+function formatDate(date) {
+  // var year = date.getFullYear(),
+  // month = date.getMonth() + 1, // months are zero indexed
+  // day = date.getDate(),
+  var hour = date.getHours(),
+    minute = date.getMinutes(),
+    // second = date.getSeconds(),
+    hourFormatted = hour % 12 || 12, // hour returned in 24 hour format
+    minuteFormatted = minute < 10 ? "0" + minute : minute,
+    morning = hour < 12 ? "am" : "pm";
+
+  return (
+    // month +
+    // '/' +
+    // day +
+    // '/' +
+    // year +
+    // ' ' +
+    hourFormatted + ":" + minuteFormatted + morning
   );
 }

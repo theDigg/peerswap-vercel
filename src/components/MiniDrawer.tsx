@@ -191,7 +191,7 @@ const MiniDrawer = (props) => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <NewAppBar open={open} handleDrawerOpen={handleDrawerOpen}/>
+      <NewAppBar open={open} handleDrawerOpen={handleDrawerOpen} history={history} />
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>

@@ -9,13 +9,12 @@ import { Switch, Route } from 'react-router-dom'
 import PrivateRoute from '../components/PrivateRoute'
 import PublicRoute from '../components/PublicRoute'
 import Drawer from '../components/MiniDrawer'
-import crypto from 'shardus-crypto-web'
+import stringify from 'fast-stable-stringify'
 import { init } from '../api/peerswapAPI'
 import { setAccount } from '../features/account/accountSlice'
 import { setChats } from '../features/messages/messagesSlice'
 import { setMySwaps } from '../features/swaps/swapsSlice'
 import { setMyBids } from '../features/bids/bidsSlice'
-import Test from "../pages/Test"
 import {
   getAccountData,
   getChats,
@@ -39,6 +38,7 @@ const LazyReceipts = React.lazy(() => import('../pages/Receipts'))
 const LazyEconomy = React.lazy(() => import('../pages/Economy'))
 const LazyVote = React.lazy(() => import('../pages/Vote'))
 const LazySettings = React.lazy(() => import('../pages/Settings'))
+const LazyTest = React.lazy(() => import("../pages/Test"));
 const LazyAbout = React.lazy(() => import('../pages/About'))
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
   const { theme } = useSelector((state: RootState) => state.theme)
 
   useEffect(() => {
-    init().then((crypto) => {
+    init().then(() => {
       console.log('APP RENDERED')
       if (wallet) {
         getAccountData(wallet.entry.address).then((accountData) => {
@@ -61,12 +61,12 @@ function App() {
           })
         })
         getMySwaps(wallet.entry.address).then((swaps) => {
-          if (crypto.hashObj(swaps) !== crypto.hashObj(mySwaps)) {
+          if (stringify(swaps) !== stringify(mySwaps)) {
             dispatch(setMySwaps(swaps))
           }
         })
         getMyBids(wallet.entry.address).then((bids) => {
-          if (crypto.hashObj(bids) !== crypto.hashObj(myBids)) {
+          if (stringify(bids) !== stringify(myBids)) {
             dispatch(setMyBids(bids))
           }
         })
@@ -79,7 +79,7 @@ function App() {
     let startTime = Date.now()
     if (wallet) {
       getAccountData(wallet.entry.address).then((accountData) => {
-        if (crypto.hashObj(account) !== crypto.hashObj(accountData.account)) {
+        if (stringify(account) !== stringify(accountData.account)) {
           dispatch(setAccount(accountData.account))
         }
         getChats(accountData.account, wallet).then((chats) => {
@@ -87,12 +87,12 @@ function App() {
         })
       })
       getMySwaps(wallet.entry.address).then((swaps) => {
-        if (crypto.hashObj(swaps) !== crypto.hashObj(mySwaps)) {
+        if (stringify(swaps) !== stringify(mySwaps)) {
           dispatch(setMySwaps(swaps))
         }
       })
       getMyBids(wallet.entry.address).then((bids) => {
-        if (crypto.hashObj(bids) !== crypto.hashObj(myBids)) {
+        if (stringify(bids) !== stringify(myBids)) {
           dispatch(setMyBids(bids))
         }
         console.log(Date.now() - startTime)
@@ -110,7 +110,7 @@ function App() {
               <LazyWelcome />
             </Route>
             <Route path="/test">
-              <Test />
+              <LazyTest />
             </Route>
             <Route path="/settings">
               <LazySettings />

@@ -1,15 +1,17 @@
 import axios from "axios";
-import crypto from "shardus-crypto-web";
+// import crypto from "shardus-crypto-web";
 import stringify from "fast-stable-stringify";
-const ISSERVER = typeof window === "undefined";
 
-let archiver = (!ISSERVER &&
-  JSON.parse(localStorage.getItem("archiver") as string)) || {
+let crypto: any
+
+// import("./Module").then((Module) => Module.method());
+
+let archiver = JSON.parse(localStorage.getItem("archiver")) || {
   ip: "localhost",
   port: 4000,
 };
 
-let host = !ISSERVER && localStorage.getItem("host");
+let host = localStorage.getItem("host");
 let network: any;
 
 // setInterval(async () => {
@@ -18,13 +20,14 @@ let network: any;
 // }, 120000)
 
 export async function init() {
+  crypto = await import("shardus-crypto-web")
+
   await crypto.initialize(
     "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
   );
   network = crypto.hash("network");
   host = await getRandomHost();
-  !ISSERVER && localStorage.setItem("host", host);
-  return crypto;
+  localStorage.setItem("host", host);
 }
 
 export async function getRandomHost() {
