@@ -6,9 +6,10 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineDot from "@mui/lab/TimelineDot";
-import FastfoodIcon from "@mui/icons-material/Fastfood";
-import LaptopMacIcon from "@mui/icons-material/LaptopMac";
-import HotelIcon from "@mui/icons-material/Hotel";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import TransformIcon from "@mui/icons-material/Transform";
+import SwapCallsIcon from "@mui/icons-material/SwapCalls";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import Typography from "@mui/material/Typography";
 
@@ -22,20 +23,20 @@ export default function CustomizedTimeline() {
           variant="body2"
           color="text.secondary"
         >
-          9:30 am
+          First
         </TimelineOppositeContent>
         <TimelineSeparator>
-          <TimelineConnector />
-          <TimelineDot>
-            <FastfoodIcon />
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
+          <TimelineDot color="primary" variant="outlined">
+            <AppRegistrationIcon />
           </TimelineDot>
-          <TimelineConnector />
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
         </TimelineSeparator>
         <TimelineContent sx={{ py: "12px", px: 2 }}>
           <Typography variant="h6" component="span">
-            Eat
+            Register
           </Typography>
-          <Typography>Because you need strength</Typography>
+          <Typography>Because you need an account</Typography>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
@@ -44,50 +45,87 @@ export default function CustomizedTimeline() {
           variant="body2"
           color="text.secondary"
         >
-          10:00 am
+          Second
         </TimelineOppositeContent>
         <TimelineSeparator>
-          <TimelineConnector />
-          <TimelineDot color="primary">
-            <LaptopMacIcon />
-          </TimelineDot>
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent sx={{ py: "12px", px: 2 }}>
-          <Typography variant="h6" component="span">
-            Code
-          </Typography>
-          <Typography>Because it&apos;s awesome!</Typography>
-        </TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-          <TimelineConnector />
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
           <TimelineDot color="primary" variant="outlined">
-            <HotelIcon />
+            <TransformIcon />
           </TimelineDot>
-          <TimelineConnector sx={{ bgcolor: "secondary.main" }} />
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
         </TimelineSeparator>
         <TimelineContent sx={{ py: "12px", px: 2 }}>
           <Typography variant="h6" component="span">
-            Sleep
+            Transfer DAI to the peerswap AMM
           </Typography>
-          <Typography>Because you need rest</Typography>
+          <Typography>Because swaps require collateral</Typography>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
+        <TimelineOppositeContent
+          sx={{ m: "auto 0" }}
+          align="right"
+          variant="body2"
+          color="text.secondary"
+        >
+          Third
+        </TimelineOppositeContent>
         <TimelineSeparator>
-          <TimelineConnector sx={{ bgcolor: "secondary.main" }} />
-          <TimelineDot color="secondary">
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
+          <TimelineDot color="primary" variant="outlined">
+            <SwapCallsIcon />
+          </TimelineDot>
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
+        </TimelineSeparator>
+        <TimelineContent sx={{ py: "12px", px: 2 }}>
+          <Typography variant="h6" component="span">
+            Submit a swap
+          </Typography>
+          <Typography>Because that's what this app is for</Typography>
+        </TimelineContent>
+      </TimelineItem>
+      <TimelineItem>
+        <TimelineOppositeContent
+          sx={{ m: "auto 0" }}
+          variant="body2"
+          color="text.secondary"
+        >
+          Fourth
+        </TimelineOppositeContent>
+        <TimelineSeparator>
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
+          <TimelineDot color="primary" variant="outlined">
+            <LocalOfferIcon />
+          </TimelineDot>
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
+        </TimelineSeparator>
+        <TimelineContent sx={{ py: "12px", px: 2 }}>
+          <Typography variant="h6" component="span">
+            Submit bids
+          </Typography>
+          <Typography>To provide liquidity and earn rewards</Typography>
+        </TimelineContent>
+      </TimelineItem>
+      <TimelineItem>
+        <TimelineOppositeContent
+          sx={{ m: "auto 0" }}
+          variant="body2"
+          color="text.secondary"
+        >
+          Finally
+        </TimelineOppositeContent>
+        <TimelineSeparator>
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
+          <TimelineDot color="primary" variant="outlined">
             <RepeatIcon />
           </TimelineDot>
-          <TimelineConnector />
+          <TimelineConnector sx={{ bgcolor: "primary.main" }} />
         </TimelineSeparator>
         <TimelineContent sx={{ py: "12px", px: 2 }}>
           <Typography variant="h6" component="span">
             Repeat
           </Typography>
-          <Typography>Because this is the life you love!</Typography>
+          <Typography>Because the rewards pile up</Typography>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
