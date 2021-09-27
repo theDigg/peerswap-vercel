@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import Fab from '@mui/material/Fab'
+import Fab from "@mui/material/Fab";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
@@ -106,7 +106,11 @@ const notifications = [
   },
 ];
 
-export default function PrimarySearchAppBar({ open, handleDrawerOpen, history }) {
+export default function PrimarySearchAppBar({
+  open,
+  handleDrawerOpen,
+  history,
+}) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -116,6 +120,7 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen, history })
   var [notificationsMenu, setNotificationsMenu] = React.useState(null);
   var [isMailsUnread, setIsMailsUnread] = React.useState(true);
   var [isNotificationsUnread, setIsNotificationsUnread] = React.useState(true);
+  const { wallet } = useSelector((state: RootState) => state.wallet);
   const { recentMessages } = useSelector((state: RootState) => state.messages);
   const { theme } = useSelector((state: RootState) => state.theme);
 
@@ -201,60 +206,66 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen, history })
         </IconButton>
         <p>Dark Mode</p>
       </MenuItem>
-      <MenuItem
-        onClick={(e) => {
-          setMailMenu(e.currentTarget);
-          setIsMailsUnread(false);
-        }}
-      >
-        <IconButton
-          aria-label="show new messages"
-          color="inherit"
-          aria-haspopup="true"
-          aria-controls="mail-menu"
-        >
-          <Badge
-            badgeContent={
-              isMailsUnread ? Object.keys(recentMessages).length : null
-            }
-            color="secondary"
+      {wallet && (
+        <>
+          <MenuItem
+            onClick={(e) => {
+              setMailMenu(e.currentTarget);
+              setIsMailsUnread(false);
+            }}
           >
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem
-        onClick={(e) => {
-          setNotificationsMenu(e.currentTarget);
-          setIsNotificationsUnread(false);
-        }}
-      >
-        <IconButton
-          color="inherit"
-          aria-haspopup="true"
-          aria-controls="mail-menu"
-        >
-          <Badge
-            badgeContent={isNotificationsUnread ? notifications.length : null}
-            color="secondary"
+            <IconButton
+              aria-label="show new messages"
+              color="inherit"
+              aria-haspopup="true"
+              aria-controls="mail-menu"
+            >
+              <Badge
+                badgeContent={
+                  isMailsUnread ? Object.keys(recentMessages).length : null
+                }
+                color="secondary"
+              >
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <p>Messages</p>
+          </MenuItem>
+          <MenuItem
+            onClick={(e) => {
+              setNotificationsMenu(e.currentTarget);
+              setIsNotificationsUnread(false);
+            }}
           >
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Account</p>
-      </MenuItem>
+            <IconButton
+              color="inherit"
+              aria-haspopup="true"
+              aria-controls="mail-menu"
+            >
+              <Badge
+                badgeContent={
+                  isNotificationsUnread ? notifications.length : null
+                }
+                color="secondary"
+              >
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <p>Notifications</p>
+          </MenuItem>
+          <MenuItem onClick={handleProfileMenuOpen}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <p>Account</p>
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
 
@@ -305,54 +316,58 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen, history })
             >
               <Brightness4Icon />
             </IconButton>
-              <IconButton
-                aria-label="show new messages"
-                color="inherit"
-                aria-haspopup="true"
-                aria-controls="mail-menu"
-                onClick={(e) => {
-                  setMailMenu(e.currentTarget)
-                  setIsMailsUnread(false)
-                }}
-              >
-                <Badge
-                  badgeContent={
-                    isMailsUnread ? Object.keys(recentMessages).length : null
-                  }
-                  color="secondary"
+            {wallet && (
+              <>
+                <IconButton
+                  aria-label="show new messages"
+                  color="inherit"
+                  aria-haspopup="true"
+                  aria-controls="mail-menu"
+                  onClick={(e) => {
+                    setMailMenu(e.currentTarget);
+                    setIsMailsUnread(false);
+                  }}
                 >
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                color="inherit"
-                aria-haspopup="true"
-                aria-controls="mail-menu"
-                onClick={(e) => {
-                  setNotificationsMenu(e.currentTarget)
-                  setIsNotificationsUnread(false)
-                }}
-              >
-                <Badge
-                  badgeContent={
-                    isNotificationsUnread ? notifications.length : null
-                  }
-                  color="secondary"
+                  <Badge
+                    badgeContent={
+                      isMailsUnread ? Object.keys(recentMessages).length : null
+                    }
+                    color="secondary"
+                  >
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  color="inherit"
+                  aria-haspopup="true"
+                  aria-controls="mail-menu"
+                  onClick={(e) => {
+                    setNotificationsMenu(e.currentTarget);
+                    setIsNotificationsUnread(false);
+                  }}
                 >
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+                  <Badge
+                    badgeContent={
+                      isNotificationsUnread ? notifications.length : null
+                    }
+                    color="secondary"
+                  >
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </>
+            )}
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
