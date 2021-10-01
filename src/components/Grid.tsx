@@ -34,7 +34,7 @@ function NestedGrid({ swaps, bids, opened }) {
       }}
     >
       <Grid container spacing={1}>
-        <Grid container item spacing={3}>
+        <Grid container item spacing={2}>
           <FormRow />
         </Grid>
       </Grid>

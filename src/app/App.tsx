@@ -1,104 +1,105 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import lightTheme from '../theme'
-import darkTheme from '../theme2'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from './rootReducer'
-import { Switch, Route } from 'react-router-dom'
-import PrivateRoute from '../components/PrivateRoute'
-import PublicRoute from '../components/PublicRoute'
-import Drawer from '../components/MiniDrawer'
-import stringify from 'fast-stable-stringify'
-import { init } from '../api/peerswapAPI'
-import { setAccount } from '../features/account/accountSlice'
-import { setChats } from '../features/messages/messagesSlice'
-import { setMySwaps } from '../features/swaps/swapsSlice'
-import { setMyBids } from '../features/bids/bidsSlice'
+import lightTheme from "../theme";
+import darkTheme from "../theme2";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./rootReducer";
+import { Switch, Route } from "react-router-dom";
+import PrivateRoute from "../components/PrivateRoute";
+import PublicRoute from "../components/PublicRoute";
+import Drawer from "../components/MiniDrawer";
+import stringify from "fast-stable-stringify";
+import { setAccount } from "../features/account/accountSlice";
+import { setChats } from "../features/messages/messagesSlice";
+import { setMySwaps } from "../features/swaps/swapsSlice";
+import { setMyBids } from "../features/bids/bidsSlice";
 import {
   getAccountData,
   getChats,
   getMySwaps,
   getMyBids,
-} from '../api/peerswapAPI'
-import useInterval from '../hooks/useInterval'
+  init
+} from "../api/peerswapAPI";
+import useInterval from "../hooks/useInterval";
+import ReloadPrompt from "../ReloadPrompt";
 
-const LazyWelcome = React.lazy(() => import('../pages/Welcome'))
-const LazyRegister = React.lazy(() => import('../pages/Register'))
-const LazyImport = React.lazy(() => import('../pages/Import'))
-const LazyHome = React.lazy(() => import('../pages/Home'))
-const LazyWallet = React.lazy(() => import('../pages/Wallet'))
-const LazySwaps = React.lazy(() => import('../pages/Swaps'))
-const LazySwap = React.lazy(() => import('../pages/Swap'))
-const LazyBid = React.lazy(() => import('../pages/Bid'))
-const LazyContract = React.lazy(() => import('../pages/Contract'))
-const LazyMessages = React.lazy(() => import('../pages/Messages'))
-const LazyTransactions = React.lazy(() => import('../pages/Transactions'))
-const LazyReceipts = React.lazy(() => import('../pages/Receipts'))
-const LazyEconomy = React.lazy(() => import('../pages/Economy'))
-const LazyVote = React.lazy(() => import('../pages/Vote'))
-const LazySettings = React.lazy(() => import('../pages/Settings'))
+const LazyWelcome = React.lazy(() => import("../pages/Welcome"));
+const LazyRegister = React.lazy(() => import("../pages/Register"));
+const LazyImport = React.lazy(() => import("../pages/Import"));
+const LazyHome = React.lazy(() => import("../pages/Home"));
+const LazyWallet = React.lazy(() => import("../pages/Wallet"));
+const LazySwaps = React.lazy(() => import("../pages/Swaps"));
+const LazySwap = React.lazy(() => import("../pages/Swap"));
+const LazyBid = React.lazy(() => import("../pages/Bid"));
+const LazyContract = React.lazy(() => import("../pages/Contract"));
+const LazyMessages = React.lazy(() => import("../pages/Messages"));
+const LazyTransactions = React.lazy(() => import("../pages/Transactions"));
+const LazyReceipts = React.lazy(() => import("../pages/Receipts"));
+const LazyEconomy = React.lazy(() => import("../pages/Economy"));
+const LazyVote = React.lazy(() => import("../pages/Vote"));
+const LazySettings = React.lazy(() => import("../pages/Settings"));
 const LazyTest = React.lazy(() => import("../pages/Test"));
-const LazyAbout = React.lazy(() => import('../pages/About'))
+const LazyAbout = React.lazy(() => import("../pages/About"));
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const { mySwaps } = useSelector((state: RootState) => state.swaps)
-  const { myBids } = useSelector((state: RootState) => state.bids)
-  const { account } = useSelector((state: RootState) => state.account)
-  const { wallet } = useSelector((state: RootState) => state.wallet)
-  const { theme } = useSelector((state: RootState) => state.theme)
+  const { mySwaps } = useSelector((state: RootState) => state.swaps);
+  const { myBids } = useSelector((state: RootState) => state.bids);
+  const { account } = useSelector((state: RootState) => state.account);
+  const { wallet } = useSelector((state: RootState) => state.wallet);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   useEffect(() => {
     init().then(() => {
-      console.log('APP RENDERED')
+      console.log("APP RENDERED");
       if (wallet) {
         getAccountData(wallet.entry.address).then((accountData) => {
-          dispatch(setAccount(accountData.account))
+          dispatch(setAccount(accountData.account));
           getChats(accountData.account, wallet).then((chats) => {
-            dispatch(setChats(chats))
-          })
-        })
+            dispatch(setChats(chats));
+          });
+        });
         getMySwaps(wallet.entry.address).then((swaps) => {
           if (stringify(swaps) !== stringify(mySwaps)) {
-            dispatch(setMySwaps(swaps))
+            dispatch(setMySwaps(swaps));
           }
-        })
+        });
         getMyBids(wallet.entry.address).then((bids) => {
           if (stringify(bids) !== stringify(myBids)) {
-            dispatch(setMyBids(bids))
+            dispatch(setMyBids(bids));
           }
-        })
+        });
       }
-    })
-  }, [])
+    });
+  }, []);
 
   // ! Probably bad idea to do this here.
   useInterval(() => {
-    let startTime = Date.now()
+    let startTime = Date.now();
     if (wallet) {
       getAccountData(wallet.entry.address).then((accountData) => {
         if (stringify(account) !== stringify(accountData.account)) {
-          dispatch(setAccount(accountData.account))
+          dispatch(setAccount(accountData.account));
         }
         getChats(accountData.account, wallet).then((chats) => {
-          dispatch(setChats(chats))
-        })
-      })
+          dispatch(setChats(chats));
+        });
+      });
       getMySwaps(wallet.entry.address).then((swaps) => {
         if (stringify(swaps) !== stringify(mySwaps)) {
-          dispatch(setMySwaps(swaps))
+          dispatch(setMySwaps(swaps));
         }
-      })
+      });
       getMyBids(wallet.entry.address).then((bids) => {
         if (stringify(bids) !== stringify(myBids)) {
-          dispatch(setMyBids(bids))
+          dispatch(setMyBids(bids));
         }
-        console.log(Date.now() - startTime)
-      })
+        console.log(Date.now() - startTime);
+      });
     }
-  }, 10000)
+  }, 10000);
 
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
@@ -174,8 +175,9 @@ function App() {
           </React.Suspense>
         </Switch>
       </Box>
+      <ReloadPrompt />
     </ThemeProvider>
   );
 }
 
-export default App
+export default App;

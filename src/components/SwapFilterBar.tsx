@@ -25,15 +25,28 @@ import { setFilters } from "../features/swaps/swapsSlice";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? alpha(theme.palette.common.white, 0.15)
+      : alpha(theme.palette.common.black, 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor:
+      theme.palette.mode === "dark"
+        ? alpha(theme.palette.common.white, 0.25)
+        : alpha(theme.palette.common.black, 0.25),
   },
+  "&:focused": {
+    backgroundColor:
+      theme.palette.mode === "dark"
+        ? alpha(theme.palette.common.white, 0.25)
+        : alpha(theme.palette.common.black, 0.25),
+  },
+  marginTop: theme.spacing(1),
   marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
+    marginLeft: theme.spacing(0),
+    width: "100%",
   },
 }));
 
@@ -49,6 +62,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
+  width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -56,9 +70,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: "12ch",
+      width: "100%",
       "&:focus": {
-        width: "20ch",
+        width: "100%",
       },
     },
   },
@@ -95,7 +109,7 @@ export default function SwapFilterBar() {
 
   const handleSearch = (ev) => {
     if (ev.key === "Enter") {
-      setTags((tags) => [...tags, search]);
+      setTags((tags) => [...tags, ...search.split(" ")]);
       setSearch("");
       ev.preventDefault();
     }
@@ -112,23 +126,26 @@ export default function SwapFilterBar() {
   };
 
   return (
-    <Box sx={{ mb: 3, flexGrow: 1 }}>
-      <AppBar position="static" color="inherit">
+    <Box sx={{ mb: 2, flexGrow: 1 }}>
+      <AppBar position="static" color="inherit" elevation={9}>
         <Toolbar>
           <Grid
             container
             direction="column"
             justifyContent="flex-start"
             alignItems="stretch"
-            spacing={3}
+            spacing={1}
           >
             <Grid item xs={12}>
+              <InputLabel id="search-help-label" sx={{ fontSize: 11, mt: 1 }}>
+                Enter tokens separated by spaces, then hit enter
+              </InputLabel>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
-                  placeholder="Enter a token ticker then hit enter"
+                  placeholder="Token list..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   inputProps={{ "aria-label": "search" }}
@@ -215,35 +232,40 @@ export default function SwapFilterBar() {
             </Grid>
             {/* <Divider /> */}
             <Grid item xs={12}>
-              <Paper
-                sx={{
-                  textAlign: "center",
-                  color: (theme) => theme.palette.text.secondary,
-                }}
-              >
-                <Box
+              {tags.length > 0 && (
+                <Paper
                   sx={{
-                    display: "flex",
-                    justifyContent: "start",
-                    flexWrap: "wrap",
-                    "& > *": {
-                      m: 0.5,
-                    },
+                    textAlign: "center",
+                    color: (theme) => theme.palette.text.secondary,
+                    mb: 1,
+                    p: 1,
                   }}
                 >
-                  {tags.map((chip) => (
-                    <Chip
-                      key={chip}
-                      id={chip}
-                      label={chip}
-                      onClick={() => handleClick(chip)}
-                      onDelete={() => handleDelete(chip)}
-                      //   deleteIcon={<DoneIcon />}
-                      variant="outlined"
-                    />
-                  ))}
-                </Box>
-              </Paper>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "start",
+                      flexWrap: "wrap",
+                      "& > *": {
+                        m: 0.5,
+                      },
+                    }}
+                  >
+                    {tags.map((chip) => (
+                      <Chip
+                        key={chip}
+                        id={chip}
+                        label={chip}
+                        onClick={() => handleClick(chip)}
+                        onDelete={() => handleDelete(chip)}
+                        //   deleteIcon={<DoneIcon />}
+                        variant="outlined"
+                        sx={{ mx: 0.5 }}
+                      />
+                    ))}
+                  </Box>
+                </Paper>
+              )}
             </Grid>
           </Grid>
         </Toolbar>

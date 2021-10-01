@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { VariantType, useSnackbar } from "notistack";
-import TextField from "@mui/material/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -13,12 +13,19 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch, { SwitchClassKey, SwitchProps } from "@mui/material/Switch";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { styled, Theme, createStyles, withStyles } from "@mui/material/styles";
+import { OutlinedInputProps } from "@mui/material/OutlinedInput";
+import {
+  styled,
+  Theme,
+  createStyles,
+  withStyles,
+  alpha,
+} from "@mui/material/styles";
 import { getParameters, submitProposalTx, getWindow } from "../api/peerswapAPI";
 import { formatDateTime } from "../utils/stringUtils";
 
@@ -190,10 +197,10 @@ export default function Economy(props) {
     <Box sx={styles.root}>
       <Box component="main" sx={styles.content}>
         <Offset />
+        <Typography variant="h3" align="center" sx={styles.mb}>
+          New Economy Proposal
+        </Typography>
         <Container maxWidth="md">
-          <Typography variant="h3" align="center" sx={styles.mb}>
-            New Economy Proposal
-          </Typography>
           <Typography variant="body1" align="center" sx={styles.mb}>
             Submit a new proposal when the proposal window is active.
           </Typography>
@@ -218,7 +225,7 @@ export default function Economy(props) {
           </Box>
 
           {!state.checked && windows[currentWindowName] && (
-            <Card sx={styles.active} elevation={3}>
+            <Card sx={styles.active} elevation={9}>
               <Typography
                 variant="body1"
                 color="textPrimary"
@@ -251,7 +258,7 @@ export default function Economy(props) {
                     ? styles.active
                     : styles.card
                 }
-                elevation={3}
+                elevation={9}
               >
                 <Typography
                   variant="body1"
@@ -282,7 +289,7 @@ export default function Economy(props) {
                     ? styles.active
                     : styles.card
                 }
-                elevation={3}
+                elevation={9}
               >
                 <Typography
                   variant="body1"
@@ -313,7 +320,7 @@ export default function Economy(props) {
                     ? styles.active
                     : styles.card
                 }
-                elevation={3}
+                elevation={9}
               >
                 <Typography
                   variant="body1"
@@ -344,7 +351,7 @@ export default function Economy(props) {
                     ? styles.active
                     : styles.card
                 }
-                elevation={3}
+                elevation={9}
               >
                 <Typography
                   variant="body1"
@@ -418,39 +425,65 @@ export default function Economy(props) {
   );
 }
 
-const StyledTableTextField = styled(TextField)`
-  width: 100px;
-  label.Mui-focused {
-    color: red;
-  }
-  .MuiOutlinedInput-root {
-    fieldset {
-      border-color: grey;
-    }
-    &:hover fieldset {
-      border-color: black;
-    }
-    &.Mui-focused fieldset {
-      border-color: red;
-    }
-  }
-` as typeof TextField;
+const RedditTextField = styled((props: TextFieldProps) => (
+  <TextField
+    InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
+    {...props}
+  />
+))(({ theme }) => ({
+  "& .MuiFilledInput-root": {
+    border: "1px solid #e2e2e1",
+    overflow: "hidden",
+    borderRadius: 4,
+    backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
+    transition: theme.transitions.create([
+      "border-color",
+      "background-color",
+      "box-shadow",
+    ]),
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
+    "&.Mui-focused": {
+      backgroundColor: "transparent",
+      boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
+      borderColor: theme.palette.primary.main,
+    },
+  },
+}));
+
+const ValidationTextField = styled(TextField)({
+  "& input:valid + fieldset": {
+    borderColor: "green",
+    borderWidth: 2,
+  },
+  "& input:invalid + fieldset": {
+    borderColor: "red",
+    borderWidth: 2,
+  },
+  "& input:valid:focus + fieldset": {
+    borderLeftWidth: 6,
+    padding: "4px !important", // override inline-style
+  },
+});
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  head: {
+  [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
-  body: {
+  [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
   },
 }));
 
@@ -463,16 +496,24 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Network Proposal Fee",
       parameters.proposalFee,
-      <StyledTableTextField
+      <RedditTextField
+        label="Proposal Fee"
+        defaultValue={nextParameters.proposalFee}
+        id="proposalFee-input"
+        variant="filled"
         value={nextParameters.proposalFee}
         name="proposalFee"
         onChange={changeParameters}
       />
     ),
     createData(
-      "Min. Maintenance Fee",
+      "Maintenance Fee",
       parameters.maintenanceFee,
-      <StyledTableTextField
+      <RedditTextField
+        label="Maintenance Fee"
+        defaultValue={nextParameters.maintenanceFee}
+        id="maintenanceFee-input"
+        variant="filled"
         value={nextParameters.maintenanceFee}
         name="maintenanceFee"
         onChange={changeParameters}
@@ -481,7 +522,11 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Maintenance Interval",
       parameters.maintenanceInterval,
-      <StyledTableTextField
+      <RedditTextField
+        label="Maintenance Interval"
+        defaultValue={nextParameters.maintenanceInterval}
+        id="maintenanceInterval-input"
+        variant="filled"
         value={nextParameters.maintenanceInterval}
         name="maintenanceInterval"
         onChange={changeParameters}
@@ -490,7 +535,11 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Node Penalty",
       parameters.nodePenalty,
-      <StyledTableTextField
+      <RedditTextField
+        label="Node Penalt"
+        defaultValue={nextParameters.nodePenalty}
+        id="nodePenalty-input"
+        variant="filled"
         value={nextParameters.nodePenalty}
         name="nodePenalty"
         onChange={changeParameters}
@@ -499,7 +548,11 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Node Reward Amount",
       parameters.nodeRewardAmount,
-      <StyledTableTextField
+      <RedditTextField
+        label="Node Reward"
+        defaultValue={nextParameters.nodeRewardAmount}
+        id="nodeRewardAmount-input"
+        variant="filled"
         value={nextParameters.nodeRewardAmount}
         name="nodeRewardAmount"
         onChange={changeParameters}
@@ -508,7 +561,11 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Node Reward Interval",
       parameters.nodeRewardInterval,
-      <StyledTableTextField
+      <RedditTextField
+        label="Node Reward Interval"
+        defaultValue={nextParameters.nodeRewardInterval}
+        id="nodeRewardInterval-input"
+        variant="filled"
         value={nextParameters.nodeRewardInterval}
         name="nodeRewardInterval"
         onChange={changeParameters}
@@ -517,7 +574,11 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Stake Required",
       parameters.stakeRequired,
-      <StyledTableTextField
+      <RedditTextField
+        label="Stake Required"
+        defaultValue={nextParameters.stakeRequired}
+        id="stakeRequired-input"
+        variant="filled"
         value={nextParameters.stakeRequired}
         name="stakeRequired"
         onChange={changeParameters}
@@ -526,7 +587,11 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Transaction Fee",
       parameters.transactionFee,
-      <StyledTableTextField
+      <RedditTextField
+        label="TX Fee"
+        defaultValue={nextParameters.transactionFee}
+        id="transactionFee-input"
+        variant="filled"
         value={nextParameters.transactionFee}
         name="transactionFee"
         onChange={changeParameters}
@@ -535,7 +600,11 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Faucet Amount",
       parameters.faucetAmount,
-      <StyledTableTextField
+      <RedditTextField
+        label="Faucet Amount"
+        defaultValue={nextParameters.faucetAmount}
+        id="faucetAmount-input"
+        variant="filled"
         value={nextParameters.faucetAmount}
         name="faucetAmount"
         onChange={changeParameters}
@@ -544,7 +613,11 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
     createData(
       "Default Toll",
       parameters.defaultToll,
-      <StyledTableTextField
+      <RedditTextField
+        label="Default Toll"
+        defaultValue={nextParameters.defaultToll}
+        id="defaultToll-input"
+        variant="filled"
         value={nextParameters.defaultToll}
         name="defaultToll"
         onChange={changeParameters}
@@ -553,8 +626,8 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
   ];
 
   return (
-    <TableContainer component={Paper} elevation={3}>
-      <Table sx={styles.table} aria-label="customized table">
+    <TableContainer component={Paper} elevation={9}>
+      <Table sx={styles.table} size="small" aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Parameters</StyledTableCell>
@@ -568,7 +641,9 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
               <StyledTableCell component="th" scope="row">
                 {row.parameter}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.current}</StyledTableCell>
+              <StyledTableCell align="right">
+                <strong>{row.current}</strong>
+              </StyledTableCell>
               <StyledTableCell align="right">{row.next}</StyledTableCell>
             </StyledTableRow>
           ))}

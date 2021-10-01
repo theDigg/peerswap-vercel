@@ -9,6 +9,7 @@ import { RootState } from "../app/rootReducer";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Grid from "../components/Grid";
+import Masonry from "../components/Masonry";
 import Box from "@mui/material/Box";
 import { makeStyles, Theme, createStyles, styled } from "@mui/material/styles";
 import { setMySwaps } from "../features/swaps/swapsSlice";
@@ -47,7 +48,7 @@ let renders = 0;
 function Home({ wallet, history }) {
   console.log("HOME RENDERED ", renders++, " Times");
   const dispatch = useDispatch();
-  const { account } = useSelector((state: RootState) => state.account)
+  const { account } = useSelector((state: RootState) => state.account);
   const { mySwaps } = useSelector((state: RootState) => state.swaps);
   const { myBids } = useSelector((state: RootState) => state.bids);
 
@@ -60,40 +61,22 @@ function Home({ wallet, history }) {
     });
   }, []);
 
-  const swaps = useMemo(
-    () => <Grid swaps={mySwaps} bids={[]} opened={true} />,
-    [mySwaps]
-  );
+  const swaps = useMemo(() => <Masonry items={mySwaps} />, [mySwaps]);
+  const bids = useMemo(() => <Masonry items={myBids} />, [myBids]);
 
   return (
     <Box sx={styles.root}>
       <Box component="main" sx={styles.content}>
         <Offset />
-        <AccountInfo history={history} account={account}/>
-        <Divider sx={styles.divider} />
-        <Typography
-          variant="body1"
-          sx={styles.title}
-          color="primary"
-          align="center"
-          gutterBottom
-        >
-          Swaps
-        </Typography>
-        <Divider sx={styles.divider} />
+        <AccountInfo history={history} account={account} />
+        <Divider orientation="horizontal" sx={{ my: 2 }}>
+          SWAPS
+        </Divider>
         {swaps}
-        <Divider sx={styles.divider} />
-        <Typography
-          variant="body1"
-          sx={styles.title}
-          color="primary"
-          align="center"
-          gutterBottom
-        >
-          Bids
-        </Typography>
-        <Divider sx={styles.divider} />
-        <Grid swaps={[]} bids={myBids} opened={true} />
+        <Divider orientation="horizontal" sx={{ my: 2 }}>
+          BIDS
+        </Divider>
+        {bids}
       </Box>
     </Box>
   );

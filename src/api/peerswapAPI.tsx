@@ -2,7 +2,7 @@ import axios from "axios";
 // import crypto from "shardus-crypto-web";
 import stringify from "fast-stable-stringify";
 
-let crypto: any
+let crypto: any;
 
 // import("./Module").then((Module) => Module.method());
 
@@ -20,7 +20,7 @@ let network: any;
 // }, 120000)
 
 export async function init() {
-  crypto = await import("shardus-crypto-web")
+  crypto = await import("shardus-crypto-web");
 
   await crypto.initialize(
     "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"

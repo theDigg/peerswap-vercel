@@ -81,7 +81,7 @@ export default function Settings() {
     <Box sx={{ display: "flex", width: "100%" }}>
       <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <Offset />
-        <Card sx={{ minWidth: 300, mb: 3 }} variant="outlined">
+        <Card sx={{ minWidth: 300, mb: 3 }} elevation={9}>
           <CardContent sx={{ p: 0 }}>
             <Typography
               sx={{ flexGrow: 1, p: 2 }}

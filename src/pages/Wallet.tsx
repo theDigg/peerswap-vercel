@@ -37,7 +37,7 @@ const Unit = styled("span")(({ theme }) => ({
   letterSpacing: "-.16px",
   textAlign: "left",
   position: "relative",
-  top: "-30px",
+  top: "-25px",
   left: "5px",
 }));
 
@@ -117,26 +117,29 @@ export default function Wallet({ wallet, location }) {
       >
         <Offset />
         <Typography
-          variant="h3"
+          variant="h4"
           align="center"
-          sx={{ m: (theme) => theme.spacing(2) }}
+          sx={{ m: 1 }}
         >
           {account && account.data.balance.toFixed(3)}
           <Unit>SWAP</Unit>
         </Typography>
-        <Paper square sx={{ flexGrow: 1 }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            variant="fullWidth"
-            indicatorColor="primary"
-            textColor="primary"
-            aria-label="icon label tabs example"
-          >
-            <LinkTab icon={<AttachMoneyIcon />} label="Send" />
-            <LinkTab icon={<SwapHorizIcon />} label="Swap" />
-            <LinkTab icon={<CardGiftcardIcon />} label="Receive" />
-          </Tabs>
+        <Paper sx={{ flexGrow: 1 }} elevation={9}>
+          <Paper sx={{ flexGrow: 1 }} elevation={3}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              variant="fullWidth"
+              indicatorColor="primary"
+              textColor="primary"
+              aria-label="icon label tabs example"
+              centered
+            >
+              <LinkTab icon={<AttachMoneyIcon />} label="Send" />
+              <LinkTab icon={<SwapHorizIcon />} label="Swap" />
+              <LinkTab icon={<CardGiftcardIcon />} label="Receive" />
+            </Tabs>
+          </Paper>
           <TabPanel value={value} index={0}>
             <SendTab wallet={wallet} />
           </TabPanel>
@@ -354,8 +357,11 @@ function SwapTab({ wallet }) {
       }}
     >
       <FormControl component="fieldset">
-        <Container maxWidth="sm">
-          <FormLabel component="legend" sx={{ m: (theme) => theme.spacing(2) }}>
+        <Container
+          maxWidth="sm"
+          sx={{ display: "flex", flexDirection: "column" }}
+        >
+          <FormLabel component="legend" sx={{ my: 1 }}>
             Swap Type
           </FormLabel>
           <RadioGroup
@@ -363,7 +369,11 @@ function SwapTab({ wallet }) {
             name="swap-type"
             value={state.swapType}
             onChange={(e) => handleChange(e, "swapType")}
-            sx={{ m: (theme) => theme.spacing(2) }}
+            sx={{
+              my: 1,
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+            }}
             row
           >
             <FormControlLabel value="offer" control={<Radio />} label="Offer" />
@@ -397,47 +407,47 @@ function SwapTab({ wallet }) {
             />
           )}
           <TextField
-            id="outlined-basic"
+            id="filled-basic"
             value={state.maxTimeToSend}
             type="number"
             label="Max Time To Send"
-            variant="outlined"
+            variant="filled"
             onChange={(e) =>
               setState({
                 ...state,
                 maxTimeToSend: parseFloat(e.target.value),
               })
             }
-            sx={{ m: (theme) => theme.spacing(2) }}
+            sx={{ my: 1 }}
             fullWidth
           />
           <TextField
-            id="outlined-basic"
+            id="filled-basic"
             value={state.maxTimeToReceive}
             type="number"
             label="Max Time To Receive"
-            variant="outlined"
+            variant="filled"
             onChange={(e) =>
               setState({
                 ...state,
                 maxTimeToReceive: parseFloat(e.target.value),
               })
             }
-            sx={{ m: (theme) => theme.spacing(2) }}
+            sx={{ my: 1 }}
             fullWidth
           />
           <TextField
-            id="outlined-basic"
+            id="filled-basic"
             type="number"
             label="Collateral"
-            variant="outlined"
+            variant="filled"
             onChange={(e) =>
               setState({
                 ...state,
                 initiatorCollateral: parseFloat(e.target.value),
               })
             }
-            sx={{ m: (theme) => theme.spacing(2) }}
+            sx={{ my: 1 }}
             fullWidth
           />
           <FormControlLabel
@@ -449,20 +459,20 @@ function SwapTab({ wallet }) {
               />
             }
             label="Fixed Precision"
-            labelPlacement="start"
+            labelPlacement="end"
           />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ my: 1 }}
+            startIcon={<SwapCallsIcon />}
+          >
+            Swap
+          </Button>
         </Container>
       </FormControl>
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        size="large"
-        sx={{ mt: (theme) => theme.spacing(2) }}
-        startIcon={<SwapCallsIcon />}
-      >
-        Swap
-      </Button>
     </Form>
   );
 }
@@ -471,20 +481,20 @@ const OfferForm = ({ handleChange, setNumber }) => {
   return (
     <>
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Token Offered"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => handleChange(e, "tokenOffered")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Amount Offered"
         type="number"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => setNumber(e, "amountOffered")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
     </>
@@ -495,28 +505,28 @@ const RequestForm = ({ handleChange, setNumber }) => {
   return (
     <>
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Token Requested"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => handleChange(e, "tokenRequested")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Amount Requested"
         type="number"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => setNumber(e, "amountRequested")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Blockchain Address"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => handleChange(e, "initiatorChainAddress")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
     </>
@@ -527,45 +537,45 @@ const ImmediateForm = ({ handleChange, setNumber }) => {
   return (
     <>
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Token Offered"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => handleChange(e, "tokenOffered")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Amount Offered"
         type="number"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => setNumber(e, "amountOffered")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Token Requested"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => handleChange(e, "tokenRequested")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Amount Requested"
         type="number"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => setNumber(e, "amountRequested")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
-        id="outlined-basic"
+        id="filled-basic"
         label="Blockchain Address"
-        variant="outlined"
+        variant="filled"
         onChange={(e) => handleChange(e, "initiatorChainAddress")}
-        sx={{ m: (theme) => theme.spacing(2) }}
+        sx={{ my: 1 }}
         fullWidth
       />
     </>

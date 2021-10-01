@@ -50,7 +50,7 @@ function BidCard({ swap, bid }) {
   };
 
   return (
-    <Card sx={{ width: "100%" }} elevation={9}>
+    <Card sx={{ width: "100%", my: 1 }} elevation={9}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" sx={{ bgcolor: grey[600] }}>

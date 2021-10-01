@@ -13,6 +13,7 @@ import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 import Grid from "../components/Grid";
+import Masonry from "../components/Masonry";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
@@ -209,7 +210,7 @@ export default function Swaps() {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 2,
         }}
       >
         <Offset />
@@ -370,7 +371,11 @@ export default function Swaps() {
           </Box>
         </Modal>
         <SwapFilterBar />
-        <Grid swaps={filteredSwaps || swaps} bids={[]} opened={false} />
+        {filteredSwaps.length ? (
+          <Masonry items={filteredSwaps} />
+        ) : (
+          <Masonry items={swaps} />
+        )}
         <Fab
           variant="extended"
           sx={{
