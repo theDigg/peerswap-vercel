@@ -39,15 +39,15 @@ export default function AccountInfo({ history, account }) {
         </Typography>
       </CardContent>
       <Container maxWidth="sm">
-        <CardActions sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-evenly',
-        }}>
+        <CardActions
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
           <Button
-            size="large"
-            color="primary"
-            variant="outlined"
+            variant="contained"
             onClick={() => {
               history.push("/wallet/send");
             }}
@@ -55,9 +55,8 @@ export default function AccountInfo({ history, account }) {
             Send
           </Button>
           <Button
-            size="large"
             color="secondary"
-            variant="outlined"
+            variant="contained"
             onClick={() => {
               history.push("/wallet/swap");
             }}
@@ -65,8 +64,7 @@ export default function AccountInfo({ history, account }) {
             Swap
           </Button>
           <Button
-            size="large"
-            variant="outlined"
+            variant="contained"
             onClick={() => {
               history.push("/wallet/receive");
             }}

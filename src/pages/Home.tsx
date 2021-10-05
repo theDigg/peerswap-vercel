@@ -9,8 +9,11 @@ import { RootState } from "../app/rootReducer";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Grid from "../components/Grid";
+import LoopIcon from "@mui/icons-material/Loop";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Masonry from "../components/Masonry";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 import { makeStyles, Theme, createStyles, styled } from "@mui/material/styles";
 import { setMySwaps } from "../features/swaps/swapsSlice";
 import { setMyBids } from "../features/bids/bidsSlice";
@@ -70,11 +73,23 @@ function Home({ wallet, history }) {
         <Offset />
         <AccountInfo history={history} account={account} />
         <Divider orientation="horizontal" sx={{ my: 2 }}>
-          SWAPS
+          <Chip
+            icon={<LoopIcon />}
+            label="SWAPS"
+            variant="outlined"
+            size="small"
+            color="primary"
+          />
         </Divider>
         {swaps}
         <Divider orientation="horizontal" sx={{ my: 2 }}>
-          BIDS
+          <Chip
+            icon={<LocalOfferIcon />}
+            label="BIDS"
+            variant="outlined"
+            size="small"
+            color="secondary"
+          />
         </Divider>
         {bids}
       </Box>

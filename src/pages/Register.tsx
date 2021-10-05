@@ -17,6 +17,7 @@ import {
   registerAlias,
 } from "../api/peerswapAPI";
 import { setWallets, setWallet } from "../features/wallet/walletSlice";
+import { setAccount } from "../features/account/accountSlice";
 
 const StyledTextField = styled(TextField)`
   label.Mui-focused {
@@ -149,6 +150,9 @@ export default function Register() {
                 }
                 setLoading(false);
                 dispatch(setWallets(wallet));
+                const { account } = await getAccountFromAlias(username);
+                console.log(account);
+                dispatch(setAccount(account));
               }}
             >
               Register
