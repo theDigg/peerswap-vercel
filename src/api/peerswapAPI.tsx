@@ -7,7 +7,7 @@ let crypto: any;
 // import("./Module").then((Module) => Module.method());
 
 let archiver = JSON.parse(localStorage.getItem("archiver")) || {
-  ip: "localhost",
+  ip: "test.peerswap.org",
   port: 4000,
 };
 
@@ -18,6 +18,47 @@ let network: any;
 //   host = await getRandomHost()
 //   localStorage.setItem('host', host)
 // }, 120000)
+
+const config = {
+  server: {
+    ip: "localhost",
+    port: 4000,
+  },
+  proxy: {
+    ip: "test.peerswap.org",
+    port: 443,
+  },
+  version: "1.1.0",
+};
+
+// const getProxyUrl = function (url, option) {
+//   try {
+//     let ip, port;
+//     if (!option) {
+//       ip = host.split(":")[0];
+//       port = host.split(":")[1];
+//     } else if (option) {
+//       ip = option.ip;
+//       port = option.port;
+//     }
+//     if (ip === "localhost" || ip === "127.0.0.1") {
+//       return `http://localhost:${port}${url}`;
+//     }
+//     return `https://${config.proxy.ip}:${config.proxy.port}/rproxy/${ip}:${port}${url}`;
+//   } catch (e) {
+//     return "";
+//   }
+// };
+
+// const getProxyUrlWithRandomHost = async function (url, option) {
+//   const randomHost = await getRandomHost();
+//   const { ip, port } = randomHost;
+
+//   if (ip === "localhost" || ip === "127.0.0.1") {
+//     return `http://localhost:${port}${url}`;
+//   }
+//   return `https://${config.proxy.ip}:${config.proxy.port}/rproxy/${ip}:${port}${url}`;
+// };
 
 export async function init() {
   crypto = await import("shardus-crypto-web");
@@ -32,7 +73,7 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    `http://${archiver.ip}:${archiver.port}/nodelist`
+    `https://${config.proxy.ip}:${config.proxy.port}/rproxy/${archiver.ip}:${archiver.port}/nodelist`
   );
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -42,9 +83,9 @@ export async function getRandomHost() {
   }
   const { ip, port } = randomHost;
   console.log(
-    `Now using: http://${ip}:${port} as host for query's and transactions`
+    `Now using: https://${config.proxy.ip}:${config.proxy.port}/rproxy/${archiver.ip}:${port} as host for query's and transactions`
   );
-  return `http://localhost:${port}`;
+  return `https://${config.proxy.ip}:${config.proxy.port}/rproxy/${archiver.ip}:${port}`;
 }
 
 export async function updateArchiveServer(ip: string, port: number) {
