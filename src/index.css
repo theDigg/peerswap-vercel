@@ -18,5 +18,5 @@ code {
 }
 
 ::-webkit-scrollbar {
-  display: none;
+  display: auto;
 }

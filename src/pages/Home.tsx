@@ -13,6 +13,7 @@ import LoopIcon from "@mui/icons-material/Loop";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Masonry from "../components/Masonry";
 import Box from "@mui/material/Box";
+import SwapFilterBar from "../components/SwapFilterBar";
 import Chip from "@mui/material/Chip";
 import { makeStyles, Theme, createStyles, styled } from "@mui/material/styles";
 import { setMySwaps } from "../features/swaps/swapsSlice";
@@ -53,6 +54,7 @@ function Home({ wallet, history }) {
   const dispatch = useDispatch();
   const { account } = useSelector((state: RootState) => state.account);
   const { mySwaps } = useSelector((state: RootState) => state.swaps);
+  const { filteredSwaps } = useSelector((state: RootState) => state.swaps);
   const { myBids } = useSelector((state: RootState) => state.bids);
 
   useEffect(() => {
@@ -64,7 +66,16 @@ function Home({ wallet, history }) {
     });
   }, []);
 
-  const swaps = useMemo(() => <Masonry items={mySwaps} />, [mySwaps]);
+  const swaps = useMemo(
+    () =>
+      filteredSwaps.length ? (
+        <Masonry items={filteredSwaps} />
+      ) : (
+        <Masonry items={mySwaps} />
+      ),
+    [filteredSwaps, mySwaps]
+  );
+
   const bids = useMemo(() => <Masonry items={myBids} />, [myBids]);
 
   return (
@@ -72,6 +83,7 @@ function Home({ wallet, history }) {
       <Box component="main" sx={styles.content}>
         <Offset />
         <AccountInfo history={history} account={account} />
+        <SwapFilterBar />
         <Divider orientation="horizontal" sx={{ my: 2 }}>
           <Chip
             icon={<LoopIcon />}
