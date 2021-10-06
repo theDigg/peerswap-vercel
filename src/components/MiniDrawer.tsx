@@ -8,19 +8,16 @@ import MuiDrawer from "@mui/material/Drawer";
 // import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+// import MenuIcon from "@mui/icons-material/Menu";
 import InputIcon from '@mui/icons-material/Input'
 import HomeIcon from '@mui/icons-material/Home'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import ImportExportIcon from '@mui/icons-material/ImportExport'
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
-import MessageIcon from '@mui/icons-material/Message'
-import GroupIcon from '@mui/icons-material/Group'
 import HistoryIcon from '@mui/icons-material/History'
-import ReceiptIcon from '@mui/icons-material/Receipt'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import TuneIcon from '@mui/icons-material/Tune'
 import InfoIcon from '@mui/icons-material/Info'
@@ -31,7 +28,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { setWallet } from '../features/wallet/walletSlice'
 import NewAppBar from './AppBarNew'
@@ -139,12 +135,6 @@ const MiniDrawer = (props) => {
       icon: <HistoryIcon />,
       show: wallet !== null,
       onClick: () => history.push("/transactions"),
-    },
-    {
-      text: "Tx Receipts",
-      icon: <ReceiptIcon />,
-      show: wallet !== null,
-      onClick: () => history.push("/receipts"),
     },
     {
       text: "Economy",

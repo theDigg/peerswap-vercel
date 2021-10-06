@@ -18,7 +18,11 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function BasicMasonry({ items }) {
   return (
     <Box sx={{ width: "100%" }}>
-      <Masonry columns={{ xs: 1, sm: 2, lg: 3, xl: 4 }} spacing={1}>
+      <Masonry
+        sx={{ p: 1 }}
+        columns={{ xs: 1, sm: 2, lg: 3, xl: 4 }}
+        spacing={1}
+      >
         {items &&
           items.map((item) => (
             <MasonryItem key={item.id}>

@@ -12,7 +12,7 @@ import Drawer from "../components/MiniDrawer";
 import stringify from "fast-stable-stringify";
 import { setAccount } from "../features/account/accountSlice";
 import { setChats } from "../features/messages/messagesSlice";
-import { setMySwaps } from "../features/swaps/swapsSlice";
+import { setMySwaps, setFilters } from "../features/swaps/swapsSlice";
 import { setMyBids } from "../features/bids/bidsSlice";
 import {
   getAccountData,
@@ -35,7 +35,6 @@ const LazyBid = React.lazy(() => import("../pages/Bid"));
 const LazyContract = React.lazy(() => import("../pages/Contract"));
 const LazyMessages = React.lazy(() => import("../pages/Messages"));
 const LazyTransactions = React.lazy(() => import("../pages/Transactions"));
-const LazyReceipts = React.lazy(() => import("../pages/Receipts"));
 const LazyEconomy = React.lazy(() => import("../pages/Economy"));
 const LazyVote = React.lazy(() => import("../pages/Vote"));
 const LazySettings = React.lazy(() => import("../pages/Settings"));
@@ -46,6 +45,7 @@ function App() {
   const dispatch = useDispatch();
 
   const { mySwaps } = useSelector((state: RootState) => state.swaps);
+  const { filters } = useSelector((state: RootState) => state.swaps);
   const { myBids } = useSelector((state: RootState) => state.bids);
   const { account } = useSelector((state: RootState) => state.account);
   const { wallet } = useSelector((state: RootState) => state.wallet);
@@ -62,9 +62,9 @@ function App() {
           });
         });
         getMySwaps(wallet.entry.address).then((swaps) => {
-          if (stringify(swaps) !== stringify(mySwaps)) {
+          // if (stringify(swaps) !== stringify(mySwaps)) {
             dispatch(setMySwaps(swaps));
-          }
+          // }
         });
         getMyBids(wallet.entry.address).then((bids) => {
           if (stringify(bids) !== stringify(myBids)) {
@@ -90,6 +90,7 @@ function App() {
       getMySwaps(wallet.entry.address).then((swaps) => {
         if (stringify(swaps) !== stringify(mySwaps)) {
           dispatch(setMySwaps(swaps));
+          dispatch(setFilters(filters));
         }
       });
       getMyBids(wallet.entry.address).then((bids) => {
@@ -158,11 +159,6 @@ function App() {
             <PrivateRoute
               path="/transactions"
               component={LazyTransactions}
-              wallet={wallet}
-            />
-            <PrivateRoute
-              path="/receipts"
-              component={LazyReceipts}
               wallet={wallet}
             />
             <PrivateRoute

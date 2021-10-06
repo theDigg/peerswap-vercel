@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { RedditTextField } from "../style/components/TextFields";
 import { submitVoteTx } from "../api/peerswapAPI";
 import { formatDate } from "../utils/stringUtils";
 
@@ -59,7 +60,7 @@ totalVotes: 0
 type: "ProposalAccount"
 */
 
-const Parameter = styled(Typography)(({ theme }) => ({
+const Parameter = styled(Box)(({ theme }) => ({
   display: "flex",
   width: "100%",
   justifyContent: "space-between",
@@ -86,12 +87,13 @@ export default function Proposal({ proposal }) {
         width: "100%",
         mt: 3,
       }}
+      elevation={6}
     >
       <CardHeader
         // avatar={
-        //   <Avatar aria-label="swap-initiator" className={classes.avatar}>
-        //     {swap.offerToken}
-        //   </Avatar>
+        //   <IconButton aria-label="settings">
+        //     <ExpandMoreIcon />
+        //   </IconButton>
         // }
         // action={
         //   <IconButton aria-label="settings">
@@ -103,7 +105,7 @@ export default function Proposal({ proposal }) {
       />
       <CardContent>
         <Container maxWidth="md">
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Default Toll:</em>
             <Chip
               label={proposal.parameters.defaultToll}
@@ -111,7 +113,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Faucet Amount:</em>
             <Chip
               label={proposal.parameters.faucetAmount}
@@ -119,7 +121,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Maintenance Fee:</em>
             <Chip
               label={proposal.parameters.maintenanceFee}
@@ -127,7 +129,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Maintenance Interval:</em>
             <Chip
               label={proposal.parameters.maintenanceInterval}
@@ -135,7 +137,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Node Penalty:</em>
             <Chip
               label={proposal.parameters.nodePenalty}
@@ -143,7 +145,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Node Reward Amount:</em>
             <Chip
               label={proposal.parameters.nodeRewardAmount}
@@ -151,7 +153,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Node Reward Interval:</em>
             <Chip
               label={proposal.parameters.nodeRewardInterval}
@@ -159,7 +161,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Proposal Fee:</em>
             <Chip
               label={proposal.parameters.proposalFee}
@@ -167,7 +169,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Stake Required:</em>
             <Chip
               label={proposal.parameters.stakeRequired}
@@ -175,7 +177,7 @@ export default function Proposal({ proposal }) {
               color="primary"
             />
           </Parameter>
-          <Parameter variant="body1" color="textPrimary">
+          <Parameter color="textPrimary">
             <em>Transaction Fee:</em>
             <Chip
               label={proposal.parameters.transactionFee}
@@ -216,10 +218,10 @@ export default function Proposal({ proposal }) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Divider />
-          <TextField
+          <RedditTextField
             sx={{ width: "100%", mt: 3 }}
             id="vote-amount"
-            label="Amount"
+            label="Vote Amount"
             variant="filled"
             color="primary"
             type="number"
@@ -234,7 +236,7 @@ export default function Proposal({ proposal }) {
             size="large"
             sx={{
               width: "100%",
-              my: 2
+              my: 2,
             }}
             startIcon={<DoneAllIcon />}
             onClick={() => {

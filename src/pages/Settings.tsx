@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import { RedditTextField } from "../style/components/TextFields";
 import { styled } from "@mui/material/styles";
 import { setArchiver } from "../features/archiver/archiverSlice";
 import { updateArchiveServer } from "../api/peerswapAPI";
@@ -81,7 +82,7 @@ export default function Settings() {
     <Box sx={{ display: "flex", width: "100%" }}>
       <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <Offset />
-        <Card sx={{ minWidth: 300, mb: 3 }} elevation={9}>
+        <Card sx={{ minWidth: 300 }} elevation={9}>
           <CardContent sx={{ p: 0 }}>
             <Typography
               sx={{ flexGrow: 1, p: 2 }}
@@ -109,16 +110,16 @@ export default function Settings() {
               >
                 <FormRow />
               </Grid>
-              <StyledTextField
+              <RedditTextField
                 sx={{ width: "100%", mt: 2 }}
                 label="New IP"
-                variant="outlined"
+                variant="filled"
                 onChange={(e) => setIp(e.target.value)}
               />
-              <StyledTextField
+              <RedditTextField
                 sx={{ width: "100%", mt: 2 }}
                 label="New Port"
-                variant="outlined"
+                variant="filled"
                 onChange={(e) => setPort(e.target.value)}
               />
               <CardActions

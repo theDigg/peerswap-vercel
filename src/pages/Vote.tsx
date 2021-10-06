@@ -149,7 +149,7 @@ export default function Vote(props) {
             </Button>
           </WindowInfo>
           {!state.checked && windows[currentWindowName] && (
-            <CardInfo elevation={9} sx={{ border: "2px solid green" }}>
+            <CardInfo elevation={6} sx={{ border: "2px solid green" }}>
               <Typography
                 variant="body1"
                 color="textPrimary"
@@ -181,7 +181,7 @@ export default function Vote(props) {
                   border:
                     currentWindowName === "proposalWindow" && "2px solid green",
                 }}
-                elevation={9}
+                elevation={6}
               >
                 <Typography
                   variant="body1"
@@ -211,7 +211,7 @@ export default function Vote(props) {
                   border:
                     currentWindowName === "votingWindow" && "2px solid green",
                 }}
-                elevation={9}
+                elevation={6}
               >
                 <Typography
                   variant="body1"
@@ -241,7 +241,7 @@ export default function Vote(props) {
                   border:
                     currentWindowName === "graceWindow" && "2px solid green",
                 }}
-                elevation={9}
+                elevation={6}
               >
                 <Typography
                   variant="body1"
@@ -271,7 +271,7 @@ export default function Vote(props) {
                   border:
                     currentWindowName === "applyWindow" && "2px solid green",
                 }}
-                elevation={9}
+                elevation={6}
               >
                 <Typography
                   variant="body1"
@@ -299,7 +299,7 @@ export default function Vote(props) {
             </>
           )}
           {proposals &&
-            proposals.map((proposal) => <Proposal proposal={proposal} />)}
+            proposals.map((proposal) => <Proposal proposal={proposal} key={proposal.id} />)}
         </Container>
       </Box>
     </Box>

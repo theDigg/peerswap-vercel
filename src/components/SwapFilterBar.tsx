@@ -118,6 +118,7 @@ export default function SwapFilterBar() {
   const handleSetFilters = () => {
     dispatch(
       setFilters({
+        on: true,
         swapType,
         swapStatus,
         tags,
@@ -127,7 +128,7 @@ export default function SwapFilterBar() {
 
   return (
     <Box sx={{ mb: 2, flexGrow: 1 }}>
-      <AppBar position="static" color="inherit" elevation={9}>
+      <AppBar position="static" color="inherit" elevation={5}>
         <Toolbar>
           <Grid
             container

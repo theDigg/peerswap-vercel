@@ -50,7 +50,7 @@ function BidCard({ swap, bid }) {
   };
 
   return (
-    <Card sx={{ width: "100%", my: 1 }} elevation={9}>
+    <Card sx={{ width: "100%" }} elevation={4}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" sx={{ bgcolor: grey[600] }}>
@@ -66,7 +66,7 @@ function BidCard({ swap, bid }) {
         subheader={formatDateTime(bid.createdAt)}
       />
       <CardContent>
-        <Paper elevation={5} sx={{ p: (theme) => `${theme.spacing(2)}` }}>
+        <Paper elevation={4} sx={{ p: (theme) => `${theme.spacing(2)}` }}>
           <Grid
             container
             direction="row"

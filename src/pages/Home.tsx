@@ -87,7 +87,7 @@ function Home({ wallet, history }) {
         <Divider orientation="horizontal" sx={{ my: 2 }}>
           <Chip
             icon={<LoopIcon />}
-            label="SWAPS"
+            label="YOUR SWAPS"
             variant="outlined"
             size="small"
             color="primary"
@@ -97,7 +97,7 @@ function Home({ wallet, history }) {
         <Divider orientation="horizontal" sx={{ my: 2 }}>
           <Chip
             icon={<LocalOfferIcon />}
-            label="BIDS"
+            label="YOUR BIDS"
             variant="outlined"
             size="small"
             color="secondary"

@@ -19,7 +19,7 @@ const Unit = styled('span')(({theme}) => ({
 
 export default function AccountInfo({ history, account }) {
   return (
-    <Card sx={{ mb: 3, minWidth: 300 }} elevation={9}>
+    <Card sx={{ mb: 3, minWidth: 300 }} elevation={5}>
       <CardContent>
         <Typography variant="h6" color="primary" align="center" gutterBottom>
           @{account?.alias}

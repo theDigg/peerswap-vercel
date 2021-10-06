@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 // import clsx from 'clsx'
 import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
 import CardHeader from "@mui/material/CardHeader";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
@@ -25,12 +26,14 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded'
 import WarningIcon from '@mui/icons-material/Warning'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import BidCard from './BidCard'
 import { submitReceiptTx, submitDisputeTx, queryBids } from '../api/peerswapAPI'
 import { formatDateTime, shortenHex } from '../utils/stringUtils'
 import useCopyToClipboard from '../hooks/useCopyToClipboard'
 import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 
 
 const StyledLink = styled(Link)(({ theme }) => ({
@@ -90,7 +93,7 @@ function SwapCard({ swap, opened }) {
         setBids(data.bids)
       }
     })
-  }, [])
+  }, [swap.bids, opened])
 
   const handleClickVariant = (variant: VariantType, response: string) => () => {
     // variant could be success, error, warning, info, or default
@@ -102,7 +105,7 @@ function SwapCard({ swap, opened }) {
   }
 
   return (
-    <Card sx={{ width: "100%" }} elevation={9}>
+    <Card sx={{ width: "100%" }} elevation={4}>
       <CardHeader
         avatar={
           <Avatar aria-label="swap-initiator" sx={{ bgcolor: red[500] }}>
@@ -118,7 +121,7 @@ function SwapCard({ swap, opened }) {
         subheader={formatDateTime(swap.createdAt)}
       />
       <CardContent>
-        <Paper elevation={5} sx={{ p: (theme) => `${theme.spacing(2)}` }}>
+        <Paper elevation={4} sx={{ p: (theme) => `${theme.spacing(2)}` }}>
           <Grid
             container
             direction="row"
@@ -529,21 +532,26 @@ function SwapCard({ swap, opened }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography
-            variant="h4"
-            color="textSecondary"
-            component="div"
-            align="center"
-          >
-            Bids
-          </Typography>
-          {/* <Divider /> */}
+          <Divider orientation="horizontal" sx={{ mb: 2 }}>
+            <Chip
+              icon={<LocalOfferIcon />}
+              label="BIDS"
+              variant="outlined"
+              size="small"
+              color="secondary"
+            />
+          </Divider>
           {bids &&
-            bids.map((bid, i) => <BidCard swap={swap} bid={bid} key={i} />)}
+            bids.map((bid, i) => (
+              <Box sx={{ mt: 1 }} key={bid.id}>
+                <BidCard swap={swap} bid={bid} />
+              </Box>
+            ))}
         </CardContent>
       </Collapse>
     </Card>
   );
 }
 
-export default React.memo(SwapCard)
+export default SwapCard
+// export default React.memo(SwapCard);

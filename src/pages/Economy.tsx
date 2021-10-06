@@ -19,13 +19,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { OutlinedInputProps } from "@mui/material/OutlinedInput";
-import {
-  styled,
-  Theme,
-  createStyles,
-  withStyles,
-  alpha,
-} from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
+import { RedditTextField } from "../style/components/TextFields";
 import { getParameters, submitProposalTx, getWindow } from "../api/peerswapAPI";
 import { formatDateTime } from "../utils/stringUtils";
 
@@ -188,7 +183,7 @@ export default function Economy(props) {
       ...state,
       parameters: {
         ...state.parameters,
-        [event.target.name]: parseFloat(event.target.value),
+        [event.target.name]: event.target.value || 0,
       },
     });
   };
@@ -225,7 +220,7 @@ export default function Economy(props) {
           </Box>
 
           {!state.checked && windows[currentWindowName] && (
-            <Card sx={styles.active} elevation={9}>
+            <Card sx={styles.active} elevation={6}>
               <Typography
                 variant="body1"
                 color="textPrimary"
@@ -258,7 +253,7 @@ export default function Economy(props) {
                     ? styles.active
                     : styles.card
                 }
-                elevation={9}
+                elevation={6}
               >
                 <Typography
                   variant="body1"
@@ -289,7 +284,7 @@ export default function Economy(props) {
                     ? styles.active
                     : styles.card
                 }
-                elevation={9}
+                elevation={6}
               >
                 <Typography
                   variant="body1"
@@ -320,7 +315,7 @@ export default function Economy(props) {
                     ? styles.active
                     : styles.card
                 }
-                elevation={9}
+                elevation={6}
               >
                 <Typography
                   variant="body1"
@@ -351,7 +346,7 @@ export default function Economy(props) {
                     ? styles.active
                     : styles.card
                 }
-                elevation={9}
+                elevation={6}
               >
                 <Typography
                   variant="body1"
@@ -378,26 +373,26 @@ export default function Economy(props) {
               </Card>
             </div>
           )}
-          {Object.keys(parameters).length && (
+          {Object.keys(parameters).length > 0 && (
             <ParameterTable
               parameters={parameters}
               nextParameters={state.parameters}
               changeParameters={handleParameterChange}
             />
           )}
-          <TextField
+          <RedditTextField
             sx={styles.input}
             label="Title"
-            variant="outlined"
+            variant="filled"
             onChange={handleInputChange}
             name="title"
           />
-          <TextField
+          <RedditTextField
             sx={styles.input}
             multiline
             rows={4}
             label="Description"
-            variant="outlined"
+            variant="filled"
             onChange={handleInputChange}
             name="description"
           />
@@ -425,47 +420,32 @@ export default function Economy(props) {
   );
 }
 
-const RedditTextField = styled((props: TextFieldProps) => (
-  <TextField
-    InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-    {...props}
-  />
-))(({ theme }) => ({
-  "& .MuiFilledInput-root": {
-    border: "1px solid #e2e2e1",
-    overflow: "hidden",
-    borderRadius: 4,
-    backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-    transition: theme.transitions.create([
-      "border-color",
-      "background-color",
-      "box-shadow",
-    ]),
-    "&:hover": {
-      backgroundColor: "transparent",
-    },
-    "&.Mui-focused": {
-      backgroundColor: "transparent",
-      boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
-      borderColor: theme.palette.primary.main,
-    },
-  },
-}));
-
-const ValidationTextField = styled(TextField)({
-  "& input:valid + fieldset": {
-    borderColor: "green",
-    borderWidth: 2,
-  },
-  "& input:invalid + fieldset": {
-    borderColor: "red",
-    borderWidth: 2,
-  },
-  "& input:valid:focus + fieldset": {
-    borderLeftWidth: 6,
-    padding: "4px !important", // override inline-style
-  },
-});
+// const RedditTextField = styled((props: TextFieldProps) => (
+//   <TextField
+//     InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
+//     {...props}
+//   />
+// ))(({ theme }) => ({
+//   "& .MuiFilledInput-root": {
+//     border: "1px solid #e2e2e1",
+//     overflow: "hidden",
+//     borderRadius: 4,
+//     backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
+//     transition: theme.transitions.create([
+//       "border-color",
+//       "background-color",
+//       "box-shadow",
+//     ]),
+//     "&:hover": {
+//       backgroundColor: "transparent",
+//     },
+//     "&.Mui-focused": {
+//       backgroundColor: "transparent",
+//       boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
+//       borderColor: theme.palette.primary.main,
+//     },
+//   },
+// }));
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -498,7 +478,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.proposalFee,
       <RedditTextField
         label="Proposal Fee"
-        defaultValue={nextParameters.proposalFee}
+        type="number"
         id="proposalFee-input"
         variant="filled"
         value={nextParameters.proposalFee}
@@ -511,7 +491,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.maintenanceFee,
       <RedditTextField
         label="Maintenance Fee"
-        defaultValue={nextParameters.maintenanceFee}
+        type="number"
         id="maintenanceFee-input"
         variant="filled"
         value={nextParameters.maintenanceFee}
@@ -524,7 +504,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.maintenanceInterval,
       <RedditTextField
         label="Maintenance Interval"
-        defaultValue={nextParameters.maintenanceInterval}
+        type="number"
         id="maintenanceInterval-input"
         variant="filled"
         value={nextParameters.maintenanceInterval}
@@ -537,7 +517,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.nodePenalty,
       <RedditTextField
         label="Node Penalt"
-        defaultValue={nextParameters.nodePenalty}
+        type="number"
         id="nodePenalty-input"
         variant="filled"
         value={nextParameters.nodePenalty}
@@ -550,7 +530,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.nodeRewardAmount,
       <RedditTextField
         label="Node Reward"
-        defaultValue={nextParameters.nodeRewardAmount}
+        type="number"
         id="nodeRewardAmount-input"
         variant="filled"
         value={nextParameters.nodeRewardAmount}
@@ -563,7 +543,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.nodeRewardInterval,
       <RedditTextField
         label="Node Reward Interval"
-        defaultValue={nextParameters.nodeRewardInterval}
+        type="number"
         id="nodeRewardInterval-input"
         variant="filled"
         value={nextParameters.nodeRewardInterval}
@@ -576,7 +556,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.stakeRequired,
       <RedditTextField
         label="Stake Required"
-        defaultValue={nextParameters.stakeRequired}
+        type="number"
         id="stakeRequired-input"
         variant="filled"
         value={nextParameters.stakeRequired}
@@ -589,7 +569,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.transactionFee,
       <RedditTextField
         label="TX Fee"
-        defaultValue={nextParameters.transactionFee}
+        type="number"
         id="transactionFee-input"
         variant="filled"
         value={nextParameters.transactionFee}
@@ -602,7 +582,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.faucetAmount,
       <RedditTextField
         label="Faucet Amount"
-        defaultValue={nextParameters.faucetAmount}
+        type="number"
         id="faucetAmount-input"
         variant="filled"
         value={nextParameters.faucetAmount}
@@ -615,7 +595,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       parameters.defaultToll,
       <RedditTextField
         label="Default Toll"
-        defaultValue={nextParameters.defaultToll}
+        type="number"
         id="defaultToll-input"
         variant="filled"
         value={nextParameters.defaultToll}
