@@ -7,7 +7,7 @@ let crypto: any;
 // import("./Module").then((Module) => Module.method());
 
 let archiver = JSON.parse(localStorage.getItem("archiver")) || {
-  ip: "peerswap.org",
+  ip: "www.peerswap.org",
   port: 4000,
 };
 
@@ -56,7 +56,7 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    `https://peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
+    `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
   );
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -68,7 +68,7 @@ export async function getRandomHost() {
   console.log(
     `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
   );
-  return `https://peerswap.org/rproxy/${archiver.ip}:${port}`;
+  return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
 }
 
 export async function updateArchiveServer(ip: string, port: number) {

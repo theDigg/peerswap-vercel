@@ -2,11 +2,10 @@
   "name": "peerswap",
   "version": "0.0.0",
   "scripts": {
-    "start": "next dev",
-    "start-production": "next start",
+    "dev": "next dev",
+    "start": "next start",
     "build": "next build",
-    "test": "jest test",
-    "format": "prettier --write \"src/**/*\""
+    "export": "next export"
   },
   "dependencies": {
     "@emotion/react": "latest",
