@@ -7,29 +7,12 @@ let crypto: any;
 // import("./Module").then((Module) => Module.method());
 
 let archiver = JSON.parse(localStorage.getItem("archiver")) || {
-  ip: "test.peerswap.org",
+  ip: "localhost",
   port: 4000,
 };
 
 let host = localStorage.getItem("host");
 let network: any;
-
-// setInterval(async () => {
-//   host = await getRandomHost()
-//   localStorage.setItem('host', host)
-// }, 120000)
-
-const config = {
-  server: {
-    ip: "localhost",
-    port: 4000,
-  },
-  proxy: {
-    ip: "test.peerswap.org",
-    port: 443,
-  },
-  version: "1.1.0",
-};
 
 // const getProxyUrl = function (url, option) {
 //   try {
@@ -73,7 +56,7 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    `https://${config.proxy.ip}:${config.proxy.port}/rproxy/${archiver.ip}:${archiver.port}/nodelist`
+    `http://${archiver.ip}:${archiver.port}/nodelist`
   );
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -83,9 +66,9 @@ export async function getRandomHost() {
   }
   const { ip, port } = randomHost;
   console.log(
-    `Now using: https://${config.proxy.ip}:${config.proxy.port}/rproxy/${archiver.ip}:${port} as host for query's and transactions`
+    `Now using: http://${archiver.ip}:${port} as host for query's and transactions`
   );
-  return `https://${config.proxy.ip}:${config.proxy.port}/rproxy/${archiver.ip}:${port}`;
+  return `http://localhost:${port}`;
 }
 
 export async function updateArchiveServer(ip: string, port: number) {
