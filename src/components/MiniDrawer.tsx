@@ -1,6 +1,6 @@
 import * as React from "react";
-import { withRouter } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { withRouter } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -12,25 +12,25 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 // import MenuIcon from "@mui/icons-material/Menu";
-import InputIcon from '@mui/icons-material/Input'
-import HomeIcon from '@mui/icons-material/Home'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
-import ImportExportIcon from '@mui/icons-material/ImportExport'
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
-import HistoryIcon from '@mui/icons-material/History'
-import BarChartIcon from '@mui/icons-material/BarChart'
-import TuneIcon from '@mui/icons-material/Tune'
-import InfoIcon from '@mui/icons-material/Info'
-import StyleIcon from '@mui/icons-material/Style'
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import InputIcon from "@mui/icons-material/Input";
+import HomeIcon from "@mui/icons-material/Home";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ImportExportIcon from "@mui/icons-material/ImportExport";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import HistoryIcon from "@mui/icons-material/History";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import TuneIcon from "@mui/icons-material/Tune";
+import InfoIcon from "@mui/icons-material/Info";
+import StyleIcon from "@mui/icons-material/Style";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
-import { setWallet } from '../features/wallet/walletSlice'
-import NewAppBar from './AppBarNew'
+import { setWallet } from "../features/wallet/walletSlice";
+import NewAppBar from "./AppBarNew";
 
 const drawerWidth = 240;
 
@@ -81,9 +81,8 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-
 const MiniDrawer = (props) => {
-  const { wallet, history } = props
+  const { wallet, history } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
@@ -178,26 +177,23 @@ const MiniDrawer = (props) => {
     setOpen(false);
   };
 
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <NewAppBar open={open} handleDrawerOpen={handleDrawerOpen} history={history} />
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-         {itemsList
+  const drawer = (
+    <div>
+      <DrawerHeader>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === "rtl" ? (
+            <ChevronRightIcon />
+          ) : (
+            <ChevronLeftIcon />
+          )}
+        </IconButton>
+      </DrawerHeader>
+      <Divider />
+      <List>
+        {itemsList
           .filter((item) => item.show)
           .map((item, index) => {
-            const { text, icon, onClick } = item
+            const { text, icon, onClick } = item;
             return (
               <div key={text}>
                 <ListItem button key={text} onClick={onClick}>
@@ -206,44 +202,52 @@ const MiniDrawer = (props) => {
                 </ListItem>
                 <Divider />
               </div>
-            )
+            );
           })}
-        </List>
+      </List>
+    </div>
+  );
+
+  const container = window !== undefined ? () => document.body : undefined;
+
+  return (
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <NewAppBar
+        open={open}
+        handleDrawerOpen={handleDrawerOpen}
+        history={history}
+      />
+      <MuiDrawer
+        container={container}
+        variant="temporary"
+        open={open}
+        onClose={handleDrawerClose}
+        sx={{
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidth,
+            backgroundColor: "#000",
+          },
+        }}
+      >
+        {drawer}
+      </MuiDrawer>
+      <Drawer
+        variant="permanent"
+        open={open}
+        sx={{
+          display: { xs: "none", sm: "block" },
+        }}
+      >
+        {drawer}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1 }}>
         <DrawerHeader />
-        {/* <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography> */}
       </Box>
     </Box>
   );
-}
+};
 
-export default withRouter(MiniDrawer)
+export default withRouter(MiniDrawer);
