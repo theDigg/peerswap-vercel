@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+const isClient = typeof window !== "undefined";
+
 interface ArchiverState {
   archiver: {
     ip: string;
@@ -8,7 +10,7 @@ interface ArchiverState {
 }
 
 const initialState: ArchiverState = {
-  archiver: JSON.parse(localStorage.getItem("archiver")) || {
+  archiver: isClient && JSON.parse(localStorage.getItem("archiver")) || {
     ip: "localhost",
     port: 4000,
   },
@@ -20,7 +22,7 @@ const archiverDetails = createSlice({
   reducers: {
     setArchiver(state, action: PayloadAction<any>) {
       state.archiver = { ip: action.payload.ip, port: action.payload.port };
-      localStorage.setItem("archiver", JSON.stringify(state.archiver));
+      isClient && localStorage.setItem("archiver", JSON.stringify(state.archiver));
     },
   },
 });

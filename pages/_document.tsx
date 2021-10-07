@@ -1,4 +1,4 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
   render() {
@@ -11,17 +11,20 @@ class MyDocument extends Document {
           <link rel="mask-icon" href="/favicon.svg" color="#FFFFFF" />
           <meta name="msapplication-TileColor" content="#FFFFFF" />
           <meta name="theme-color" content="#ffffff" />
-          <script type="module" src="/src/main.tsx" dangerouslySetInnerHTML={{ __html: `` }} />
+          <script
+            type="module"
+            src="/src/main.tsx"
+            dangerouslySetInnerHTML={{ __html: `` }}
+          />
         </Head>
-        
+
         <body>
           <Main />
           <NextScript />
-          
         </body>
       </Html>
-    )
+    );
   }
 }
 
-export default MyDocument      
+export default MyDocument;

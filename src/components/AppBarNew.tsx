@@ -109,7 +109,6 @@ const notifications = [
 export default function PrimarySearchAppBar({
   open,
   handleDrawerOpen,
-  history,
 }) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -138,13 +137,11 @@ export default function PrimarySearchAppBar({
   const handleMenuClose = (route: string) => {
     setAnchorEl(null);
     handleMobileMenuClose();
-    history.push(route);
   };
 
   const handleMailMenuClose = (route: string) => {
     setMailMenu(null);
     handleMobileMenuClose();
-    history.push(route);
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -469,7 +466,6 @@ export default function PrimarySearchAppBar({
             marginBottom: 2,
             textTransform: "none",
           }}
-          onClick={() => history.push("/messages")}
         >
           Send New Message
           <SendIcon

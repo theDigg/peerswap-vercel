@@ -1,6 +1,6 @@
 import * as React from "react";
-import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -82,7 +82,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const MiniDrawer = (props) => {
-  const { wallet, history } = props;
+  const { wallet } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
@@ -91,81 +91,82 @@ const MiniDrawer = (props) => {
       text: "Welcome",
       icon: <HomeIcon />,
       show: wallet === null,
-      onClick: () => history.push("/welcome"),
+      link: "/welcome",
     },
     {
       text: "Register",
       icon: <InputIcon />,
       show: wallet === null,
-      onClick: () => history.push("/register"),
+      link: "/register",
     },
     {
       text: "Import",
       icon: <ImportExportIcon />,
       show: wallet === null,
-      onClick: () => history.push("/import"),
+      link: "/import",
     },
     {
       text: "Home",
       icon: <HomeIcon />,
       show: wallet !== null,
-      onClick: () => history.push("/"),
+      link: "/",
     },
     {
       text: "Wallet",
       icon: <AccountBalanceWalletIcon />,
       show: wallet !== null,
-      onClick: () => history.push("/wallet"),
+      link: "/wallet",
     },
     {
       text: "Swaps",
       icon: <SwapHorizIcon />,
       show: wallet !== null,
-      onClick: () => history.push("/swaps"),
+      link: "/swaps",
     },
     {
       text: "Messages",
       icon: <MailIcon />,
       show: wallet !== null,
-      onClick: () => history.push("/messages"),
+      link: "/messages",
     },
     {
       text: "Tx History",
       icon: <HistoryIcon />,
       show: wallet !== null,
-      onClick: () => history.push("/transactions"),
+      link: "/transactions",
     },
     {
       text: "Economy",
       icon: <BarChartIcon />,
       show: wallet !== null,
-      onClick: () => history.push("/economy"),
+      link: "/economy",
     },
     {
       text: "Settings",
       icon: <TuneIcon />,
       show: true,
-      onClick: () => history.push("/settings"),
+      link: "/settings",
     },
     {
       text: "About",
       icon: <InfoIcon />,
       show: true,
-      onClick: () => history.push("/about"),
+      link: "/about",
     },
     {
       text: "Test",
       icon: <StyleIcon />,
       show: true,
-      onClick: () => history.push("/test"),
+      link: "/test",
     },
     {
       text: "Sign out",
       icon: <ExitToAppIcon />,
       show: wallet !== null,
-      onClick: () => {
-        dispatch(setWallet(null));
-      },
+      link: "/logout",
+      // link: () => {
+      //   dispatch(setWallet(null));
+      // },
     },
   ];
 
@@ -193,31 +194,26 @@ const MiniDrawer = (props) => {
         {itemsList
           .filter((item) => item.show)
           .map((item, index) => {
-            const { text, icon, onClick } = item;
+            const { text, icon, link } = item;
             return (
-              <div key={text}>
-                <ListItem button key={text} onClick={onClick}>
+              <Link key={text} href={link}>
+                <ListItem button>
                   {icon && <ListItemIcon>{icon}</ListItemIcon>}
                   <ListItemText primary={text} />
                 </ListItem>
-                <Divider />
-              </div>
+              </Link>
             );
           })}
       </List>
     </div>
   );
 
-  const container = window !== undefined ? () => document.body : undefined;
+  const container = undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <NewAppBar
-        open={open}
-        handleDrawerOpen={handleDrawerOpen}
-        history={history}
-      />
+      <NewAppBar open={open} handleDrawerOpen={handleDrawerOpen} />
       <MuiDrawer
         container={container}
         variant="temporary"
@@ -250,4 +246,4 @@ const MiniDrawer = (props) => {
   );
 };
 
-export default withRouter(MiniDrawer);
+export default MiniDrawer;

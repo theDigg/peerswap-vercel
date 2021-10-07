@@ -5,7 +5,6 @@ import lightTheme from "../theme";
 import darkTheme from "../theme2";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./rootReducer";
-import { Switch, Route } from "react-router-dom";
 import PrivateRoute from "../components/PrivateRoute";
 import PublicRoute from "../components/PublicRoute";
 import Drawer from "../components/MiniDrawer";
@@ -22,23 +21,6 @@ import {
   init
 } from "../api/peerswapAPI";
 import useInterval from "../hooks/useInterval";
-
-const LazyWelcome = React.lazy(() => import("../pages/Welcome"));
-const LazyRegister = React.lazy(() => import("../pages/Register"));
-const LazyImport = React.lazy(() => import("../pages/Import"));
-const LazyHome = React.lazy(() => import("../pages/Home"));
-const LazyWallet = React.lazy(() => import("../pages/Wallet"));
-const LazySwaps = React.lazy(() => import("../pages/Swaps"));
-const LazySwap = React.lazy(() => import("../pages/Swap"));
-const LazyBid = React.lazy(() => import("../pages/Bid"));
-const LazyContract = React.lazy(() => import("../pages/Contract"));
-const LazyMessages = React.lazy(() => import("../pages/Messages"));
-const LazyTransactions = React.lazy(() => import("../pages/Transactions"));
-const LazyEconomy = React.lazy(() => import("../pages/Economy"));
-const LazyVote = React.lazy(() => import("../pages/Vote"));
-const LazySettings = React.lazy(() => import("../pages/Settings"));
-const LazyTest = React.lazy(() => import("../pages/Test"));
-const LazyAbout = React.lazy(() => import("../pages/About"));
 
 function App() {
   const dispatch = useDispatch();
@@ -105,8 +87,8 @@ function App() {
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <Box sx={{ display: "flex" }}>
         <Drawer wallet={wallet} />
-        <Switch>
-          <React.Suspense fallback="Loading...">
+        {/* <Switch> */}
+          {/* <React.Suspense fallback="Loading...">
             <Route path="/welcome">
               <LazyWelcome />
             </Route>
@@ -168,7 +150,7 @@ function App() {
             <PrivateRoute path="/vote" component={LazyVote} wallet={wallet} />
             <PrivateRoute path="/about" component={LazyAbout} wallet={wallet} />
           </React.Suspense>
-        </Switch>
+        </Switch> */}
       </Box>
     </ThemeProvider>
   );

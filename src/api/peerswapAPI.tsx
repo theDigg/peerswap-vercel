@@ -2,16 +2,18 @@ import axios from "axios";
 // import crypto from "shardus-crypto-web";
 import stringify from "fast-stable-stringify";
 
+const isClient = typeof window !== "undefined";
+
 let crypto: any;
 
 // import("./Module").then((Module) => Module.method());
 
-let archiver = JSON.parse(localStorage.getItem("archiver")) || {
+let archiver = isClient && JSON.parse(localStorage.getItem("archiver")) || {
   ip: "www.peerswap.org",
   port: 4000,
 };
 
-let host = localStorage.getItem("host");
+let host = isClient && localStorage.getItem("host");
 let network: any;
 
 // const getProxyUrl = function (url, option) {
@@ -51,7 +53,7 @@ export async function init() {
   );
   network = crypto.hash("network");
   host = await getRandomHost();
-  localStorage.setItem("host", host);
+  isClient && localStorage.setItem("host", host);
 }
 
 export async function getRandomHost() {

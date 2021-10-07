@@ -1,5 +1,7 @@
 import '../src/index.css'
 import Head from 'next/head'
+import { Provider } from "react-redux";
+import store from "../src/app/store";
 
 export default function MyApp({ Component, pageProps}) {
   return (
@@ -8,7 +10,9 @@ export default function MyApp({ Component, pageProps}) {
         <title>Peerswap</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <Component {...pageProps} />
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
     </>
   )
 }

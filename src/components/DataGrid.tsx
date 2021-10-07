@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import {
   DataGridPro,
   GridToolbar,
@@ -364,7 +364,7 @@ const columns: GridColDef[] = [
     headerName: "Action",
     width: 130,
     renderCell: (params: GridRenderCellParams) => (
-      <StyledLink to={`swap/${params.value}`}>
+      <StyledLink href={`swap/${params.value}`}>
         <IconButton aria-label="bid on this swap">
           <LocalOfferIcon />
         </IconButton>
@@ -599,28 +599,26 @@ export default function FullFeaturedDemo({ swaps }) {
   };
 
   return (
-    <StyledEngineProvider injectFirst>
-      <div className={classes.root}>
-        <SettingsPanel
-          onApply={handleApplyClick}
-          size={size}
-          type={type}
-          theme={getActiveTheme()}
-        />
-        <DataGridPro
-          className={isAntDesign ? antDesignClasses.root : undefined}
-          rows={[...swaps]}
-          columns={columns}
-          components={{
-            Toolbar: GridToolbar,
-            NoRowsOverlay: CustomNoRowsOverlay,
-          }}
-          loading={loading}
-          checkboxSelection
-          disableSelectionOnClick
-          {...pagination}
-        />
-      </div>
-    </StyledEngineProvider>
+    <div className={classes.root}>
+      <SettingsPanel
+        onApply={handleApplyClick}
+        size={size}
+        type={type}
+        theme={getActiveTheme()}
+      />
+      <DataGridPro
+        className={isAntDesign ? antDesignClasses.root : undefined}
+        rows={[...swaps]}
+        columns={columns}
+        components={{
+          Toolbar: GridToolbar,
+          NoRowsOverlay: CustomNoRowsOverlay,
+        }}
+        loading={loading}
+        checkboxSelection
+        disableSelectionOnClick
+        {...pagination}
+      />
+    </div>
   );
 }
