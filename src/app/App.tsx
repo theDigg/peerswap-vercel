@@ -22,7 +22,6 @@ import {
   init
 } from "../api/peerswapAPI";
 import useInterval from "../hooks/useInterval";
-import ReloadPrompt from "../ReloadPrompt";
 
 const LazyWelcome = React.lazy(() => import("../pages/Welcome"));
 const LazyRegister = React.lazy(() => import("../pages/Register"));
@@ -171,7 +170,6 @@ function App() {
           </React.Suspense>
         </Switch>
       </Box>
-      <ReloadPrompt />
     </ThemeProvider>
   );
 }
