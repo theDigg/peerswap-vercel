@@ -12,11 +12,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 // import MenuIcon from "@mui/icons-material/Menu";
-import InputIcon from "@mui/icons-material/Input";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import HomeIcon from "@mui/icons-material/Home";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import ImportExportIcon from "@mui/icons-material/ImportExport";
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import DownloadTwoToneIcon from "@mui/icons-material/DownloadTwoTone";
+// import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LoopIcon from "@mui/icons-material/Loop";
 import HistoryIcon from "@mui/icons-material/History";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -32,7 +34,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import { setWallet } from "../features/wallet/walletSlice";
 import NewAppBar from "./AppBarNew";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -95,31 +97,31 @@ const MiniDrawer = (props) => {
     },
     {
       text: "Register",
-      icon: <InputIcon />,
+      icon: <AppRegistrationIcon />,
       show: wallet === null,
       onClick: () => history.push("/register"),
     },
     {
       text: "Import",
-      icon: <ImportExportIcon />,
+      icon: <DownloadTwoToneIcon />,
       show: wallet === null,
       onClick: () => history.push("/import"),
     },
     {
       text: "Home",
-      icon: <HomeIcon />,
+      icon: <DashboardIcon />,
       show: wallet !== null,
       onClick: () => history.push("/"),
     },
     {
       text: "Wallet",
-      icon: <AccountBalanceWalletIcon />,
+      icon: <AccountBalanceIcon />,
       show: wallet !== null,
       onClick: () => history.push("/wallet"),
     },
     {
       text: "Swaps",
-      icon: <SwapHorizIcon />,
+      icon: <LoopIcon />,
       show: wallet !== null,
       onClick: () => history.push("/swaps"),
     },
@@ -148,17 +150,17 @@ const MiniDrawer = (props) => {
       onClick: () => history.push("/settings"),
     },
     {
-      text: "About",
+      text: "Info",
       icon: <InfoIcon />,
-      show: true,
-      onClick: () => history.push("/about"),
+      show: wallet !== null,
+      onClick: () => history.push("/info"),
     },
-    {
-      text: "Test",
-      icon: <StyleIcon />,
-      show: true,
-      onClick: () => history.push("/test"),
-    },
+    // {
+    //   text: "Test",
+    //   icon: <StyleIcon />,
+    //   show: true,
+    //   onClick: () => history.push("/test"),
+    // },
     {
       text: "Sign out",
       icon: <ExitToAppIcon />,

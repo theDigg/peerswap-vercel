@@ -26,7 +26,7 @@ import { withRouter } from "react-router-dom";
 import { setWallet } from "../features/wallet/walletSlice";
 import { setTheme } from "../features/theme/themeSlice";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;

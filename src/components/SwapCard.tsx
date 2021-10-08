@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react'
-import { VariantType, useSnackbar } from 'notistack'
-import { useSelector } from 'react-redux'
-import { RootState } from '../app/rootReducer'
+import React, { useEffect, useRef } from "react";
+import { VariantType, useSnackbar } from "notistack";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/rootReducer";
 import { styled } from "@mui/material/styles";
-// import clsx from 'clsx'
 import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
@@ -11,30 +10,30 @@ import CardHeader from "@mui/material/CardHeader";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import Tooltip from "@mui/material/Tooltip";
-// import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
-// import ShareIcon from "@mui/icons-material/Share";
 import { red, blue, yellow, green, common } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
-import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded'
-import WarningIcon from '@mui/icons-material/Warning'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import LoopIcon from "@mui/icons-material/Loop";
+import WarningIcon from "@mui/icons-material/Warning";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import BidCard from './BidCard'
-import { submitReceiptTx, submitDisputeTx, queryBids } from '../api/peerswapAPI'
-import { formatDateTime, shortenHex } from '../utils/stringUtils'
-import useCopyToClipboard from '../hooks/useCopyToClipboard'
-import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
-
+import BidCard from "./BidCard";
+import { formatDateTime, shortenHex } from "../utils/stringUtils";
+import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import {
+  submitReceiptTx,
+  submitDisputeTx,
+  queryBids,
+} from "../api/peerswapAPI";
 
 const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
@@ -49,14 +48,14 @@ const statusColorBackground = {
   exchanging: yellow[700],
   disputing: red[700],
   complete: green[700],
-}
+};
 
 const statusColorText = {
   open: common.white,
   exchanging: common.black,
   disputing: common.white,
   complete: common.white,
-}
+};
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -74,42 +73,42 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 function SwapCard({ swap, opened }) {
-  const isCurrent = useRef(true)
-  const [, copy] = useCopyToClipboard()
-  const { wallet } = useSelector((state: RootState) => state.wallet)
-  const [expanded, setExpanded] = React.useState(opened)
-  const [bids, setBids] = React.useState([])
-  const { enqueueSnackbar } = useSnackbar()
+  const isCurrent = useRef(true);
+  const [, copy] = useCopyToClipboard();
+  const { wallet } = useSelector((state: RootState) => state.wallet);
+  const [expanded, setExpanded] = React.useState(opened);
+  const [bids, setBids] = React.useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     return () => {
-      isCurrent.current = false
-    }
-  }, [])
+      isCurrent.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     queryBids(swap.id).then((data) => {
       if (isCurrent.current) {
-        setBids(data.bids)
+        setBids(data.bids);
       }
-    })
-  }, [swap.bids, opened])
+    });
+  }, [swap.bids, opened]);
 
   const handleClickVariant = (variant: VariantType, response: string) => () => {
     // variant could be success, error, warning, info, or default
-    enqueueSnackbar(response, { variant })
-  }
+    enqueueSnackbar(response, { variant });
+  };
 
   const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
+    setExpanded(!expanded);
+  };
 
   return (
     <Card sx={{ width: "100%" }} elevation={4}>
       <CardHeader
         avatar={
           <Avatar aria-label="swap-initiator" sx={{ bgcolor: red[500] }}>
-            <SwapVertRoundedIcon />
+            <LoopIcon />
           </Avatar>
         }
         action={
@@ -553,5 +552,5 @@ function SwapCard({ swap, opened }) {
   );
 }
 
-export default SwapCard
+export default SwapCard;
 // export default React.memo(SwapCard);

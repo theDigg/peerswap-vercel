@@ -13,15 +13,14 @@ class MyDocument extends Document {
           <meta name="theme-color" content="#ffffff" />
           <script type="module" src="/src/main.tsx" dangerouslySetInnerHTML={{ __html: `` }} />
         </Head>
-        
+
         <body>
           <Main />
           <NextScript />
-          
         </body>
       </Html>
     )
   }
 }
 
-export default MyDocument      
+export default MyDocument

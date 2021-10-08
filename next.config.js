@@ -9,5 +9,5 @@ module.exports = {
   // read more here: https://nextjs.org/docs/api-reference/next/image
   images: {
     disableStaticImages: true
-  }  
+  }
 }

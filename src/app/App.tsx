@@ -37,8 +37,8 @@ const LazyTransactions = React.lazy(() => import("../pages/Transactions"));
 const LazyEconomy = React.lazy(() => import("../pages/Economy"));
 const LazyVote = React.lazy(() => import("../pages/Vote"));
 const LazySettings = React.lazy(() => import("../pages/Settings"));
-const LazyTest = React.lazy(() => import("../pages/Test"));
-const LazyAbout = React.lazy(() => import("../pages/About"));
+// const LazyTest = React.lazy(() => import("../pages/Test"));
+const LazyInfo = React.lazy(() => import("../pages/Info"));
 
 function App() {
   const dispatch = useDispatch();
@@ -110,9 +110,9 @@ function App() {
             <Route path="/welcome">
               <LazyWelcome />
             </Route>
-            <Route path="/test">
+            {/* <Route path="/test">
               <LazyTest />
-            </Route>
+            </Route> */}
             <Route path="/settings">
               <LazySettings />
             </Route>
@@ -166,7 +166,7 @@ function App() {
               wallet={wallet}
             />
             <PrivateRoute path="/vote" component={LazyVote} wallet={wallet} />
-            <PrivateRoute path="/about" component={LazyAbout} wallet={wallet} />
+            <PrivateRoute path="/about" component={LazyInfo} wallet={wallet} />
           </React.Suspense>
         </Switch>
       </Box>
