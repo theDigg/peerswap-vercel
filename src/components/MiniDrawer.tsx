@@ -9,6 +9,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 // import Typography from "@mui/material/Typography";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 // import MenuIcon from "@mui/icons-material/Menu";
@@ -35,6 +36,17 @@ import { setWallet } from "../features/wallet/walletSlice";
 import NewAppBar from "./AppBarNew";
 
 const drawerWidth = 200;
+
+const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette.common.black,
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -198,10 +210,12 @@ const MiniDrawer = (props) => {
             const { text, icon, onClick } = item;
             return (
               <div key={text}>
-                <ListItem button key={text} onClick={onClick}>
-                  {icon && <ListItemIcon>{icon}</ListItemIcon>}
-                  <ListItemText primary={text} />
-                </ListItem>
+                <BootstrapTooltip title={open ? '' : text} placement="right">
+                  <ListItem button onClick={onClick}>
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                </BootstrapTooltip>
                 <Divider />
               </div>
             );
@@ -230,7 +244,6 @@ const MiniDrawer = (props) => {
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
             width: drawerWidth,
-            backgroundColor: "#000",
           },
         }}
       >

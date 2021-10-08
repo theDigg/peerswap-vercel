@@ -166,7 +166,7 @@ function App() {
               wallet={wallet}
             />
             <PrivateRoute path="/vote" component={LazyVote} wallet={wallet} />
-            <PrivateRoute path="/about" component={LazyInfo} wallet={wallet} />
+            <PrivateRoute path="/info" component={LazyInfo} wallet={wallet} />
           </React.Suspense>
         </Switch>
       </Box>
