@@ -58,6 +58,7 @@ export async function getRandomHost() {
   const { data } = await axios.get(
     `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
   );
+  console.log(data);
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
   const randomHost = nodeList[randomIndex];

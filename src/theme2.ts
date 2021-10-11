@@ -15,8 +15,9 @@ const darkTheme = createTheme({
       main: red.A400,
     },
     background: {
-      default: '#212121',
-    }
+      default: "#202020",
+      paper: "#111",
+    },
   },
 });
 

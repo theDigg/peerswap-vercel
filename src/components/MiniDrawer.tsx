@@ -100,72 +100,125 @@ const MiniDrawer = (props) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+  const [active, setActive] = React.useState(location.pathname.split("/")[1]);
+  console.log(active);
   const itemsList = [
     {
       text: "Welcome",
-      icon: <HomeIcon />,
+      icon: <HomeIcon color={active === "welcome" ? "primary" : "inherit"} />,
       show: wallet === null,
-      onClick: () => history.push("/welcome"),
+      onClick: () => {
+        setActive("welcome");
+        history.push("/welcome");
+      },
     },
     {
       text: "Register",
-      icon: <AppRegistrationIcon />,
+      icon: (
+        <AppRegistrationIcon
+          color={active === "register" ? "primary" : "inherit"}
+        />
+      ),
       show: wallet === null,
-      onClick: () => history.push("/register"),
+      onClick: () => {
+        setActive("register");
+        history.push("/register");
+      },
     },
     {
       text: "Import",
-      icon: <DownloadTwoToneIcon />,
+      icon: (
+        <DownloadTwoToneIcon
+          color={active === "import" ? "primary" : "inherit"}
+        />
+      ),
       show: wallet === null,
-      onClick: () => history.push("/import"),
+      onClick: () => {
+        setActive("import");
+        history.push("/import");
+      },
     },
     {
       text: "Home",
-      icon: <DashboardIcon />,
+      icon: <DashboardIcon color={active === "" ? "primary" : "inherit"} />,
       show: wallet !== null,
-      onClick: () => history.push("/"),
+      onClick: () => {
+        setActive("");
+        history.push("/");
+      },
     },
     {
       text: "Wallet",
-      icon: <AccountBalanceIcon />,
+      icon: (
+        <AccountBalanceIcon
+          color={active === "wallet" ? "primary" : "inherit"}
+        />
+      ),
       show: wallet !== null,
-      onClick: () => history.push("/wallet"),
+      onClick: () => {
+        setActive("wallet");
+        history.push("/wallet");
+      },
     },
     {
       text: "Swaps",
-      icon: <LoopIcon />,
+      icon: <LoopIcon color={active === "swaps" ? "primary" : "inherit"} />,
       show: wallet !== null,
-      onClick: () => history.push("/swaps"),
+      onClick: () => {
+        setActive("swaps");
+        history.push("/swaps");
+      },
     },
     {
       text: "Messages",
-      icon: <MailIcon />,
+      icon: <MailIcon color={active === "messages" ? "primary" : "inherit"} />,
       show: wallet !== null,
-      onClick: () => history.push("/messages"),
+      onClick: () => {
+        setActive("messages");
+        history.push("/messages");
+      },
     },
     {
       text: "Tx History",
-      icon: <HistoryIcon />,
+      icon: (
+        <HistoryIcon
+          color={active === "transactions" ? "primary" : "inherit"}
+        />
+      ),
       show: wallet !== null,
-      onClick: () => history.push("/transactions"),
+      onClick: () => {
+        setActive("transactions");
+        history.push("/transactions");
+      },
     },
     {
       text: "Economy",
-      icon: <BarChartIcon />,
+      icon: (
+        <BarChartIcon color={active === "economy" ? "primary" : "inherit"} />
+      ),
       show: wallet !== null,
-      onClick: () => history.push("/economy"),
+      onClick: () => {
+        setActive("economy");
+        history.push("/economy");
+      },
     },
     {
       text: "Settings",
-      icon: <TuneIcon />,
+      icon: <TuneIcon color={active === "settings" ? "primary" : "inherit"} />,
       show: true,
-      onClick: () => history.push("/settings"),
+      onClick: () => {
+        setActive("settings");
+        history.push("/settings");
+      },
     },
     {
       text: "Info",
-      icon: <InfoIcon />,
+      icon: <InfoIcon color={active === "info" ? "primary" : "inherit"} />,
       show: wallet !== null,
-      onClick: () => history.push("/info"),
+      onClick: () => {
+        setActive("info");
+        history.push("/info");
+      },
     },
     // {
     //   text: "Test",
@@ -175,10 +228,13 @@ const MiniDrawer = (props) => {
     // },
     {
       text: "Sign out",
-      icon: <ExitToAppIcon />,
+      icon: (
+        <ExitToAppIcon />
+      ),
       show: wallet !== null,
       onClick: () => {
         dispatch(setWallet(null));
+        history.push("/welcome");
       },
     },
   ];
@@ -210,7 +266,7 @@ const MiniDrawer = (props) => {
             const { text, icon, onClick } = item;
             return (
               <div key={text}>
-                <BootstrapTooltip title={open ? '' : text} placement="right">
+                <BootstrapTooltip title={open ? "" : text} placement="right">
                   <ListItem button onClick={onClick}>
                     <ListItemIcon>{icon}</ListItemIcon>
                     <ListItemText primary={text} />

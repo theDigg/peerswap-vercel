@@ -7,7 +7,6 @@ import {
   GridRenderCellParams,
   GridOverlay,
 } from "@mui/x-data-grid-pro";
-import { useDemoData } from "@mui/x-data-grid-generator";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import IconButton from "@mui/material/IconButton";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -539,12 +538,6 @@ export default function FullFeaturedDemo({ swaps }) {
   const [isAntDesign, setIsAntDesign] = React.useState<boolean>(false);
   const [type, setType] = React.useState<GridDataType>("Swaps");
   const [size, setSize] = React.useState(100);
-  const { loading, data, setRowLength, loadNewData } = useDemoData({
-    dataSet: "Commodity",
-    rowLength: size,
-    maxColumns: 40,
-    editable: true,
-  });
 
   const [pagination, setPagination] = React.useState<GridPaginationSettings>({
     pagination: false,
@@ -567,11 +560,6 @@ export default function FullFeaturedDemo({ swaps }) {
 
     if (getActiveTheme() !== settings.theme) {
       setIsAntDesign(!isAntDesign);
-    }
-
-    if (size !== settings.size || type !== settings.type) {
-      setRowLength(settings.size);
-      loadNewData();
     }
 
     const newPaginationSettings: GridPaginationSettings = {
@@ -615,7 +603,7 @@ export default function FullFeaturedDemo({ swaps }) {
             Toolbar: GridToolbar,
             NoRowsOverlay: CustomNoRowsOverlay,
           }}
-          loading={loading}
+          loading={swaps.length  === 0}
           checkboxSelection
           disableSelectionOnClick
           {...pagination}
