@@ -36,6 +36,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
+const StyledLink = styled(Link)(({ theme }) => ({
+  textDecoration: "none",
+  "&:hover": {
+    cursor: "pointer",
+    opacity: 0.9,
+  },
+}));
+
 const statusColorBackground = {
   incomplete: red[700],
   complete: green[700],
@@ -487,13 +495,14 @@ export default function ContractCard({ contract }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Link to={`../swap/${contract.swapId}`}>
+              <StyledLink to={`../swap/${contract.swapId}`}>
                 <Chip
                   label={shortenHex(contract.swapId)}
                   size="small"
                   color="primary"
+                  sx={{ cursor: "pointer" }}
                 />
-              </Link>
+              </StyledLink>
             </Grid>
           </Grid>
           <Grid
@@ -508,13 +517,14 @@ export default function ContractCard({ contract }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Link to={`../bid/${contract.bidId}`}>
+              <StyledLink to={`../bid/${contract.bidId}`}>
                 <Chip
                   label={shortenHex(contract.bidId)}
                   size="small"
                   color="primary"
+                  sx={{ cursor: "pointer" }}
                 />
-              </Link>
+              </StyledLink>
             </Grid>
           </Grid>
           {contract.disputeId && (

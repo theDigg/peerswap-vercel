@@ -101,7 +101,6 @@ const MiniDrawer = (props) => {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState(location.pathname.split("/")[1]);
-  console.log(active);
   const itemsList = [
     {
       text: "Welcome",

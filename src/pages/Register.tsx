@@ -151,7 +151,6 @@ export default function Register() {
                 setLoading(false);
                 dispatch(setWallets(wallet));
                 const { account } = await getAccountFromAlias(username);
-                console.log(account);
                 dispatch(setAccount(account));
               }}
             >

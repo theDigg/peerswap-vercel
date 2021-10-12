@@ -6,10 +6,10 @@ const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: blue[800],
+      main: blue[500],
     },
     secondary: {
-      main: deepOrange[700],
+      main: deepOrange[500],
     },
     error: {
       main: red.A400,

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { VariantType, useSnackbar } from "notistack";
+import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -37,6 +38,14 @@ const statusColorText = {
   disputing: common.white,
   complete: common.white,
 };
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  textDecoration: "none",
+  "&:hover": {
+    cursor: "pointer",
+    opacity: 0.9,
+  },
+}));
 
 function BidCard({ swap, bid }) {
   const [initiatorChainAddress, setInitiatorChainAddress] = useState("");
@@ -234,14 +243,14 @@ function BidCard({ swap, bid }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Link to={`../swap/${bid.swapId}`}>
+              <StyledLink to={`../swap/${bid.swapId}`}>
                 <Chip
                   label={shortenHex(bid.swapId)}
                   size="small"
                   color="primary"
-                  // className={classes.link}
+                  sx={{ cursor: "pointer" }}
                 />
-              </Link>
+              </StyledLink>
             </Grid>
           </Grid>
           {bid.contractId && (
@@ -257,7 +266,7 @@ function BidCard({ swap, bid }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <Link
+                <StyledLink
                   to={`../contract/${bid.contractId}`}
                   // className={classes.link}
                 >
@@ -265,9 +274,9 @@ function BidCard({ swap, bid }) {
                     label={shortenHex(bid.contractId)}
                     size="small"
                     color="primary"
-                    // className={classes.link}
+                    sx={{ cursor: "pointer" }}
                   />
-                </Link>
+                </StyledLink>
               </Grid>
             </Grid>
           )}
@@ -284,7 +293,7 @@ function BidCard({ swap, bid }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <Link
+                <StyledLink
                   to={`../dispute/${bid.disputeId}`}
                   // className={classes.link}
                 >
@@ -294,7 +303,7 @@ function BidCard({ swap, bid }) {
                     color="primary"
                     // className={classes.link}
                   />
-                </Link>
+                </StyledLink>
               </Grid>
             </Grid>
           )}

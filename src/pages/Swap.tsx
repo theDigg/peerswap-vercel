@@ -13,6 +13,7 @@ import Chip from "@mui/material/Chip";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
@@ -23,16 +24,20 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import QueueIcon from "@mui/icons-material/Queue";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import WarningIcon from "@mui/icons-material/Warning";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { Theme, styled } from "@mui/material/styles";
 import { formatDateTime, shortenHex } from "../utils/stringUtils";
+import BidCard from "../components/BidCard";
+import useInterval from "../hooks/useInterval";
 import {
   Accounts,
   getSwap,
   submitBidTx,
   submitReceiptTx,
   submitDisputeTx,
+  queryBids,
 } from "../api/peerswapAPI";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
 
@@ -118,6 +123,8 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
 
 export default function Swap({ location }) {
   const [swap, setSwap] = useState<Accounts.Swap>();
+  const [bids, setBids] = React.useState([]);
+  const isCurrent = React.useRef(true);
   const [, copy] = useCopyToClipboard();
   const [state, setState] = React.useState({
     swapId: "",
@@ -138,8 +145,19 @@ export default function Swap({ location }) {
   };
 
   useEffect(() => {
+    return () => {
+      isCurrent.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
     getSwap(location.pathname).then(({ swap }) => {
       setSwap(swap.data);
+      queryBids(swap.data.id).then((data) => {
+        // if (isCurrent.current) {
+        setBids(data.bids);
+        // }
+      });
       if (swap.data.swapType === "offer") {
         setState({
           ...state,
@@ -165,6 +183,14 @@ export default function Swap({ location }) {
       }
     });
   }, [location.pathname]);
+
+  useInterval(() => {
+    queryBids(swap.id).then((data) => {
+      // if (isCurrent.current) {
+      setBids(data.bids);
+      // }
+    });
+  }, 10000);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -577,6 +603,7 @@ export default function Swap({ location }) {
                             label={shortenHex(swap.acceptedBid)}
                             size="small"
                             color="primary"
+                            sx={{ cursor: "pointer" }}
                           />
                         </StyledLink>
                       </Grid>
@@ -604,6 +631,7 @@ export default function Swap({ location }) {
                             label={shortenHex(swap.contractId)}
                             size="small"
                             color="primary"
+                            sx={{ cursor: "pointer" }}
                           />
                         </StyledLink>
                       </Grid>
@@ -686,8 +714,8 @@ export default function Swap({ location }) {
               </CardActions>
               <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <Container maxWidth="md">
-                  {swap.status === "open" && (
-                    <CardContent>
+                  <CardContent>
+                    {swap.status === "open" && (
                       <form
                         style={{
                           display: "flex",
@@ -793,8 +821,23 @@ export default function Swap({ location }) {
                           Place Bid
                         </Button>
                       </form>
-                    </CardContent>
-                  )}
+                    )}
+                    <Divider orientation="horizontal" sx={{ my: 2 }}>
+                      <Chip
+                        icon={<LocalOfferIcon />}
+                        label="BIDS"
+                        variant="outlined"
+                        size="small"
+                        color="secondary"
+                      />
+                    </Divider>
+                    {bids &&
+                      bids.map((bid, i) => (
+                        <Box sx={{ my: 2 }} key={bid.id}>
+                          <BidCard swap={swap} bid={bid} />
+                        </Box>
+                      ))}
+                  </CardContent>
                 </Container>
               </Collapse>
             </Card>

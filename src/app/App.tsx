@@ -52,7 +52,6 @@ function App() {
 
   useEffect(() => {
     init().then(() => {
-      console.log("APP RENDERED");
       if (wallet) {
         getAccountData(wallet.entry.address).then((accountData) => {
           dispatch(setAccount(accountData.account));
@@ -96,7 +95,6 @@ function App() {
         if (stringify(bids) !== stringify(myBids)) {
           dispatch(setMyBids(bids));
         }
-        console.log(Date.now() - startTime);
       });
     }
   }, 10000);

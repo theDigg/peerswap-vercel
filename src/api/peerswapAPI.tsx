@@ -58,7 +58,6 @@ export async function getRandomHost() {
   const { data } = await axios.get(
     `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
   );
-  console.log(data);
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
   const randomHost = nodeList[randomIndex];
@@ -1048,7 +1047,6 @@ export async function submitProposalTx(parameters: any, user: Wallet) {
     timestamp: Date.now(),
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
-  console.log(parameters, tx);
   return injectTx(tx);
 }
 

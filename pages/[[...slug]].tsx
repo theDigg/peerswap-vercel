@@ -1,6 +1,6 @@
 // import NextIndexWrapper from '../src/main'
 
-// next/dynamic is used to prevent breaking incompatibilities 
+// next/dynamic is used to prevent breaking incompatibilities
 // with SSR from window.SOME_VAR usage, if this is not used
 // next/dynamic can be removed to take advantage of SSR/prerendering
 import dynamic from 'next/dynamic'
