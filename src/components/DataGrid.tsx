@@ -364,7 +364,7 @@ const columns: GridColDef[] = [
     headerName: "Action",
     width: 130,
     renderCell: (params: GridRenderCellParams) => (
-      <BootstrapTooltip title="Bid on this swap" placement="right">
+      <BootstrapTooltip title="Bid" placement="right">
         <StyledLink to={`swap/${params.value}`}>
           <IconButton aria-label="bid on this swap">
             <LocalOfferIcon />
