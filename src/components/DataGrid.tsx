@@ -25,6 +25,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { StyledEngineProvider } from "@mui/material/styles";
 import { formatDateTime } from "../utils/stringUtils";
+import { BootstrapTooltip } from "../style/components/Tooltip";
 
 const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
@@ -363,11 +364,13 @@ const columns: GridColDef[] = [
     headerName: "Action",
     width: 130,
     renderCell: (params: GridRenderCellParams) => (
-      <StyledLink to={`swap/${params.value}`}>
-        <IconButton aria-label="bid on this swap">
-          <LocalOfferIcon />
-        </IconButton>
-      </StyledLink>
+      <BootstrapTooltip title="Bid on this swap" placement="right">
+        <StyledLink to={`swap/${params.value}`}>
+          <IconButton aria-label="bid on this swap">
+            <LocalOfferIcon />
+          </IconButton>
+        </StyledLink>
+      </BootstrapTooltip>
     ),
   },
   {

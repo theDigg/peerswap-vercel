@@ -4,27 +4,20 @@ import { useDispatch } from "react-redux";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
-// import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-// import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
-// import Typography from "@mui/material/Typography";
-import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-// import MenuIcon from "@mui/icons-material/Menu";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import DownloadTwoToneIcon from "@mui/icons-material/DownloadTwoTone";
-// import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LoopIcon from "@mui/icons-material/Loop";
 import HistoryIcon from "@mui/icons-material/History";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import TuneIcon from "@mui/icons-material/Tune";
 import InfoIcon from "@mui/icons-material/Info";
-import StyleIcon from "@mui/icons-material/Style";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -34,19 +27,9 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import { setWallet } from "../features/wallet/walletSlice";
 import NewAppBar from "./AppBarNew";
+import { BootstrapTooltip } from "style/components/Tooltip";
 
 const drawerWidth = 200;
-
-const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.arrow}`]: {
-    color: theme.palette.common.black,
-  },
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.black,
-  },
-}));
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,

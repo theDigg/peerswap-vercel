@@ -116,11 +116,7 @@ export default function Wallet({ wallet, location }) {
         }}
       >
         <Offset />
-        <Typography
-          variant="h4"
-          align="center"
-          sx={{ m: 1 }}
-        >
+        <Typography variant="h4" align="center" sx={{ m: 1 }}>
           {account && account.data.balance.toFixed(3)}
           <Unit>SWAP</Unit>
         </Typography>
@@ -206,7 +202,6 @@ function SendTab({ wallet }) {
             <Alert
               variant="filled"
               severity={severity as any}
-              sx={{ m: (theme) => theme.spacing(2) }}
             >
               {status}
             </Alert>
@@ -461,6 +456,15 @@ function SwapTab({ wallet }) {
             label="Fixed Precision"
             labelPlacement="end"
           />
+          <Alert
+            variant="filled"
+            severity="info"
+            sx={{ mb: (theme) => theme.spacing(1) }}
+          >
+            Fixed precision means that each user in the swap agreement needs to
+            send the exact amounts specified in the swap, otherwise a
+            0.001 difference in the amounts sent will be accepted.
+          </Alert>
           <Button
             type="submit"
             variant="contained"
@@ -480,6 +484,14 @@ function SwapTab({ wallet }) {
 const OfferForm = ({ handleChange, setNumber }) => {
   return (
     <>
+      <Alert
+        variant="filled"
+        severity="info"
+        sx={{ mb: (theme) => theme.spacing(1) }}
+      >
+        Offer swaps are for used when you want to offer a token that you have
+        while being open to receiving any token offered in bids
+      </Alert>
       <TextField
         id="filled-basic"
         label="Token Offered"
@@ -504,6 +516,14 @@ const OfferForm = ({ handleChange, setNumber }) => {
 const RequestForm = ({ handleChange, setNumber }) => {
   return (
     <>
+      <Alert
+        variant="filled"
+        severity="info"
+        sx={{ mb: (theme) => theme.spacing(1) }}
+      >
+        Request swaps are for used when you want to request a token that you
+        want while being open to offering tokens requested in bids
+      </Alert>
       <TextField
         id="filled-basic"
         label="Token Requested"
@@ -536,6 +556,23 @@ const RequestForm = ({ handleChange, setNumber }) => {
 const ImmediateForm = ({ handleChange, setNumber }) => {
   return (
     <>
+      <Alert
+        variant="filled"
+        severity="info"
+        sx={{ mb: (theme) => theme.spacing(1) }}
+      >
+        Immediate swaps are for used when you want to specify the token that you
+        want, the token that you have, and the exact amounts for each in the
+        terms.
+      </Alert>
+      <Alert
+        variant="filled"
+        severity="warning"
+        sx={{ mb: (theme) => theme.spacing(1) }}
+      >
+        Any bid on an immediate swap will automatically put you and the provider
+        into a swap agreement (You don't have to accept the bid)
+      </Alert>
       <TextField
         id="filled-basic"
         label="Token Offered"
