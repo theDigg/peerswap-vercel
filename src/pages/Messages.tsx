@@ -17,14 +17,11 @@ import Container from "@mui/material/Container";
 import { VariantType, useSnackbar } from "notistack";
 import { submitMessageTx, getChats } from "../api/peerswapAPI";
 import { setChats } from "../features/messages/messagesSlice";
+import { stringAvatar } from '../utils/stringUtils'
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const styles = {
-  root: {
-    display: "flex",
-    width: "100%",
-  },
   input: {
     width: "100%",
     marginTop: 2,
@@ -33,81 +30,7 @@ const styles = {
     width: "100%",
     marginTop: 2,
   },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1,
-  },
-  content: {
-    width: "100%",
-    height: "calc(100vh - 60px)",
-    flexGrow: 1,
-    padding: 2,
-  },
-  list: {
-    width: "100%",
-    backgroundColor: "theme.palette.background.paper",
-    height: "77vh",
-    overflow: "scroll",
-  },
-  tabRoot: {
-    flexGrow: 1,
-    backgroundColor: "theme.palette.background.paper",
-    display: "flex",
-    width: "100%",
-    height: "100%",
-  },
-  tabPanel: {
-    width: "100%",
-    height: "100%",
-  },
-  tabs: {
-    borderRight: `1px solid grey`, // fix
-    minWidth: "200px",
-  },
-  messageNotificationSide: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginRight: 2,
-  },
-  messageNotificationBodySide: {
-    alignItems: "flex-start",
-    marginRight: 0,
-  },
-  profileMenuLink: {
-    fontSize: 16,
-    textDecoration: "none",
-    "&:hover": {
-      cursor: "pointer",
-    },
-  },
-  messageNotification: {
-    height: "auto",
-    display: "flex",
-    alignItems: "center",
-    "&:hover, &:focus": {
-      backgroundColor: "theme.palette.background.default",
-    },
-  },
 };
-
-const StyledTextField = styled(TextField)`
-  label.Mui-focused {
-    color: red;
-  }
-  .MuiOutlinedInput-root {
-    fieldset {
-      border-color: grey;
-    }
-    &:hover fieldset {
-      border-color: black;
-    }
-    &.Mui-focused fieldset {
-      border-color: red;
-    }
-  }
-` as typeof TextField;
 
 export default function Messages({ wallet, location }) {
   const dispatch = useDispatch();
@@ -124,17 +47,21 @@ export default function Messages({ wallet, location }) {
   }, [account, dispatch, wallet]);
 
   return (
-    <div style={styles.root}>
-      <main style={styles.content}>
-        <Offset />
-        <VerticalTabs
-          wallet={wallet}
-          chats={chats}
-          index={index}
-          location={location}
-        />
-      </main>
-    </div>
+    <Box
+      component="main"
+      sx={{
+        width: "100%",
+        height: "calc(100vh - 64px)",
+      }}
+    >
+      <Offset />
+      <VerticalTabs
+        wallet={wallet}
+        chats={chats}
+        index={index}
+        location={location}
+      />
+    </Box>
   );
 }
 
@@ -148,16 +75,19 @@ function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Box
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
-      style={styles.tabPanel}
+      sx={{
+        width: "100%",
+        height: "100%",
+      }}
       {...other}
     >
       {value === index && <Box>{children}</Box>}
-    </div>
+    </Box>
   );
 }
 
@@ -175,10 +105,10 @@ function VerticalTabs({ wallet, chats, index, location }) {
   const { enqueueSnackbar } = useSnackbar();
   const bottomChat = useRef();
 
-  useEffect(() => {
-    // @ts-ignore
-    bottomChat?.current?.scrollIntoView({ behavior: "smooth" });
-  }, [message]);
+  // useEffect(() => {
+  //   // @ts-ignore
+  //   bottomChat?.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [message]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -190,14 +120,25 @@ function VerticalTabs({ wallet, chats, index, location }) {
   };
 
   return (
-    <div style={styles.tabRoot}>
+    <div
+      style={{
+        flexGrow: 1,
+        backgroundColor: "theme.palette.background.paper",
+        display: "flex",
+        width: "100%",
+        height: "100%",
+      }}
+    >
       <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        style={styles.tabs}
+        sx={{
+          borderRight: `1px dashed grey`,
+          minWidth: "200px",
+        }}
       >
         <Tab label="New Chat" {...a11yProps(0)} key={0}></Tab>
         {chats &&
@@ -208,13 +149,13 @@ function VerticalTabs({ wallet, chats, index, location }) {
       <TabPanel value={value} index={0} key={0}>
         <Container maxWidth="xl">
           <TextField
-            style={styles.input}
+            sx={styles.input}
             label="Recipient"
             variant="outlined"
             onChange={(e) => setTarget(e.target.value)}
           />
           <TextField
-            style={styles.input}
+            sx={styles.input}
             multiline
             minRows={3}
             label="Message"
@@ -224,7 +165,7 @@ function VerticalTabs({ wallet, chats, index, location }) {
           <Button
             color="primary"
             variant="contained"
-            style={styles.button}
+            sx={styles.button}
             onClick={(e) => {
               e.preventDefault();
               submitMessageTx(message, target, wallet).then((data: any) => {
@@ -240,21 +181,33 @@ function VerticalTabs({ wallet, chats, index, location }) {
         Object.keys(chats).map((user, i) => (
           <TabPanel value={value} index={i + 1} key={user}>
             <Container
-              maxWidth="xl"
+              maxWidth="md"
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                flexGrow: 1,
               }}
             >
-              <List sx={styles.list}>
+              <List
+                sx={{
+                  width: "100%",
+                  backgroundColor: "theme.palette.background.default",
+                  height: "77vh",
+                  overflow: "auto",
+                }}
+              >
                 {chats[user].map((message, i, arr) => (
-                  <div key={i}>
+                  <Box key={i}>
                     <ListItem
                       alignItems="flex-start"
-                      style={styles.messageNotification}
+                      sx={{
+                        display: "flex",
+                        gap: 2,
+                        "&:hover, &:focus": {
+                          backgroundColor: "theme.palette.background.default",
+                        },
+                      }}
                     >
-                      <div
+                      <Box
                         style={{
                           display: "flex",
                           flexDirection: "column",
@@ -266,20 +219,20 @@ function VerticalTabs({ wallet, chats, index, location }) {
                         <Typography>
                           {formatDate(new Date(message.timestamp))}
                         </Typography>
-                      </div>
+                      </Box>
                       <ListItemText
                         primary={message.handle}
                         secondary={message.body}
                       />
                     </ListItem>
                     {arr[i + 1] && <Divider />}
-                  </div>
+                  </Box>
                 ))}
                 <div ref={bottomChat} />
               </List>
               <>
                 <TextField
-                  style={styles.input}
+                  sx={styles.input}
                   label="Message"
                   variant="outlined"
                   onChange={(e) => setMessage(e.target.value)}
@@ -287,7 +240,7 @@ function VerticalTabs({ wallet, chats, index, location }) {
                 <Button
                   color="primary"
                   variant="contained"
-                  style={styles.button}
+                  sx={styles.button}
                   onClick={(e) => {
                     e.preventDefault();
                     submitMessageTx(message, user, wallet).then((data: any) => {
@@ -303,35 +256,6 @@ function VerticalTabs({ wallet, chats, index, location }) {
         ))}
     </div>
   );
-}
-
-function stringToColor(string: string) {
-  let hash = 0;
-  let i;
-
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  let color = "#";
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.substr(-2);
-  }
-  /* eslint-enable no-bitwise */
-
-  return color;
-}
-
-function stringAvatar(name: string) {
-  return {
-    sx: {
-      bgcolor: stringToColor(name.toUpperCase()),
-    },
-    children: `${name[0].toUpperCase()}`,
-  };
 }
 
 function formatDate(date) {

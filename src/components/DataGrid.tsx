@@ -443,10 +443,10 @@ const columns: GridColDef[] = [
   },
   {
     field: "createdAt",
-    headerName: "Created At",
+    headerName: "Date Created",
     type: "date",
     description: "The timestamp this swap was created",
-    width: 170,
+    width: 190,
     valueFormatter: ({ value }: any) => formatDateTime(value),
   },
 ];
