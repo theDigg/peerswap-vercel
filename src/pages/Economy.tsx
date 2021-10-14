@@ -516,7 +516,7 @@ function ParameterTable({ parameters, nextParameters, changeParameters }) {
       "Node Penalty",
       parameters.nodePenalty,
       <RedditTextField
-        label="Node Penalt"
+        label="Node Penalty"
         type="number"
         id="nodePenalty-input"
         variant="filled"

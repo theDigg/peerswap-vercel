@@ -207,13 +207,13 @@ function VerticalTabs({ wallet, chats, index, location }) {
       </Tabs>
       <TabPanel value={value} index={0} key={0}>
         <Container maxWidth="xl">
-          <StyledTextField
+          <TextField
             style={styles.input}
             label="Recipient"
             variant="outlined"
             onChange={(e) => setTarget(e.target.value)}
           />
-          <StyledTextField
+          <TextField
             style={styles.input}
             multiline
             minRows={3}
@@ -278,7 +278,7 @@ function VerticalTabs({ wallet, chats, index, location }) {
                 <div ref={bottomChat} />
               </List>
               <>
-                <StyledTextField
+                <TextField
                   style={styles.input}
                   label="Message"
                   variant="outlined"
