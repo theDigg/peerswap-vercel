@@ -49,6 +49,8 @@ Now that we both submitted our swaps, we can search for each other's swap reques
 * Request 350 USD in the bid and paste `0x04d6e89719b2efc3b34a0436a448d1498b44f955` for the address
 * place the bid
 
+## Interactions with swaps and bids
+
 `Aamir speaking:`
 Now that we've both placed bids on each other's swaps, let's return to our dashboard and see what's going on there. `*Clicks on dashboard page*` I now have a bid and a swap showing up in the dashboard. I can see all the bids that have been placed on my swap by hitting the carat icon in the lower right corner of the swap card. `*Hits carat*` These bids will update in realtime as providers are placing them on my swap, so I could sit here and wait for more to show up, or I could just accept kyle's offer. I'll accept the offer `*hits checkmark icon*`, and kyle will do the same on his side. We can wait for the swap status to be updated to reflect that we're now in the exchanging status of the swap process. This would be the time to send kyle my offer, and vice-versa. Since this is just a demo, We'll hit this double check mark icon to signal that I have confirmed that I received the tokens I requested `*Clicks double check mark icon*`. In a real world scenario, you would obviously wait to receive the tokens, and if the provider doesn't honor the agreement, or fails to send the tokens altogether, I can hit this warning icon to indicate that something went wrong and I need to dispute this swap in court. As mentioned previously, this feature is still in development, but that's how it would work. Now we can see that kyle has marked the swap as successful, and I got back the DAI that was put up as collateral.
 
