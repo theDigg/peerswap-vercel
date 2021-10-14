@@ -24,8 +24,6 @@ function Messages({ wallet, location, history }) {
     Object.keys(chats).indexOf(location.pathname.split("/").pop()) + 1
   );
 
-  console.log(index);
-
   useEffect(() => {
     getChats(account, wallet).then((chats) => {
       dispatch(setChats(chats));

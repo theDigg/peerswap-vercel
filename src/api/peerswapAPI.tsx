@@ -826,7 +826,6 @@ export async function submitMessageTx(
   target: string,
   user: Wallet
 ) {
-  console.log(target)
   const { account } = await getAccountFromAlias(target);
   const targetAddress = account.id;
   const messageData = stringify({
