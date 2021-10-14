@@ -1,45 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Container from "@mui/material/Container";
+import ChatMessage from "components/ChatMessage";
 import { VariantType, useSnackbar } from "notistack";
 import { submitMessageTx, getChats } from "../api/peerswapAPI";
 import { setChats } from "../features/messages/messagesSlice";
-import { stringAvatar } from '../utils/stringUtils'
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-const styles = {
-  input: {
-    width: "100%",
-    marginTop: 2,
-  },
-  button: {
-    width: "100%",
-    marginTop: 2,
-  },
-};
-
-export default function Messages({ wallet, location }) {
+function Messages({ wallet, location }) {
   const dispatch = useDispatch();
   const { chats } = useSelector((state: RootState) => state.messages);
   const { account } = useSelector((state: RootState) => state.account);
-  const [index] = useState(
+  const [index, setIndex] = useState(
     Object.keys(chats).indexOf(location.pathname.split("/").pop()) + 1
   );
+
+  console.log(index);
 
   useEffect(() => {
     getChats(account, wallet).then((chats) => {
@@ -51,8 +35,10 @@ export default function Messages({ wallet, location }) {
     <Box
       component="main"
       sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: `100vh`,
         width: "100%",
-        height: "calc(100vh - 64px)",
       }}
     >
       <Offset />
@@ -60,7 +46,7 @@ export default function Messages({ wallet, location }) {
         wallet={wallet}
         chats={chats}
         index={index}
-        location={location}
+        setIndex={setIndex}
       />
     </Box>
   );
@@ -82,12 +68,22 @@ function TabPanel(props: TabPanelProps) {
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       sx={{
-        width: "100%",
-        height: "100%",
+        flexGrow: 1,
+        height: '100%'
       }}
       {...other}
     >
-      {value === index && <Box>{children}</Box>}
+      {value === index && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+          }}
+        >
+          {children}
+        </Box>
+      )}
     </Box>
   );
 }
@@ -99,7 +95,7 @@ function a11yProps(index: any) {
   };
 }
 
-function VerticalTabs({ wallet, chats, index, location }) {
+function VerticalTabs({ wallet, chats, index, setIndex }) {
   const [value, setValue] = useState(index);
   const [message, setMessage] = useState("");
   const [target, setTarget] = useState("");
@@ -113,6 +109,7 @@ function VerticalTabs({ wallet, chats, index, location }) {
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
+    setIndex(newValue);
   };
 
   const handleClickVariant = (variant: VariantType, response: string) => () => {
@@ -120,13 +117,18 @@ function VerticalTabs({ wallet, chats, index, location }) {
     enqueueSnackbar(response, { variant });
   };
 
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    submitMessageTx(message, target, wallet).then((data: any) => {
+      handleClickVariant("success", data.result.reason)();
+    });
+    setMessage("");
+  };
+
   return (
-    <div
-      style={{
-        flexGrow: 1,
-        backgroundColor: "theme.palette.background.paper",
+    <Box
+      sx={{
         display: "flex",
-        width: "100%",
         height: "100%",
       }}
     >
@@ -137,136 +139,86 @@ function VerticalTabs({ wallet, chats, index, location }) {
         onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{
-          borderRight: `1px dashed grey`,
-          minWidth: "200px",
+          // borderRight: `1px solid grey`,
+          maxWidth: "200px",
+          minWidth: "100px",
         }}
       >
         <Tab label="New Chat" {...a11yProps(0)} key={0}></Tab>
         {chats &&
           Object.keys(chats).map((user, i) => (
-            <Tab label={user} {...a11yProps(i + 1)} key={user}></Tab>
+            <Tab
+              label={user}
+              {...a11yProps(i + 1)}
+              key={user}
+              onClick={() => setTarget(user)}
+            />
           ))}
       </Tabs>
       <TabPanel value={value} index={0} key={0}>
-        <Container maxWidth="xl">
+        <Paper
+          elevation={6}
+          sx={{
+            height: "100%",
+            p: 1,
+            overflow: "auto",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <TextField
-            sx={styles.input}
+            sx={{ mt: 2, mx: 2 }}
             label="Recipient"
             variant="outlined"
             onChange={(e) => setTarget(e.target.value)}
           />
           <TextField
-            sx={styles.input}
-            multiline
-            minRows={3}
+            sx={{ mt: 2, mx: 2 }}
             label="Message"
             variant="outlined"
+            multiline
+            minRows={3}
+            value={message}
             onChange={(e) => setMessage(e.target.value)}
-          />
-          <Button
-            color="primary"
-            variant="contained"
-            sx={styles.button}
-            onClick={(e) => {
-              e.preventDefault();
-              submitMessageTx(message, target, wallet).then((data: any) => {
-                handleClickVariant("success", data.result.reason)();
-              });
+            onKeyPress={(event) => {
+              event.key === "Enter" && handleSendMessage(event);
             }}
-          >
-            Submit
-          </Button>
-        </Container>
+          />
+        </Paper>
       </TabPanel>
       {chats &&
         Object.keys(chats).map((user, i) => (
           <TabPanel value={value} index={i + 1} key={user}>
-            <Container
-              maxWidth="md"
+            <Paper
+              elevation={6}
               sx={{
+                height: "100%",
+                p: 1,
+                overflow: "auto",
                 display: "flex",
                 flexDirection: "column",
               }}
             >
-              <List
-                sx={{
-                  width: "100%",
-                  backgroundColor: "theme.palette.background.default",
-                  height: "77vh",
-                  overflow: "auto",
-                }}
-              >
+              <List>
                 {chats[user].map((message, i, arr) => (
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar {...stringAvatar(message.handle)} />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={message.handle}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            sx={{ display: 'inline' }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {formatDate(new Date(message.timestamp))}
-                          </Typography>
-                          {" — " + message.body}
-                        </React.Fragment>
-                      }
-                    />
-                  </ListItem>
+                  <ChatMessage message={message} key={i} />
                 ))}
-                {/* <div ref={bottomChat} /> */}
               </List>
-              <>
-                <TextField
-                  sx={styles.input}
-                  label="Message"
-                  variant="outlined"
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-                <Button
-                  color="primary"
-                  variant="contained"
-                  sx={styles.button}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    submitMessageTx(message, user, wallet).then((data: any) => {
-                      handleClickVariant("success", data.result.reason)();
-                    });
-                  }}
-                >
-                  Submit
-                </Button>
-              </>
-            </Container>
+              <TextField
+                sx={{ mt: "auto", mx: 2, mb: 2 }}
+                label="Message"
+                variant="outlined"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={(event) => {
+                  event.key === "Enter" && handleSendMessage(event);
+                }}
+              />
+            </Paper>
           </TabPanel>
         ))}
-    </div>
+    </Box>
   );
 }
 
-function formatDate(date) {
-  // var year = date.getFullYear(),
-  // month = date.getMonth() + 1, // months are zero indexed
-  // day = date.getDate(),
-  var hour = date.getHours(),
-    minute = date.getMinutes(),
-    // second = date.getSeconds(),
-    hourFormatted = hour % 12 || 12, // hour returned in 24 hour format
-    minuteFormatted = minute < 10 ? "0" + minute : minute,
-    morning = hour < 12 ? "am" : "pm";
-
-  return (
-    // month +
-    // '/' +
-    // day +
-    // '/' +
-    // year +
-    // ' ' +
-    hourFormatted + ":" + minuteFormatted + morning
-  );
-}
+export default React.memo(Messages)
