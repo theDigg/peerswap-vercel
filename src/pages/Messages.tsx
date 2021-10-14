@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { makeStyles, Theme, createStyles, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
@@ -103,7 +104,7 @@ function VerticalTabs({ wallet, chats, index, location }) {
   const [message, setMessage] = useState("");
   const [target, setTarget] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-  const bottomChat = useRef();
+  // const bottomChat = useRef();
 
   // useEffect(() => {
   //   // @ts-ignore
@@ -196,39 +197,29 @@ function VerticalTabs({ wallet, chats, index, location }) {
                 }}
               >
                 {chats[user].map((message, i, arr) => (
-                  <Box key={i}>
-                    <ListItem
-                      alignItems="flex-start"
-                      sx={{
-                        display: "flex",
-                        gap: 2,
-                        "&:hover, &:focus": {
-                          backgroundColor: "theme.palette.background.default",
-                        },
-                      }}
-                    >
-                      <Box
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          marginRight: 2,
-                        }}
-                      >
-                        <Avatar {...stringAvatar(message.handle)} />
-                        <Typography>
-                          {formatDate(new Date(message.timestamp))}
-                        </Typography>
-                      </Box>
-                      <ListItemText
-                        primary={message.handle}
-                        secondary={message.body}
-                      />
-                    </ListItem>
-                    {arr[i + 1] && <Divider />}
-                  </Box>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar {...stringAvatar(message.handle)} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={message.handle}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {formatDate(new Date(message.timestamp))}
+                          </Typography>
+                          {" — " + message.body}
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
                 ))}
-                <div ref={bottomChat} />
+                {/* <div ref={bottomChat} /> */}
               </List>
               <>
                 <TextField
