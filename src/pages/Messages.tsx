@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import TextField from "@mui/material/TextField";
@@ -15,7 +16,7 @@ import { setChats } from "../features/messages/messagesSlice";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-function Messages({ wallet, location }) {
+function Messages({ wallet, location, history }) {
   const dispatch = useDispatch();
   const { chats } = useSelector((state: RootState) => state.messages);
   const { account } = useSelector((state: RootState) => state.account);
@@ -37,16 +38,19 @@ function Messages({ wallet, location }) {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: `100vh`,
+        height: "100vh",
+        maxHeight: "100vh",
         width: "100%",
+        overflow: "hidden",
       }}
     >
-      <Offset />
+      <Offset sx={{ overflow: "hidden" }} />
       <VerticalTabs
         wallet={wallet}
         chats={chats}
         index={index}
         setIndex={setIndex}
+        history={history}
       />
     </Box>
   );
@@ -69,7 +73,6 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`vertical-tab-${index}`}
       sx={{
         flexGrow: 1,
-        height: '100%'
       }}
       {...other}
     >
@@ -79,6 +82,8 @@ function TabPanel(props: TabPanelProps) {
             display: "flex",
             flexDirection: "column",
             height: "100%",
+            overflow: "hidden",
+            flexGrow: 1,
           }}
         >
           {children}
@@ -95,17 +100,20 @@ function a11yProps(index: any) {
   };
 }
 
-function VerticalTabs({ wallet, chats, index, setIndex }) {
+function VerticalTabs({ wallet, chats, index, setIndex, history }) {
   const [value, setValue] = useState(index);
   const [message, setMessage] = useState("");
-  const [target, setTarget] = useState("");
+  const [target, setTarget] = useState(
+    window.location.pathname.split("/").pop()
+  );
   const { enqueueSnackbar } = useSnackbar();
-  // const bottomChat = useRef();
+  const bottomChat = useRef();
 
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   bottomChat?.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [message]);
+  useEffect(() => {
+    // @ts-ignore
+    bottomChat?.current?.scrollIntoView({ behavior: "smooth" });
+    setTarget(window.location.pathname.split("/").pop());
+  }, [value]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -129,7 +137,7 @@ function VerticalTabs({ wallet, chats, index, setIndex }) {
     <Box
       sx={{
         display: "flex",
-        height: "100%",
+        height: "90%",
       }}
     >
       <Tabs
@@ -140,18 +148,24 @@ function VerticalTabs({ wallet, chats, index, setIndex }) {
         aria-label="Vertical tabs example"
         sx={{
           // borderRight: `1px solid grey`,
-          maxWidth: "200px",
+          maxWidth: { xs: "120px", sm: "150px", md: "200px" },
           minWidth: "100px",
+          wordBreak: "break-word",
         }}
       >
-        <Tab label="New Chat" {...a11yProps(0)} key={0}></Tab>
+        <Tab
+          label="New Chat"
+          {...a11yProps(0)}
+          key={0}
+          onClick={() => history.push(`../messages`)}
+        />
         {chats &&
           Object.keys(chats).map((user, i) => (
             <Tab
               label={user}
               {...a11yProps(i + 1)}
               key={user}
-              onClick={() => setTarget(user)}
+              onClick={() => history.push(`../messages/${user}`)}
             />
           ))}
       </Tabs>
@@ -176,8 +190,6 @@ function VerticalTabs({ wallet, chats, index, setIndex }) {
             sx={{ mt: 2, mx: 2 }}
             label="Message"
             variant="outlined"
-            multiline
-            minRows={3}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={(event) => {
@@ -194,18 +206,18 @@ function VerticalTabs({ wallet, chats, index, setIndex }) {
               sx={{
                 height: "100%",
                 p: 1,
-                overflow: "auto",
                 display: "flex",
                 flexDirection: "column",
               }}
             >
-              <List>
+              <List sx={{ height: "100%", overflow: "auto", flexGrow: 1 }}>
                 {chats[user].map((message, i, arr) => (
                   <ChatMessage message={message} key={i} />
                 ))}
+                <div ref={bottomChat} />
               </List>
               <TextField
-                sx={{ mt: "auto", mx: 2, mb: 2 }}
+                sx={{ my: "auto", mx: 2, height: "10%" }}
                 label="Message"
                 variant="outlined"
                 value={message}
@@ -221,4 +233,4 @@ function VerticalTabs({ wallet, chats, index, setIndex }) {
   );
 }
 
-export default React.memo(Messages)
+export default withRouter(Messages);

@@ -74,4 +74,4 @@ That about wraps up the basics on how to use peerswap, now lets go ahead and che
 ## Q & A + Giving the link
 
 `Aamir or kyle speaking:`
-That about wraps it up for our first demo presentation of peerswap. We hope you enjoyed, and we hope that you try it out at https://peerswap.vercel.app. Lets us know if you have any questions and we'll be happy to answer them.
+That about wraps it up for our first demo presentation of peerswap. We hope you enjoyed, and we hope that you try it out at [https://peerswap.vercel.app](Peerswap). Lets us know if you have any questions and we'll be happy to answer them.
