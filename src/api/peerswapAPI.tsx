@@ -826,29 +826,38 @@ export async function submitMessageTx(
   target: string,
   user: Wallet
 ) {
-  const { account } = await getAccountFromAlias(target);
-  const targetAddress = account.id;
-  const messageData = stringify({
-    body: message,
-    handle: user.handle,
-    timestamp: Date.now(),
-  });
-  const encryptedMsg = crypto.encryptAB(
-    messageData,
-    targetAddress,
-    user.entry.keys.secretKey
-  );
-  const tx = {
-    type: "message",
-    network,
-    from: user.entry.address,
-    to: targetAddress,
-    chatId: crypto.hash([user.entry.address, targetAddress].sort().join(``)),
-    message: encryptedMsg,
-    timestamp: Date.now(),
-  };
-  crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
-  return injectTx(tx);
+  try {
+    const { account } = await getAccountFromAlias(target);
+    const targetAddress = account.id;
+    const messageData = stringify({
+      body: message,
+      handle: user.handle,
+      timestamp: Date.now(),
+    });
+    const encryptedMsg = crypto.encryptAB(
+      messageData,
+      targetAddress,
+      user.entry.keys.secretKey
+    );
+    const tx = {
+      type: "message",
+      network,
+      from: user.entry.address,
+      to: targetAddress,
+      chatId: crypto.hash([user.entry.address, targetAddress].sort().join(``)),
+      message: encryptedMsg,
+      timestamp: Date.now(),
+    };
+    crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
+    return injectTx(tx);
+  } catch (err) {
+    return {
+      result: {
+        status: "error",
+        reason: "This user doesn't exist dummy, it say's it right up there in that big red alert box.",
+      },
+    };
+  }
 }
 
 export async function submitTransferTx(

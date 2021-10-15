@@ -8,34 +8,18 @@ import {
   GridOverlay,
 } from "@mui/x-data-grid-pro";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import IconButton from "@mui/material/IconButton";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import CheckIcon from "@mui/icons-material/Check";
-import LoopIcon from "@mui/icons-material/Loop";
-import InfoIcon from "@mui/icons-material/Info";
-import WarningIcon from "@mui/icons-material/Warning";
 import { makeStyles } from "@mui/styles";
 import { createTheme, Theme, styled } from "@mui/material/styles";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { StyledEngineProvider } from "@mui/material/styles";
 import { formatDateTime } from "../utils/stringUtils";
-import { BootstrapTooltip } from "../style/components/Tooltip";
 
-const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  "&:hover": {
-    cursor: "pointer",
-    opacity: 0.9,
-  },
-}));
-
-type GridDataType = "Swaps" | "Bids";
+type GridDataType = "Transactions";
 type GridDataThemeOption = "default" | "ant";
 
 interface GridPaginationSettings {
@@ -273,180 +257,28 @@ function CustomNoRowsOverlay() {
           </g>
         </g>
       </svg>
-      <div className={classes.label}>No Swaps</div>
+      <div className={classes.label}>No Transactions</div>
     </GridOverlay>
   );
 }
 
-const getStatusChip = (value) => {
-  if (value === "open") {
-    return (
-      <Chip
-        icon={<InfoIcon />}
-        label={value}
-        variant="outlined"
-        size="small"
-        color="info"
-      />
-    );
-  }
-  if (value === "exchanging") {
-    return (
-      <Chip
-        icon={<LoopIcon />}
-        label={value}
-        variant="outlined"
-        size="small"
-        color="warning"
-      />
-    );
-  }
-  if (value === "disputing") {
-    return (
-      <Chip
-        icon={<WarningIcon />}
-        label={value}
-        variant="outlined"
-        size="small"
-        color="error"
-      />
-    );
-  }
-  if (value === "complete") {
-    return (
-      <Chip
-        icon={<CheckIcon />}
-        label={value}
-        variant="outlined"
-        size="small"
-        color="success"
-      />
-    );
-  }
-};
-
-// interface Swap {
-//   id: string;
-//   type: string;
-//   swapType: "offer" | "request" | "immediate";
-//   status: string;
-//   initiator: string;
-//   initiatorAlias: string;
-//   provider?: string;
-//   providerAlias?: string;
-//   tokenOffered?: string;
-//   amountOffered?: number;
-//   providerChainAddress?: string;
-//   providerChainMemo?: string; // Memo in case the blockchain requires it
-//   tokenRequested?: string; // Doesn't need to specify, or could specify a range of tokens
-//   amountRequested?: number; // If tokenRequested isn't specified or a range is selected, then this should also not be specified in the swap
-//   initiatorChainAddress?: string; // This could be set when the agreement is created
-//   initiatorChainMemo?: string; // Memo in case the blockchain requires it
-//   fixed: boolean;
-//   maxTimeToSend?: number; // time in seconds - 3600
-//   maxTimeToReceive?: number; // time in seconds after first confirmation of send - 3600
-//   initiatorCollateral: number; // Possibly no deposit if initiator is to go first?
-//   providerCollateral?: number;
-//   timeOfAgreement?: number;
-//   disputeId?: string;
-//   contractId?: string;
-//   acceptedBid?: string;
-//   bids: string[];
-//   createdAt: number;
-//   hash: string;
-//   timestamp: number;
-// }
-
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 90 },
+  { field: "id", headerName: "TxID", width: 150 },
   {
-    field: "id",
-    headerName: "Action",
-    width: 130,
-    renderCell: (params: GridRenderCellParams) => (
-      <BootstrapTooltip title="Bid" placement="right">
-        <StyledLink to={`swap/${params.value}`}>
-          <IconButton aria-label="bid on this swap">
-            <LocalOfferIcon />
-          </IconButton>
-        </StyledLink>
-      </BootstrapTooltip>
-    ),
-  },
-  {
-    field: "swapType",
+    field: "type",
     headerName: "Type",
-    width: 120,
-  },
-  {
-    field: "status",
-    headerName: "Status",
     width: 150,
-    renderCell: (params: GridRenderCellParams) => getStatusChip(params.value),
   },
   {
-    field: "tokenOffered",
-    headerName: "Token Offered",
-    width: 180,
-  },
-  {
-    field: "amountOffered",
-    headerName: "Amount Offered",
-    type: "number",
-    width: 190,
-  },
-  {
-    field: "tokenRequested",
-    headerName: "Token Requested",
-    width: 200,
-  },
-  {
-    field: "amountRequested",
-    headerName: "Amount Requested",
-    type: "number",
-    width: 210,
-  },
-  {
-    field: "initiatorCollateral",
-    headerName: "Collateral",
-    type: "number",
+    field: "data",
+    headerName: "Data",
     width: 150,
-    renderCell: (params: GridRenderCellParams) => (
-      <Chip label={params.value + " DAI"} size="small" />
-    ),
   },
   {
-    field: "initiator",
-    headerName: "Initiator",
-    width: 140,
-  },
-  {
-    field: "initiatorAlias",
-    headerName: "Initiator Alias",
-    width: 170,
-  },
-  {
-    field: "provider",
-    headerName: "Provider",
-    width: 140,
-  },
-  {
-    field: "providerAlias",
-    headerName: "Provider Alias",
-    width: 180,
-  },
-  {
-    field: "fixed",
-    headerName: "Fixed",
-    type: "boolean",
-    width: 120,
-  },
-  {
-    field: "createdAt",
-    headerName: "Date Created",
+    field: "timestamp",
+    headerName: "Timestamp",
     type: "date",
-    description: "The timestamp this swap was created",
-    width: 190,
+    width: 180,
     valueFormatter: ({ value }: any) => formatDateTime(value),
   },
 ];
@@ -462,6 +294,10 @@ function SettingsPanel(props: GridToolbarContainerProps) {
 
   const handleSizeChange = React.useCallback((event) => {
     setSize(Number(event.target.value));
+  }, []);
+
+  const handleDatasetChange = React.useCallback((event) => {
+    setType(event.target.value);
   }, []);
 
   const handlePaginationChange = React.useCallback((event) => {
@@ -531,11 +367,11 @@ function SettingsPanel(props: GridToolbarContainerProps) {
   );
 }
 
-export default function FullFeaturedDemo({ swaps }) {
+export default function TxDataGrid({ transactions }) {
   const classes = useStyles();
   const antDesignClasses = useStylesAntDesign();
   const [isAntDesign, setIsAntDesign] = React.useState<boolean>(false);
-  const [type, setType] = React.useState<GridDataType>("Swaps");
+  const [type, setType] = React.useState<GridDataType>("Transactions");
   const [size, setSize] = React.useState(100);
 
   const [pagination, setPagination] = React.useState<GridPaginationSettings>({
@@ -596,13 +432,13 @@ export default function FullFeaturedDemo({ swaps }) {
         />
         <DataGridPro
           className={isAntDesign ? antDesignClasses.root : undefined}
-          rows={[...swaps]}
+          rows={[...transactions]}
           columns={columns}
           components={{
             Toolbar: GridToolbar,
             NoRowsOverlay: CustomNoRowsOverlay,
           }}
-          // loading={swaps.length  === 0}
+        //   loading={!transactions}
           checkboxSelection
           disableSelectionOnClick
           {...pagination}

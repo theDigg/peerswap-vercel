@@ -81,7 +81,7 @@ const OfferForm = ({ handleChange, setNumber }) => {
         label="Token Offered"
         variant="filled"
         onChange={(e) => handleChange(e, "tokenOffered")}
-        sx={{ m: 1 }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
@@ -90,7 +90,7 @@ const OfferForm = ({ handleChange, setNumber }) => {
         type="number"
         variant="filled"
         onChange={(e) => setNumber(e, "amountOffered")}
-        sx={{ m: 1 }}
+        sx={{ my: 1 }}
         fullWidth
       />
     </>
@@ -105,7 +105,7 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
         label={`Token Requested for sending ${requestedToken}`}
         variant="filled"
         onChange={(e) => handleChange(e, "tokenRequested")}
-        sx={{ m: 1 }}
+        sx={{ my: 1 }}
         fullWidth
       />
       <TextField
@@ -114,7 +114,7 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
         type="number"
         variant="filled"
         onChange={(e) => setNumber(e, "amountRequested")}
-        sx={{ m: 1 }}
+        sx={{ my: 1 }}
         fullWidth
       />
     </>
@@ -716,11 +716,11 @@ export default function Swap({ location }) {
                 <Container maxWidth="md">
                   <CardContent>
                     {swap.status === "open" && (
-                      <form
-                        style={{
+                      <Box
+                        component="form"
+                        sx={{
                           display: "flex",
                           flexDirection: "column",
-                          width: "100%",
                         }}
                         noValidate
                         autoComplete="off"
@@ -741,7 +741,7 @@ export default function Swap({ location }) {
                               setNumber={handleNumberChange}
                             />
                             <TextField
-                              sx={{ m: 1 }}
+                              sx={{ my: 1 }}
                               id="blockchain-address"
                               label={swap.tokenOffered + " Address"}
                               variant="filled"
@@ -764,7 +764,7 @@ export default function Swap({ location }) {
                               requestedToken={swap.tokenRequested}
                             />
                             <TextField
-                              sx={{ m: 1 }}
+                              sx={{ my: 1 }}
                               id="blockchain-address"
                               label={state.tokenRequested + " Address"}
                               variant="filled"
@@ -781,7 +781,7 @@ export default function Swap({ location }) {
                         )}
                         {swap.swapType === "immediate" && (
                           <TextField
-                            sx={{ m: 1 }}
+                            sx={{ my: 1 }}
                             id="blockchain-address"
                             label={state.tokenRequested + " Address"}
                             variant="filled"
@@ -796,7 +796,7 @@ export default function Swap({ location }) {
                           />
                         )}
                         <TextField
-                          sx={{ m: 1 }}
+                          sx={{ my: 1 }}
                           id="collateral-amount"
                           label="Collateral"
                           variant="filled"
@@ -820,7 +820,7 @@ export default function Swap({ location }) {
                         >
                           Place Bid
                         </Button>
-                      </form>
+                      </Box>
                     )}
                     <Divider orientation="horizontal" sx={{ my: 2 }}>
                       <Chip

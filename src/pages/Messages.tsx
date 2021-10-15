@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
 import List from "@mui/material/List";
 import Paper from "@mui/material/Paper";
 import Tabs from "@mui/material/Tabs";
@@ -11,7 +12,11 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import ChatMessage from "components/ChatMessage";
 import { VariantType, useSnackbar } from "notistack";
-import { submitMessageTx, getChats } from "../api/peerswapAPI";
+import {
+  submitMessageTx,
+  getChats,
+  getAccountFromAlias,
+} from "../api/peerswapAPI";
 import { setChats } from "../features/messages/messagesSlice";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
@@ -104,6 +109,8 @@ function VerticalTabs({ wallet, chats, index, setIndex, history }) {
   const [target, setTarget] = useState(
     window.location.pathname.split("/").pop()
   );
+  const [status, setStatus] = useState("");
+  const [severity, setSeverity] = useState("success");
   const { enqueueSnackbar } = useSnackbar();
   const bottomChat = useRef();
 
@@ -112,6 +119,23 @@ function VerticalTabs({ wallet, chats, index, setIndex, history }) {
     bottomChat?.current?.scrollIntoView({ behavior: "smooth" });
     setTarget(window.location.pathname.split("/").pop());
   }, [value]);
+
+  useEffect(() => {
+    if (target.length > 3 && target !== "messages") {
+      getAccountFromAlias(target).then((res) => {
+        if (res.error) {
+          setStatus("This user doesn't exist.");
+          setSeverity("error");
+        } else {
+          setStatus("User found! Safe to submit");
+          setSeverity("success");
+        }
+      });
+    } else {
+      setStatus("Enter the user's alias to send them tokens");
+      setSeverity("info");
+    }
+  }, [target]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -126,7 +150,11 @@ function VerticalTabs({ wallet, chats, index, setIndex, history }) {
   const handleSendMessage = (e) => {
     e.preventDefault();
     submitMessageTx(message, target, wallet).then((data: any) => {
-      handleClickVariant("success", data.result.reason)();
+      if (data.result.status === "error") {
+        handleClickVariant("error", data.result.reason)();
+      } else {
+        handleClickVariant("success", data.result.reason)();
+      }
     });
     setMessage("");
   };
@@ -178,6 +206,13 @@ function VerticalTabs({ wallet, chats, index, setIndex, history }) {
             flexDirection: "column",
           }}
         >
+          {status && (
+            <Box m={2}>
+              <Alert variant="filled" severity={severity as any}>
+                {status}
+              </Alert>
+            </Box>
+          )}
           <TextField
             sx={{ mt: 2, mx: 2 }}
             label="Recipient"

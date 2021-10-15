@@ -202,6 +202,7 @@ function SendTab({ wallet }) {
             <Alert
               variant="filled"
               severity={severity as any}
+              sx={{ m: 5 }}
             >
               {status}
             </Alert>
