@@ -334,7 +334,7 @@ function SwapCard({ swap, opened }) {
               </Grid>
             </Grid>
           )}
-          {swap.initiatorCollateral && (
+          {swap.collateral && (
             <Grid
               container
               direction="row"
@@ -347,24 +347,7 @@ function SwapCard({ swap, opened }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <Chip label={swap.initiatorCollateral + " DAI"} size="small" />
-              </Grid>
-            </Grid>
-          )}
-          {swap.providerCollateral && (
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Grid item>
-                <Typography variant="body1" color="textPrimary" component="div">
-                  Provider Collateral:
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Chip label={swap.providerCollateral + " DAI"} size="small" />
+                <Chip label={swap.collateral + " DAI"} size="small" />
               </Grid>
             </Grid>
           )}

@@ -407,7 +407,7 @@ const columns: GridColDef[] = [
     width: 210,
   },
   {
-    field: "initiatorCollateral",
+    field: "collateral",
     headerName: "Collateral",
     type: "number",
     width: 150,

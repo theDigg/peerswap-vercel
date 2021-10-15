@@ -195,24 +195,6 @@ export default function ContractCard({ contract }) {
           >
             <Grid item>
               <Typography variant="body1" color="textPrimary" component="div">
-                Initiator Collateral:
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Chip
-                label={contract.initiatorCollateral + " DAI"}
-                size="small"
-              />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Grid item>
-              <Typography variant="body1" color="textPrimary" component="div">
                 Provider:
               </Typography>
             </Grid>
@@ -292,11 +274,11 @@ export default function ContractCard({ contract }) {
           >
             <Grid item>
               <Typography variant="body1" color="textPrimary" component="div">
-                Provider Collateral:
+                Collateral:
               </Typography>
             </Grid>
             <Grid item>
-              <Chip label={contract.providerCollateral + " DAI"} size="small" />
+              <Chip label={contract.collateral + " DAI"} size="small" />
             </Grid>
           </Grid>
           <Grid

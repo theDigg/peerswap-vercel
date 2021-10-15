@@ -318,7 +318,7 @@ function SwapTab({ wallet }) {
     maxTimeToSend: 3600,
     maxTimeToReceive: 3600,
     fixed: false,
-    initiatorCollateral: 0,
+    collateral: 0,
     initiatorChainAddress: "",
   });
   const { enqueueSnackbar } = useSnackbar();
@@ -440,7 +440,7 @@ function SwapTab({ wallet }) {
             onChange={(e) =>
               setState({
                 ...state,
-                initiatorCollateral: parseFloat(e.target.value),
+                collateral: parseFloat(e.target.value),
               })
             }
             sx={{ my: 1 }}

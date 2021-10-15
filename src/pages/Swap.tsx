@@ -509,7 +509,7 @@ export default function Swap({ location }) {
                       </Grid>
                     </Grid>
                   )}
-                  {swap.initiatorCollateral && (
+                  {swap.collateral && (
                     <Grid
                       container
                       direction="row"
@@ -527,31 +527,7 @@ export default function Swap({ location }) {
                       </Grid>
                       <Grid item>
                         <Chip
-                          label={swap.initiatorCollateral + " DAI"}
-                          size="small"
-                        />
-                      </Grid>
-                    </Grid>
-                  )}
-                  {swap.providerCollateral && (
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Grid item>
-                        <Typography
-                          variant="body1"
-                          color="textPrimary"
-                          component="div"
-                        >
-                          Provider Collateral:
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Chip
-                          label={swap.providerCollateral + " DAI"}
+                          label={swap.collateral + " DAI"}
                           size="small"
                         />
                       </Grid>
@@ -795,21 +771,6 @@ export default function Swap({ location }) {
                             }
                           />
                         )}
-                        <TextField
-                          sx={{ my: 1 }}
-                          id="collateral-amount"
-                          label="Collateral"
-                          variant="filled"
-                          color="primary"
-                          type="number"
-                          fullWidth
-                          onChange={(e) => {
-                            setState({
-                              ...state,
-                              providerCollateral: parseFloat(e.target.value),
-                            });
-                          }}
-                        />
                         <Button
                           type="submit"
                           variant="contained"

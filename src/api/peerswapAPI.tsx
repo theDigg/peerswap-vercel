@@ -7,7 +7,8 @@ let crypto: any;
 // import("./Module").then((Module) => Module.method());
 
 let archiver = JSON.parse(localStorage.getItem("archiver")) || {
-  ip: "www.peerswap.org",
+  // ip: "www.peerswap.org",
+  ip: "localhost",
   port: 4000,
 };
 
@@ -56,7 +57,8 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
+    // `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
+    `http://${archiver.ip}:${archiver.port}/nodelist`
   );
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -66,9 +68,11 @@ export async function getRandomHost() {
   }
   const { ip, port } = randomHost;
   console.log(
-    `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
+    // `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
+    `Now using: ${archiver.ip}:${port} as host for query's and transactions`
   );
-  return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
+  // return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
+  return `http://${archiver.ip}:${port}`;
 }
 
 export async function updateArchiveServer(ip: string, port: number) {
@@ -346,7 +350,7 @@ export interface Swap {
   fixed: boolean; // Whether or not the amount in the Contract will be fixed or float
   maxTimeToSend: number; // time in seconds - 3600
   maxTimeToReceive: number; // time in seconds after first confirmation of send - 3600
-  initiatorCollateral: number; // Possibly no deposit if initiator is to go first?
+  collateral: number; // Possibly no deposit if initiator is to go first?
   timestamp: number;
   sign: Signature;
 }
@@ -495,8 +499,7 @@ export declare namespace Accounts {
     fixed: boolean;
     maxTimeToSend?: number; // time in seconds - 3600
     maxTimeToReceive?: number; // time in seconds after first confirmation of send - 3600
-    initiatorCollateral: number; // Possibly no deposit if initiator is to go first?
-    providerCollateral?: number;
+    collateral: number; // Possibly no deposit if initiator is to go first?
     timeOfAgreement?: number;
     disputeId?: string;
     contractId?: string;
@@ -523,7 +526,7 @@ export declare namespace Accounts {
     providerChainMemo?: string;
     pair: [string, string];
     rate: number;
-    providerCollateral: number;
+    collateral: number;
     status: string;
     createdAt: number;
     timestamp: number;
@@ -552,8 +555,7 @@ export declare namespace Accounts {
     fixed: boolean; // Whether or not the amount in the Contract will be fixed or float
     maxTimeToSend: number; // time in seconds - 3600
     maxTimeToReceive: number; // time in seconds after first confirmation of send - 3600
-    initiatorCollateral: number; // Possibly no collateral if initiator is to go first?
-    providerCollateral: number; // Possibly no collateral if initiator is to go first?
+    collateral: number; // Possibly no collateral if initiator is to go first?
     timeOfAgreement: number; // Timestamp of when the initiator accepts the bid
     hash: string;
     timestamp: number;
@@ -854,7 +856,8 @@ export async function submitMessageTx(
     return {
       result: {
         status: "error",
-        reason: "This user doesn't exist dummy, it say's it right up there in that big red alert box.",
+        reason:
+          "This user doesn't exist dummy, it say's it right up there in that big red alert box.",
       },
     };
   }
@@ -899,7 +902,7 @@ export async function submitSwapTx(
     amountRequested: number;
     maxTimeToSend: number;
     maxTimeToReceive: number;
-    initiatorCollateral: number;
+    collateral: number;
     initiatorChainAddress: string;
     fixed: boolean;
   },
@@ -916,7 +919,7 @@ export async function submitSwapTx(
     amountRequested: answers.amountRequested,
     maxTimeToSend: answers.maxTimeToSend,
     maxTimeToReceive: answers.maxTimeToReceive,
-    initiatorCollateral: answers.initiatorCollateral,
+    collateral: answers.collateral,
     initiatorChainAddress: answers.initiatorChainAddress,
     fixed: answers.fixed,
     timestamp: Date.now(),
@@ -934,7 +937,6 @@ export async function submitBidTx(
     amountOffered: number;
     tokenRequested: string;
     amountRequested: number;
-    providerCollateral: number;
     providerChainAddress: string;
   },
   user: Wallet
@@ -948,7 +950,6 @@ export async function submitBidTx(
     amountOffered: answers.amountOffered,
     tokenRequested: answers.tokenRequested,
     amountRequested: answers.amountRequested,
-    providerCollateral: answers.providerCollateral,
     providerChainAddress: answers.providerChainAddress,
     timestamp: Date.now(),
   };

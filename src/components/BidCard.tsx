@@ -195,7 +195,7 @@ function BidCard({ swap, bid }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Chip label={bid.providerCollateral + " DAI"} size="small" />
+              <Chip label={bid.collateral + " DAI"} size="small" />
             </Grid>
           </Grid>
           <Grid
