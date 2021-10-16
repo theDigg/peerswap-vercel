@@ -122,7 +122,7 @@ You're given a lot of powerful tools you can use to narrow down the swaps you're
 
 In this action tab over on the left, I can hit this tag icon to go to that individual swap's page so that I can bid on it `*Hits Bid Icon*`.
 
-Here is all the swap's information, a form to place a bid, and the bids that have been placed by other users. There aren't any bids at the moment, but we'll change that by requesting ETH in exchange for buying the ULT that he wants to swap. `*Fills in form to request ETH*`
+Here is all the swap's information, a form to place a bid, and the bids that have been placed by other users. There aren't any bids at the moment, but we'll change that by requesting ETH in exchange for buying the ULT that he wants to swap. `*Fills in form to offer ETH* Send 0.2 ETH`
 
 I'll put in my ETH address where I want to receive the ULT `0xfcf0ddd01904247c5325538631a8943bafb63bab`.
 
@@ -132,7 +132,7 @@ There it is, so I'm done with placing my bid on Aamir's swap, now let's have him
 
 `--------------Aamir speaking--------------`
 
-Cool so I'm still on the swap page and I found kyle's swap request right here `*Clicks bid*`, Since Kyle used an immediate swap, the exact token amounts are already specified so all I have to do is enter my address.
+Cool so I'm heading over to the swaps page and I'm looking for kyle's swap request `Find Swap Request from kyle`. Found it right here, so I'm going to click on the tag and check out the page for his swap. `*Clicks bid*`, Since Kyle used an immediate swap, the exact token amounts are already specified so all I have to do is enter my address.
 
 `* paste 0x04d6e89719b2efc3b34a0436a448d1498b44f955 *`
 
