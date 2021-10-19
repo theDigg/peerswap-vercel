@@ -405,6 +405,7 @@ export declare namespace Accounts {
       swaps: string[];
       bids: string[];
       transactions: object[];
+      lastTransaction: any
     };
     liquidity: {
       [asset: string]: {

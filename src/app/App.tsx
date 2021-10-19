@@ -19,9 +19,10 @@ import {
   getChats,
   getMySwaps,
   getMyBids,
-  init
+  init,
 } from "../api/peerswapAPI";
 import useInterval from "../hooks/useInterval";
+import { useSnackbar } from "notistack";
 
 const LazyWelcome = React.lazy(() => import("../pages/Welcome"));
 const LazyRegister = React.lazy(() => import("../pages/Register"));
@@ -50,6 +51,8 @@ function App() {
   const { wallet } = useSelector((state: RootState) => state.wallet);
   const { theme } = useSelector((state: RootState) => state.theme);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
     init().then(() => {
       if (wallet) {
@@ -61,7 +64,7 @@ function App() {
         });
         getMySwaps(wallet.entry.address).then((swaps) => {
           // if (stringify(swaps) !== stringify(mySwaps)) {
-            dispatch(setMySwaps(swaps));
+          dispatch(setMySwaps(swaps));
           // }
         });
         getMyBids(wallet.entry.address).then((bids) => {
@@ -75,10 +78,15 @@ function App() {
 
   // ! Probably bad idea to do this here.
   useInterval(() => {
-    let startTime = Date.now();
     if (wallet) {
       getAccountData(wallet.entry.address).then((accountData) => {
         if (stringify(account) !== stringify(accountData.account)) {
+          if (accountData.account.data.lastTransaction.timestamp !== account.data.lastTransaction.timestamp) {
+            enqueueSnackbar(
+              `${accountData.account.data.lastTransaction.type} transaction successful`,
+              { variant: "success" }
+            );
+          }
           dispatch(setAccount(accountData.account));
         }
         getChats(accountData.account, wallet).then((chats) => {
