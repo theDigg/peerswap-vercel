@@ -526,10 +526,7 @@ export default function Swap({ location }) {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Chip
-                          label={swap.collateral + " DAI"}
-                          size="small"
-                        />
+                        <Chip label={swap.collateral + " DAI"} size="small" />
                       </Grid>
                     </Grid>
                   )}
@@ -652,9 +649,11 @@ export default function Swap({ location }) {
                         swap.status !== "exchanging"
                       }
                       onClick={() => {
-                        submitReceiptTx(swap, wallet).then((data: any) => {
-                          handleClickVariant("success", data.result.reason)();
-                        });
+                        submitReceiptTx(swap, wallet).then(
+                          ({ result }: any) => {
+                            handleClickVariant(result.status, result.reason)();
+                          }
+                        );
                       }}
                     >
                       <DoneAllIcon />
@@ -670,9 +669,11 @@ export default function Swap({ location }) {
                         swap.status !== "exchanging"
                       }
                       onClick={() => {
-                        submitDisputeTx(swap, wallet).then((data: any) => {
-                          handleClickVariant("success", data.result.reason)();
-                        });
+                        submitDisputeTx(swap, wallet).then(
+                          ({ result }: any) => {
+                            handleClickVariant(result.status, result.reason)();
+                          }
+                        );
                       }}
                     >
                       <WarningIcon />
@@ -705,8 +706,8 @@ export default function Swap({ location }) {
                           submitBidTx(
                             { ...state, swapId: swap.id },
                             wallet
-                          ).then((data: any) => {
-                            handleClickVariant("success", data.result.reason)();
+                          ).then(({result}: any) => {
+                            handleClickVariant(result.status, result.reason)();
                           });
                         }}
                       >

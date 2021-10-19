@@ -340,8 +340,8 @@ function BidCard({ swap, bid }) {
                       ? initiatorChainAddress
                       : swap.initiatorChainAddress,
                     wallet
-                  ).then((data: any) => {
-                    handleClickVariant("success", data.result.reason)();
+                  ).then(({result}: any) => {
+                    handleClickVariant(result.status, result.reason)();
                   });
                 }}
               >
@@ -357,8 +357,8 @@ function BidCard({ swap, bid }) {
                 aria-label="bid-receipt"
                 disabled={bid.status !== "accepted"}
                 onClick={() => {
-                  submitReceiptFromBidTx(swap, wallet).then((data: any) => {
-                    handleClickVariant("success", data.result.reason)();
+                  submitReceiptFromBidTx(swap, wallet).then(({result}: any) => {
+                    handleClickVariant(result.status, result.reason)();
                   });
                 }}
               >

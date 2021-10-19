@@ -3,7 +3,7 @@ import { VariantType, useSnackbar } from "notistack";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { styled } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
+// import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import Chip from "@mui/material/Chip";
@@ -240,8 +240,8 @@ export default function Proposal({ proposal }) {
             }}
             startIcon={<DoneAllIcon />}
             onClick={() => {
-              submitVoteTx(proposal, amount, wallet).then((data) => {
-                handleClickVariant("success", data.result.reason)();
+              submitVoteTx(proposal, amount, wallet).then(({result}: any) => {
+                handleClickVariant(result.status, result.reason)();
               });
             }}
           >

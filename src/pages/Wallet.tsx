@@ -193,8 +193,8 @@ function SendTab({ wallet }) {
           autoComplete="off"
           onSubmit={(e) => {
             e.preventDefault();
-            submitTransferTx(target, amount, wallet).then((data: any) => {
-              handleClickVariant("success", data.result.reason)();
+            submitTransferTx(target, amount, wallet).then(({result}: any) => {
+              handleClickVariant(result.status, result.reason)();
             });
           }}
         >
@@ -347,8 +347,8 @@ function SwapTab({ wallet }) {
       autoComplete="off"
       onSubmit={(e) => {
         e.preventDefault();
-        submitSwapTx(state, wallet).then((data: any) => {
-          handleClickVariant("success", data.result.reason)();
+        submitSwapTx(state, wallet).then(({result}: any) => {
+          handleClickVariant(result.status, result.reason)();
         });
       }}
     >

@@ -149,12 +149,8 @@ function VerticalTabs({ wallet, chats, index, setIndex, history }) {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    submitMessageTx(message, target, wallet).then((data: any) => {
-      if (data.result.status === "error") {
-        handleClickVariant("error", data.result.reason)();
-      } else {
-        handleClickVariant("success", data.result.reason)();
-      }
+    submitMessageTx(message, target, wallet).then(({result}: any) => {
+      handleClickVariant(result.status, result.reason)();
     });
     setMessage("");
   };

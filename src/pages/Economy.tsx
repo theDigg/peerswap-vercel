@@ -402,8 +402,8 @@ export default function Economy(props) {
             size="large"
             sx={styles.button}
             onClick={() => {
-              submitProposalTx(state.parameters, wallet).then((data: any) => {
-                handleClickVariant("success", data.result.reason)();
+              submitProposalTx(state.parameters, wallet).then(({result}: any) => {
+                handleClickVariant(result.status, result.reason)();
               });
             }}
           >

@@ -474,8 +474,8 @@ function SwapCard({ swap, opened }) {
                 aria-label="mark swap as successful"
                 disabled={swap.status !== "exchanging"}
                 onClick={() => {
-                  submitReceiptTx(swap, wallet).then((data: any) => {
-                    handleClickVariant("success", data.result.reason)();
+                  submitReceiptTx(swap, wallet).then(({result}: any) => {
+                    handleClickVariant(result.status, result.reason)();
                   });
                 }}
               >
@@ -490,11 +490,11 @@ function SwapCard({ swap, opened }) {
               <IconButton
                 aria-label="dispute swap"
                 disabled={
-                  wallet.handle !== swap.user || swap.status !== "exchanging"
+                  wallet.handle !== swap.initiatorAlias || swap.status !== "exchanging"
                 }
                 onClick={() => {
-                  submitDisputeTx(swap, wallet).then((data: any) => {
-                    handleClickVariant("success", data.result.reason)();
+                  submitDisputeTx(swap, wallet).then(({result}: any) => {
+                    handleClickVariant(result.status, result.reason)();
                   });
                 }}
               >

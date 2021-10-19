@@ -141,8 +141,8 @@ export default function Register() {
               disabled={loading || severity !== "success"}
               onClick={async () => {
                 let wallet = createAccount(username);
-                registerAlias(username, wallet).then((data: any) => {
-                  handleClickVariant("success", data.result.reason)();
+                registerAlias(username, wallet).then(({result}: any) => {
+                  handleClickVariant(result.status, result.reason)();
                 });
                 setLoading(true);
                 while ((await getAccountFromAlias(username)).error) {

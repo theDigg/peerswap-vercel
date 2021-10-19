@@ -15,35 +15,6 @@ let archiver = JSON.parse(localStorage.getItem("archiver")) || {
 let host = localStorage.getItem("host");
 let network: any;
 
-// const getProxyUrl = function (url, option) {
-//   try {
-//     let ip, port;
-//     if (!option) {
-//       ip = host.split(":")[0];
-//       port = host.split(":")[1];
-//     } else if (option) {
-//       ip = option.ip;
-//       port = option.port;
-//     }
-//     if (ip === "localhost" || ip === "127.0.0.1") {
-//       return `http://localhost:${port}${url}`;
-//     }
-//     return `https://${config.proxy.ip}:${config.proxy.port}/rproxy/${ip}:${port}${url}`;
-//   } catch (e) {
-//     return "";
-//   }
-// };
-
-// const getProxyUrlWithRandomHost = async function (url, option) {
-//   const randomHost = await getRandomHost();
-//   const { ip, port } = randomHost;
-
-//   if (ip === "localhost" || ip === "127.0.0.1") {
-//     return `http://localhost:${port}${url}`;
-//   }
-//   return `https://${config.proxy.ip}:${config.proxy.port}/rproxy/${ip}:${port}${url}`;
-// };
-
 export async function init() {
   crypto = await import("shardus-crypto-web");
 
@@ -666,9 +637,21 @@ export interface Windows {
 export async function injectTx(tx: any) {
   try {
     const { data } = await axios.post(`${host}/inject`, tx);
-    return data;
+    // console.log(data)
+    return {
+      result: {
+        status: data.result.success ? 'success' : 'warning',
+        reason: data.result.reason
+      }
+    }
   } catch (err: any) {
-    return err.message;
+    // console.log(err.message)
+    return {
+      result: {
+        status: "error",
+        reason: err.message,
+      },
+    };
   }
 }
 
@@ -1032,15 +1015,17 @@ export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
 export async function submitDisputeTx(swap: Accounts.Swap, user: Wallet) {
   const tx = {
     type: "dispute",
-    dispute: crypto.hash(swap.id + swap.acceptedBid + swap.contractId),
+    disputeId: crypto.hash(swap.id + swap.acceptedBid + swap.contractId),
     initiator: user.entry.address,
     swapId: swap.id,
     bidId: swap.acceptedBid,
     provider: swap.provider,
     contractId: swap.contractId,
+    reasonForDispute: 'Testing random reason',
     timestamp: Date.now(),
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
+  // console.log(tx)
   return injectTx(tx);
 }
 
