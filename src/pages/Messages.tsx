@@ -21,6 +21,9 @@ import { setChats } from "../features/messages/messagesSlice";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
+
+// TODO: Refactor this into smaller components
+
 function Messages({ wallet, location, history }) {
   const dispatch = useDispatch();
   const { chats } = useSelector((state: RootState) => state.messages);

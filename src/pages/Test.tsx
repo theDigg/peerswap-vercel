@@ -10,11 +10,7 @@ export default function Test() {
   return (
     <Box
       component="main"
-      sx={{
-        flexGrow: 1,
-        p: (theme) => theme.spacing(3),
-        height: "90vh",
-      }}
+      sx={{ flexGrow: 1, p: (theme) => theme.spacing(3), height: "90vh" }}
     >
       <Offset />
       <MuiDataGridDemo swaps={mockSwaps} />

@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
 import { VariantType, useSnackbar } from "notistack";
 import LinearProgress from "@mui/material/LinearProgress";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Alert, { AlertColor } from "@mui/material/Alert";
-import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
+import { RedditTextField } from "style/components/TextFields";
 import {
   getAccountFromAlias,
   createAccount,
@@ -18,27 +17,7 @@ import {
 } from "../api/peerswapAPI";
 import { setWallets, setWallet } from "../features/wallet/walletSlice";
 import { setAccount } from "../features/account/accountSlice";
-
-const StyledTextField = styled(TextField)`
-  label.Mui-focused {
-    color: green;
-  }
-  .MuiOutlinedInput-root {
-    fieldset {
-      border-color: red;
-    }
-    &:hover fieldset {
-      border-color: blue;
-    }
-    &.Mui-focused fieldset {
-      border-color: green;
-    }
-  }
-` as typeof TextField;
-
-async function _sleep(ms = 0) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import { _sleep } from "../utils/sleep";
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -108,11 +87,11 @@ export default function Register() {
           <Alert variant="filled" severity={severity} sx={{ mb: 2 }}>
             {status}
           </Alert>
-          <StyledTextField
+          <RedditTextField
             sx={{ mb: 2 }}
             label="Username"
-            variant="outlined"
-            id="custom-css-outlined-input"
+            variant="filled"
+            id="username-input"
             onChange={(e) => setUsername(e.target.value.toLowerCase())}
           />
           {found ? (
@@ -141,7 +120,7 @@ export default function Register() {
               disabled={loading || severity !== "success"}
               onClick={async () => {
                 let wallet = createAccount(username);
-                registerAlias(username, wallet).then(({result}: any) => {
+                registerAlias(username, wallet).then(({ result }: any) => {
                   handleClickVariant(result.status, result.reason)();
                 });
                 setLoading(true);

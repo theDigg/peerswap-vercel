@@ -20,20 +20,8 @@ export default function Swaps() {
   }, [dispatch]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100%",
-        height: "90vh"
-      }}
-    >
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 2,
-        }}
-      >
+    <Box sx={{ display: "flex", width: "100%", height: "90vh" }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <Offset />
         <MuiDataGridDemo swaps={swaps} />
       </Box>

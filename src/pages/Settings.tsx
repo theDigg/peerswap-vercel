@@ -9,49 +9,14 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import { RedditTextField } from "../style/components/TextFields";
 import { styled } from "@mui/material/styles";
 import { setArchiver } from "../features/archiver/archiverSlice";
 import { updateArchiveServer } from "../api/peerswapAPI";
+import { LightPaper, DimPaper } from "../style/components/Papers"
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
-
-const LightPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  border: "1px solid #ddd",
-  borderRadius: 0,
-}));
-
-const DimPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  textAlign: "center",
-  color: "black",
-  border: "1px solid #ddd",
-  background: "#eee",
-  borderRadius: 0,
-}));
-
-const StyledTextField = styled(TextField)`
-  label.Mui-focused {
-    color: red;
-  }
-  .MuiOutlinedInput-root {
-    fieldset {
-      border-color: grey;
-    }
-    &:hover fieldset {
-      border-color: black;
-    }
-    &.Mui-focused fieldset {
-      border-color: red;
-    }
-  }
-` as typeof TextField;
 
 export default function Settings() {
   const dispatch = useDispatch();

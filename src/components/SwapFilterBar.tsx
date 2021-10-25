@@ -1,25 +1,25 @@
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
+// import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import Input from "@mui/material/Input";
 import MenuItem from "@mui/material/MenuItem";
 import InputBase from "@mui/material/InputBase";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
+// import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 import { alpha, Theme, styled } from "@mui/material/styles";
-import MenuIcon from "@mui/icons-material/Menu";
+// import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/rootReducer";
+// import { RootState } from "../app/rootReducer";
 import { setFilters } from "../features/swaps/swapsSlice";
 
 const Search = styled("div")(({ theme }) => ({

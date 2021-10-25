@@ -7,8 +7,8 @@ let crypto: any;
 // import("./Module").then((Module) => Module.method());
 
 let archiver = JSON.parse(localStorage.getItem("archiver")) || {
-  ip: "www.peerswap.org",
-  // ip: "localhost",
+  // ip: "www.peerswap.org",
+  ip: "localhost",
   port: 4000,
 };
 
@@ -28,8 +28,8 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
-    // `http://${archiver.ip}:${archiver.port}/nodelist`
+    // `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
+    `http://${archiver.ip}:${archiver.port}/nodelist`
   );
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -39,11 +39,11 @@ export async function getRandomHost() {
   }
   const { ip, port } = randomHost;
   console.log(
-    `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
-    // `Now using: ${archiver.ip}:${port} as host for query's and transactions`
+    // `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
+    `Now using: ${archiver.ip}:${port} as host for query's and transactions`
   );
-  return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
-  // return `http://${archiver.ip}:${port}`;
+  // return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
+  return `http://${archiver.ip}:${port}`;
 }
 
 export async function updateArchiveServer(ip: string, port: number) {
@@ -405,7 +405,7 @@ export declare namespace Accounts {
       swaps: string[];
       bids: string[];
       transactions: object[];
-      lastTransaction: any
+      lastTransaction: any;
     };
     liquidity: {
       [asset: string]: {
@@ -641,10 +641,10 @@ export async function injectTx(tx: any) {
     // console.log(data)
     return {
       result: {
-        status: data.result.success ? 'success' : 'warning',
-        reason: data.result.reason
-      }
-    }
+        status: data.result.success ? "success" : "warning",
+        reason: data.result.reason,
+      },
+    };
   } catch (err: any) {
     // console.log(err.message)
     return {
@@ -1022,7 +1022,7 @@ export async function submitDisputeTx(swap: Accounts.Swap, user: Wallet) {
     bidId: swap.acceptedBid,
     provider: swap.provider,
     contractId: swap.contractId,
-    reasonForDispute: 'Testing random reason',
+    reasonForDispute: "Testing random reason",
     timestamp: Date.now(),
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);

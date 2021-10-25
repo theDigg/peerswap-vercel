@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import Typography from '@mui/material/Typography'
 import Box from "@mui/material/Box";
-import { makeStyles, Theme, createStyles, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { getAccountData } from "../api/peerswapAPI";
 import ContractCard from "../components/ContractCard";
 

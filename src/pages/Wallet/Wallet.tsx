@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/rootReducer";
+import { RootState } from "app/rootReducer";
 import { VariantType, useSnackbar } from "notistack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
@@ -24,11 +24,14 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import SwapCallsIcon from "@mui/icons-material/SwapCalls";
 import SendIcon from "@mui/icons-material/Send";
 import QRCode from "react-qr-code";
+import OfferForm from "./OfferForm";
+import RequestForm from "./RequestForm";
+import ImmediateForm from "./ImmediateForm";
 import {
   getAccountFromAlias,
   submitTransferTx,
   submitSwapTx,
-} from "../api/peerswapAPI";
+} from "api/peerswapAPI";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -481,141 +484,3 @@ function SwapTab({ wallet }) {
     </Form>
   );
 }
-
-const OfferForm = ({ handleChange, setNumber }) => {
-  return (
-    <>
-      <Alert
-        variant="filled"
-        severity="info"
-        sx={{ mb: (theme) => theme.spacing(1) }}
-      >
-        Offer swaps are for used when you want to offer a token that you have
-        while being open to receiving any token offered in bids
-      </Alert>
-      <TextField
-        id="filled-basic"
-        label="Token Offered"
-        variant="filled"
-        onChange={(e) => handleChange(e, "tokenOffered")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-      <TextField
-        id="filled-basic"
-        label="Amount Offered"
-        type="number"
-        variant="filled"
-        onChange={(e) => setNumber(e, "amountOffered")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-    </>
-  );
-};
-
-const RequestForm = ({ handleChange, setNumber }) => {
-  return (
-    <>
-      <Alert
-        variant="filled"
-        severity="info"
-        sx={{ mb: (theme) => theme.spacing(1) }}
-      >
-        Request swaps are for used when you want to request a token that you
-        want while being open to offering tokens requested in bids
-      </Alert>
-      <TextField
-        id="filled-basic"
-        label="Token Requested"
-        variant="filled"
-        onChange={(e) => handleChange(e, "tokenRequested")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-      <TextField
-        id="filled-basic"
-        label="Amount Requested"
-        type="number"
-        variant="filled"
-        onChange={(e) => setNumber(e, "amountRequested")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-      <TextField
-        id="filled-basic"
-        label="Blockchain Address"
-        variant="filled"
-        onChange={(e) => handleChange(e, "initiatorChainAddress")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-    </>
-  );
-};
-
-const ImmediateForm = ({ handleChange, setNumber }) => {
-  return (
-    <>
-      <Alert
-        variant="filled"
-        severity="info"
-        sx={{ mb: (theme) => theme.spacing(1) }}
-      >
-        Immediate swaps are for used when you want to specify the token that you
-        want, the token that you have, and the exact amounts for each in the
-        terms.
-      </Alert>
-      <Alert
-        variant="filled"
-        severity="warning"
-        sx={{ mb: (theme) => theme.spacing(1) }}
-      >
-        Any bid on an immediate swap will automatically put you and the provider
-        into a swap agreement (You don't have to accept the bid)
-      </Alert>
-      <TextField
-        id="filled-basic"
-        label="Token Offered"
-        variant="filled"
-        onChange={(e) => handleChange(e, "tokenOffered")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-      <TextField
-        id="filled-basic"
-        label="Amount Offered"
-        type="number"
-        variant="filled"
-        onChange={(e) => setNumber(e, "amountOffered")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-      <TextField
-        id="filled-basic"
-        label="Token Requested"
-        variant="filled"
-        onChange={(e) => handleChange(e, "tokenRequested")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-      <TextField
-        id="filled-basic"
-        label="Amount Requested"
-        type="number"
-        variant="filled"
-        onChange={(e) => setNumber(e, "amountRequested")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-      <TextField
-        id="filled-basic"
-        label="Blockchain Address"
-        variant="filled"
-        onChange={(e) => handleChange(e, "initiatorChainAddress")}
-        sx={{ my: 1 }}
-        fullWidth
-      />
-    </>
-  );
-};

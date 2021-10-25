@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Typography from "@mui/material/Typography";
-import {
-  createStyles,
-  Theme,
-  withStyles,
-  makeStyles,
-} from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
@@ -15,25 +9,6 @@ import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import { importWallet } from "../api/peerswapAPI";
 import { setWallets } from "../features/wallet/walletSlice";
-
-const styles = {
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    marginTop: 10,
-  },
-  formGroup: {
-    padding: 5,
-  },
-  margin: {
-    marginBottom: 2,
-  },
-  content: {
-    flexGrow: 1,
-    padding: 3,
-    justifyContent: "center",
-  },
-};
 
 export default function Import() {
   const dispatch = useDispatch();
@@ -60,16 +35,23 @@ export default function Import() {
         mt: 10,
       }}
     >
-      <Paper elevation={3} sx={styles.content}>
+      <Paper
+        elevation={3}
+        sx={{
+          flexGrow: 1,
+          padding: 3,
+          justifyContent: "center",
+        }}
+      >
         <Typography variant="h2" align="center">
           Import
         </Typography>
-        <FormGroup sx={styles.formGroup}>
-          <Alert variant="filled" severity={severity} sx={styles.margin}>
+        <FormGroup sx={{ p: 5}}>
+          <Alert variant="filled" severity={severity} sx={{ mb: 1 }}>
             {status}
           </Alert>
           <TextField
-            sx={styles.margin}
+            sx={{ mb: 1 }}
             label="Secret Key"
             variant="outlined"
             id="custom-css-outlined-input"

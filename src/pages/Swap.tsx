@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { VariantType, useSnackbar } from "notistack";
@@ -16,7 +15,7 @@ import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red, green, yellow, blue } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -27,7 +26,7 @@ import WarningIcon from "@mui/icons-material/Warning";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import { Theme, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { formatDateTime, shortenHex } from "../utils/stringUtils";
 import BidCard from "../components/BidCard";
 import useInterval from "../hooks/useInterval";
@@ -40,31 +39,12 @@ import {
   queryBids,
 } from "../api/peerswapAPI";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import { StyledLink } from "style/components/Link";
+import { ExpandMore } from 'style/components/Buttons'
+
+// TODO: Refactor THIS
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
-
-const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  "&:hover": {
-    cursor: "pointer",
-    opacity: 0.9,
-  },
-}));
-
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
 
 const statusColor = {
   open: blue[700],

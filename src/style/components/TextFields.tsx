@@ -1,10 +1,4 @@
-import {
-  styled,
-  Theme,
-  createStyles,
-  withStyles,
-  alpha,
-} from "@mui/material/styles";
+import { styled, alpha } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { OutlinedInputProps } from "@mui/material/OutlinedInput";
 
@@ -34,3 +28,20 @@ export const RedditTextField = styled((props: TextFieldProps) => (
     },
   },
 }));
+
+export const CustomTextField = styled(TextField)`
+  label.Mui-focused {
+    color: green;
+  }
+  .MuiOutlinedInput-root {
+    fieldset {
+      border-color: red;
+    }
+    &:hover fieldset {
+      border-color: blue;
+    }
+    &.Mui-focused fieldset {
+      border-color: green;
+    }
+  }
+` as typeof TextField;
