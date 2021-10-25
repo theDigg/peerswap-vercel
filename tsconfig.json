@@ -2,10 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext",
-      "WebWorker"
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -22,12 +21,11 @@
     "jsx": "preserve",
     "baseUrl": "src",
     "noFallthroughCasesInSwitch": true,
-    "types": [
-      "vite-plugin-pwa/client"
-    ]
   },
   "include": [
-    "src"
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"

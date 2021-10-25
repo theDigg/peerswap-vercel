@@ -1,17 +1,44 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
+const APP_NAME = "Peerswap";
+const APP_DESCRIPTION =
+  "The best way to swap assets without a middleman.";
+
 class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
         <Head>
           <meta charSet="UTF-8" />
-          <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-          <link rel="apple-touch-icon" href="/pwa-192x192.png" />
-          <link rel="mask-icon" href="/favicon.svg" color="#FFFFFF" />
-          <meta name="msapplication-TileColor" content="#FFFFFF" />
-          <meta name="theme-color" content="#ffffff" />
-          <script type="module" src="/src/main.tsx" dangerouslySetInnerHTML={{ __html: `` }} />
+          <meta name="application-name" content={APP_NAME} />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="default"
+          />
+          <meta name="apple-mobile-web-app-title" content={APP_NAME} />
+          <meta name="description" content={APP_DESCRIPTION} />
+          <meta name="format-detection" content="telephone=no" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="theme-color" content="#FFFFFF" />
+          <link
+            rel="apple-touch-icon"
+            sizes="192x192"
+            href="/pwa-192x192.png"
+          />
+          {/* add your own app-icon */}
+          {/* <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/icons/apple-touch-icon.png"
+          />
+          <link rel="shortcut icon" href="/app-icon.png" /> */}
+          <link rel="manifest" href="/manifest.json" />
+          <script
+            type="module"
+            src="/src/main.tsx"
+            dangerouslySetInnerHTML={{ __html: `` }}
+          />
         </Head>
 
         <body>
@@ -19,7 +46,7 @@ class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
