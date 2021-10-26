@@ -1,37 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const withPWA = require("next-pwa");
+const runtimeCaching = require("next-pwa/cache");
 
-/** @type {import('next').NextConfig} */
 module.exports = withPWA({
   pwa: {
-    // disable: process.env.NODE_ENV === "development",
-    // process.env.NODE_ENV === 'preview' ||
-    // process.env.NODE_ENV === 'production',
-    // delete two lines above to enable PWA in production deployment
-    // add your own icons to public/manifest.json
-    // to re-generate manifest.json, you can visit https://tomitm.github.io/appmanifest/
     dest: "public",
-    register: true,
-  },
-  experimental: {
-    craCompat: true,
-  },
-  reactStrictMode: false,
-  images: {
-    disableStaticImages: true,
+    runtimeCaching,
   },
 });
-
-// module.exports = {
-//   env: {
-//     PUBLIC_URL: "",
-//   },
-//   experimental: {
-//     craCompat: true,
-//   },
-//   // Remove this to leverage Next.js' static image handling
-//   // read more here: https://nextjs.org/docs/api-reference/next/image
-//   images: {
-//     disableStaticImages: true,
-//   },
-// };

@@ -1,5 +1,7 @@
 body {
   margin: 0;
+  width: 100vw;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "fontsource-roboto",
     "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
     "Droid Sans", "Helvetica Neue", sans-serif;
@@ -15,6 +17,7 @@ code {
 
 * {
   -ms-overflow-style: none;
+  box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {

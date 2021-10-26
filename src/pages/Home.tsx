@@ -16,28 +16,6 @@ import AccountInfo from "../components/AccountInfo";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-const styles = {
-  root: {
-    display: "flex",
-    width: "100%",
-  },
-  card: {
-    minWidth: 300,
-    marginBottom: 3,
-  },
-  content: {
-    flexGrow: 1,
-    padding: 2,
-  },
-  title: {
-    fontSize: 20,
-  },
-  divider: {
-    marginTop: 2,
-    marginBottom: 2,
-  },
-};
-
 function Home({ wallet, history }) {
   const dispatch = useDispatch();
   const { account } = useSelector((state: RootState) => state.account);
@@ -67,8 +45,8 @@ function Home({ wallet, history }) {
   const bids = useMemo(() => <Masonry items={myBids} />, [myBids]);
 
   return (
-    <Box sx={styles.root}>
-      <Box component="main" sx={styles.content}>
+    <Box sx={{ display: "flex", width: "100%" }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <Offset />
         <AccountInfo history={history} account={account} />
         <SwapFilterBar />
