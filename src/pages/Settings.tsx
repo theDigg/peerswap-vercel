@@ -113,8 +113,10 @@ export default function Settings() {
                   color="secondary"
                   variant="contained"
                   onClick={() => {
-                    dispatch(setArchiver({ ip: "localhost", port: 4000 }));
-                    updateArchiveServer("localhost", 4000);
+                    dispatch(
+                      setArchiver({ ip: "www.peerswap.org", port: 4000 })
+                    );
+                    updateArchiveServer("www.peerswap.org", 4000);
                   }}
                 >
                   Reset to default

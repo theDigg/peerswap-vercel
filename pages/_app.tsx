@@ -4,6 +4,11 @@ import { DefaultSeo } from "next-seo";
 import defaultSEOConfig from "../next-seo.config";
 import DateFnsAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { SnackbarProvider } from "notistack";
+import CssBaseline from "@mui/material/CssBaseline";
+import store, { persistor } from "app/store";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 export default function MyApp({ Component, pageProps }) {
   return (
@@ -20,9 +25,27 @@ export default function MyApp({ Component, pageProps }) {
         />
       </Head>
       <DefaultSeo {...defaultSEOConfig} />
-      <LocalizationProvider dateAdapter={DateFnsAdapter}>
-        <Component {...pageProps} />
-      </LocalizationProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SnackbarProvider maxSnack={3}>
+            <LocalizationProvider dateAdapter={DateFnsAdapter}>
+              <CssBaseline />
+              <Component {...pageProps} />
+            </LocalizationProvider>
+          </SnackbarProvider>
+        </PersistGate>
+      </Provider>
     </>
   );
 }
+
+// <>
+//   <Provider store={store}>
+//     <PersistGate loading={null} persistor={persistor}>
+//       <SnackbarProvider maxSnack={3}>
+//         <CssBaseline />
+//         <App />
+//       </SnackbarProvider>
+//     </PersistGate>
+//   </Provider>
+// </>;

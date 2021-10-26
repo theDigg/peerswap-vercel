@@ -111,14 +111,14 @@ function App() {
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <Box sx={{ display: "flex" }}>
         <Drawer wallet={wallet} />
-        <Switch>
+        {/* <Switch>
           <React.Suspense fallback="Loading...">
             <Route path="/welcome">
               <LazyWelcome />
             </Route>
             {/* <Route path="/test">
               <LazyTest />
-            </Route> */}
+            </Route> 
             <Route path="/settings">
               <LazySettings />
             </Route>
@@ -174,7 +174,7 @@ function App() {
             <PrivateRoute path="/vote" component={LazyVote} wallet={wallet} />
             <PrivateRoute path="/info" component={LazyInfo} wallet={wallet} />
           </React.Suspense>
-        </Switch>
+        </Switch> */}
       </Box>
     </ThemeProvider>
   );

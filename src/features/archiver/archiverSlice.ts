@@ -8,8 +8,8 @@ interface ArchiverState {
 }
 
 const initialState: ArchiverState = {
-  archiver: JSON.parse(localStorage.getItem("archiver")) || {
-    ip: "localhost",
+  archiver: {
+    ip: "www.peerswap.org",
     port: 4000,
   },
 };
@@ -20,7 +20,6 @@ const archiverDetails = createSlice({
   reducers: {
     setArchiver(state, action: PayloadAction<any>) {
       state.archiver = { ip: action.payload.ip, port: action.payload.port };
-      localStorage.setItem("archiver", JSON.stringify(state.archiver));
     },
   },
 });

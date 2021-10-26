@@ -1,29 +1,28 @@
 import axios from "axios";
-// import crypto from "shardus-crypto-web";
+import crypto from "shardus-crypto-web";
 import stringify from "fast-stable-stringify";
-
-let crypto: any;
+crypto.initialize(
+  "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
+);
 
 // import("./Module").then((Module) => Module.method());
 
-let archiver = JSON.parse(localStorage.getItem("archiver")) || {
+let archiver = {
   ip: "www.peerswap.org",
   // ip: "localhost",
   port: 4000,
 };
 
-let host = localStorage.getItem("host");
+let host = `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
 let network: any;
 
 export async function init() {
-  crypto = await import("shardus-crypto-web");
-
   await crypto.initialize(
     "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
   );
   network = crypto.hash("network");
   host = await getRandomHost();
-  localStorage.setItem("host", host);
+  // localStorage.setItem("host", host);
 }
 
 export async function getRandomHost() {

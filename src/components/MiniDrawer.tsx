@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withRouter } from "react-router-dom";
+// import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -303,4 +303,5 @@ const MiniDrawer = (props) => {
   );
 };
 
-export default withRouter(MiniDrawer);
+// export default withRouter(MiniDrawer);
+export default MiniDrawer

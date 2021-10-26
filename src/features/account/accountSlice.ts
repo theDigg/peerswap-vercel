@@ -6,7 +6,7 @@ interface AccountState {
 }
 
 const initialState: AccountState = {
-  account: JSON.parse(localStorage.getItem("account")),
+  account: null
 };
 
 const accountDetails = createSlice({
@@ -15,7 +15,6 @@ const accountDetails = createSlice({
   reducers: {
     setAccount(state, action: PayloadAction<any>) {
       state.account = action.payload;
-      localStorage.setItem("account", JSON.stringify(action.payload));
     },
   },
 });
