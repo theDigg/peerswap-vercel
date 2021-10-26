@@ -1,4 +1,4 @@
-import "../src/index.css";
+// import "../src/index.css";
 import Head from "next/head";
 import { DefaultSeo } from "next-seo";
 import defaultSEOConfig from "../next-seo.config";

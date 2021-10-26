@@ -35,7 +35,8 @@ class MyDocument extends Document {
           <link rel="shortcut icon" href="/app-icon.png" /> */}
           <link rel="manifest" href="/manifest.json" />
           <script
-            type="module"
+            type="text/html"
+            // type="module" OLD VERSION --> no idea what this one ^ will cause but it gets rid of MIME type error
             src="/src/main.tsx"
             dangerouslySetInnerHTML={{ __html: `` }}
           />
