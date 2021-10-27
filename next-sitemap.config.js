@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 const NextSitemapConfig = {
-  siteUrl: "https://peerswap-testnet.vercel.app",
+  siteUrl: "https://peerswap.vercel.app/",
   generateRobotsTxt: true,
 };
 

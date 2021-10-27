@@ -1,12 +1,12 @@
 /** @type {import('next-seo').DefaultSeoProps} */
 const defaultSEOConfig = {
   title: "Peerswap",
-  titleTemplate: "%s | Peerswap",
+  titleTemplate: "%s",
   defaultTitle: "Peerswap",
   description: "The place to swap any asset class without a middleman.",
-  canonical: "https://peerswap-testnet.vercel.app",
+  canonical: "https://peerswap.vercel.app/",
   openGraph: {
-    url: "https://peerswap-testnet.vercel.app",
+    url: "https://peerswap.vercel.app/",
     title: "Peerswap",
     description: "The place to swap any asset class without a middleman.",
     images: [

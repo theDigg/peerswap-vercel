@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://peerswap-testnet.vercel.app
+Host: https://peerswap.vercel.app/
 
 # Sitemaps
-Sitemap: https://peerswap-testnet.vercel.app/sitemap.xml
+Sitemap: https://peerswap.vercel.app/sitemap.xml
