@@ -3,12 +3,12 @@
   "short_name": "Peerswap",
   "description": "The place to swap any asset class without a middleman.",
   "lang": "en-US",
-  "start_url": "/",
-  "background_color": "#FFFFFF",
-  "theme_color": "#FFFFFF",
+  "start_url": "https://peerswap.vercel.app/welcome",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "dir": "ltr",
-  "display": "standalone",
-  "orientation": "portrait",
+  "display": "fullscreen",
+  "orientation": "any",
   "prefer_related_applications": false,
   "icons": [
     {
