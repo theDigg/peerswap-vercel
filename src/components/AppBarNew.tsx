@@ -425,7 +425,7 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
                 backgroundColor: (theme) => theme.palette.background.default,
               },
             }}
-            onClick={() => handleMailMenuClose(`/messages/${handle}`)}
+            onClick={() => handleMailMenuClose(`/messages`)}
           >
             <Box
               sx={{

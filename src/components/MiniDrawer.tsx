@@ -173,7 +173,7 @@ const MiniDrawer = () => {
       show: wallet === null,
       onClick: () => {
         setActive("welcome");
-        router.push("/welcome");
+        router.push("/");
       },
     },
     {
@@ -203,12 +203,12 @@ const MiniDrawer = () => {
       },
     },
     {
-      text: "Home",
-      icon: <DashboardIcon color={active === "" ? "primary" : "inherit"} />,
+      text: "Dashboard",
+      icon: <DashboardIcon color={active === "Dashboard" ? "primary" : "inherit"} />,
       show: wallet !== null,
       onClick: () => {
-        setActive("");
-        router.push("/");
+        setActive("Dashboard");
+        router.push("/dashboard");
       },
     },
     {
