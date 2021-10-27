@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { styled } from "@mui/material/styles";
 
 export const StyledLink = styled(Link)(({ theme }) => ({

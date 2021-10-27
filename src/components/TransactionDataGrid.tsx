@@ -1,10 +1,8 @@
 import * as React from "react";
-// import { Link } from "react-router-dom";
 import {
   DataGridPro,
   GridToolbar,
   GridColDef,
-  GridRenderCellParams,
   GridOverlay,
 } from "@mui/x-data-grid-pro";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";

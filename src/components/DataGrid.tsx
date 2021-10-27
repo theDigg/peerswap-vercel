@@ -1,5 +1,4 @@
 import * as React from "react";
-import Link from "next/link";
 import {
   DataGridPro,
   GridToolbar,
@@ -26,14 +25,8 @@ import Select from "@mui/material/Select";
 import { StyledEngineProvider } from "@mui/material/styles";
 import { formatDateTime } from "utils/stringUtils";
 import { BootstrapTooltip } from "style/components/Tooltip";
+import { StyledLink } from "style/components/Link";
 
-const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  "&:hover": {
-    cursor: "pointer",
-    opacity: 0.9,
-  },
-}));
 
 type GridDataType = "Swaps" | "Bids";
 type GridDataThemeOption = "default" | "ant";

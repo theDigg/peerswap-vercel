@@ -22,7 +22,6 @@ import Notification from "./Notification/Notification";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
 import { Send as SendIcon } from "@mui/icons-material";
-import { withRouter } from "react-router-dom";
 import { setWallet } from "../features/wallet/walletSlice";
 import { setTheme } from "../features/theme/themeSlice";
 

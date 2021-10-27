@@ -103,22 +103,19 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
 
 export async function getServerSideProps({ params }) {
   const { slug } = params;
-  console.log(slug);
   const { swap } = await getSwap(slug);
-  console.log(swap);
+  const { bids } = await queryBids(swap.accountId);
 
   return {
-    props: { swap: swap.data },
+    props: { swap: swap.data, initialBids: bids },
   };
 }
 
-export default function Swap({ swap }) {
-  console.log(swap);
+export default function Swap({ swap, initialBids }) {
   const router = useRouter();
-  const [bids, setBids] = React.useState([]);
   const isCurrent = React.useRef(true);
   const [, copy] = useCopyToClipboard();
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     swapId: "",
     tokenOffered: "",
     amountOffered: 0,
@@ -127,7 +124,8 @@ export default function Swap({ swap }) {
     providerCollateral: 0,
     providerChainAddress: "",
   });
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = useState(true);
+  const [bids, setBids] = useState(initialBids);
   const { wallet } = useSelector((state: RootState) => state.wallet);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -135,12 +133,6 @@ export default function Swap({ swap }) {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(response, { variant });
   };
-
-  useEffect(() => {
-    return () => {
-      isCurrent.current = false;
-    };
-  }, []);
 
   useEffect(() => {
     if (swap.swapType === "offer") {
@@ -153,8 +145,8 @@ export default function Swap({ swap }) {
     if (swap.swapType === "request") {
       setState({
         ...state,
-        tokenOffered: swap.data.tokenRequested,
-        amountOffered: swap.data.amountRequested,
+        tokenOffered: swap.tokenRequested,
+        amountOffered: swap.amountRequested,
       });
     }
     if (swap.swapType === "immediate") {
@@ -166,13 +158,14 @@ export default function Swap({ swap }) {
         amountRequested: swap.amountOffered,
       });
     }
-  }, [router.pathname]);
+    return () => {
+      isCurrent.current = false;
+    };
+  }, []);
 
   useInterval(() => {
     queryBids(swap.id).then((data) => {
-      // if (isCurrent.current) {
       setBids(data.bids);
-      // }
     });
   }, 10000);
 
@@ -195,28 +188,12 @@ export default function Swap({ swap }) {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100%",
-      }}
-    >
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-        }}
-      >
+    <Box sx={{ display: "flex", width: "100%" }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Offset />
         {swap && (
           <>
-            <Card
-              sx={{
-                width: "100%",
-              }}
-              elevation={9}
-            >
+            <Card sx={{ width: "100%" }} elevation={9}>
               <CardHeader
                 avatar={
                   <Avatar
@@ -555,7 +532,7 @@ export default function Swap({ swap }) {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <StyledLink to={`../bid/${swap.acceptedBid}`}>
+                        <StyledLink href={`../bid/${swap.acceptedBid}`}>
                           <Chip
                             label={shortenHex(swap.acceptedBid)}
                             size="small"
@@ -583,7 +560,7 @@ export default function Swap({ swap }) {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <StyledLink to={`../contract/${swap.contractId}`}>
+                        <StyledLink href={`../contract/${swap.contractId}`}>
                           <Chip
                             label={shortenHex(swap.contractId)}
                             size="small"
@@ -611,7 +588,7 @@ export default function Swap({ swap }) {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <StyledLink to={`../dispute/${swap.disputeId}`}>
+                        <StyledLink href={`../dispute/${swap.disputeId}`}>
                           <Chip
                             label={shortenHex(swap.disputeId)}
                             size="small"

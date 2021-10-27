@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -28,8 +28,22 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import { setWallet } from "../features/wallet/walletSlice";
+import { setAccount } from "../features/account/accountSlice";
+import { setChats } from "../features/messages/messagesSlice";
+import { setMySwaps, setFilters } from "../features/swaps/swapsSlice";
+import { setMyBids } from "../features/bids/bidsSlice";
 import NewAppBar from "./AppBarNew";
 import { BootstrapTooltip } from "style/components/Tooltip";
+import useInterval from "../hooks/useInterval";
+import { useSnackbar } from "notistack";
+import stringify from "fast-stable-stringify";
+import {
+  getAccountData,
+  getChats,
+  getMySwaps,
+  getMyBids,
+  init,
+} from "../api/peerswapAPI";
 
 const drawerWidth = 200;
 
@@ -84,9 +98,74 @@ const MiniDrawer = () => {
   const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { mySwaps } = useSelector((state: RootState) => state.swaps);
+  const { filters } = useSelector((state: RootState) => state.swaps);
+  const { myBids } = useSelector((state: RootState) => state.bids);
+  const { account } = useSelector((state: RootState) => state.account);
   const { wallet } = useSelector((state: RootState) => state.wallet);
+  // const { theme } = useSelector((state: RootState) => state.theme);
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState(location.pathname.split("/")[1]);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    init().then(() => {
+      if (wallet) {
+        getAccountData(wallet.entry.address).then((accountData) => {
+          dispatch(setAccount(accountData.account));
+          getChats(accountData.account, wallet).then((chats) => {
+            dispatch(setChats(chats));
+          });
+        });
+        getMySwaps(wallet.entry.address).then((swaps) => {
+          // if (stringify(swaps) !== stringify(mySwaps)) {
+          dispatch(setMySwaps(swaps));
+          // }
+        });
+        getMyBids(wallet.entry.address).then((bids) => {
+          if (stringify(bids) !== stringify(myBids)) {
+            dispatch(setMyBids(bids));
+          }
+        });
+      }
+    });
+  }, []);
+
+  // ! Probably bad idea to do this here.
+  useInterval(() => {
+    if (wallet) {
+      getAccountData(wallet.entry.address).then((accountData) => {
+        if (stringify(account) !== stringify(accountData.account)) {
+          if (
+            accountData.account.data.lastTransaction.timestamp !==
+            account.data.lastTransaction.timestamp
+          ) {
+            enqueueSnackbar(
+              `${accountData.account.data.lastTransaction.type} transaction successful`,
+              { variant: "success" }
+            );
+          }
+          dispatch(setAccount(accountData.account));
+        }
+        getChats(accountData.account, wallet).then((chats) => {
+          dispatch(setChats(chats));
+        });
+      });
+      getMySwaps(wallet.entry.address).then((swaps) => {
+        if (stringify(swaps) !== stringify(mySwaps)) {
+          dispatch(setMySwaps(swaps));
+          dispatch(setFilters(filters));
+        }
+      });
+      getMyBids(wallet.entry.address).then((bids) => {
+        if (stringify(bids) !== stringify(myBids)) {
+          dispatch(setMyBids(bids));
+        }
+      });
+    }
+  }, 10000);
+
   const itemsList = [
     {
       text: "Welcome",
@@ -213,9 +292,7 @@ const MiniDrawer = () => {
     // },
     {
       text: "Sign out",
-      icon: (
-        <ExitToAppIcon />
-      ),
+      icon: <ExitToAppIcon />,
       show: wallet !== null,
       onClick: () => {
         dispatch(setWallet(null));
@@ -307,4 +384,4 @@ const MiniDrawer = () => {
 };
 
 // export default withRouter(MiniDrawer);
-export default MiniDrawer
+export default MiniDrawer;

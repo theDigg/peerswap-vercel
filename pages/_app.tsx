@@ -1,4 +1,3 @@
-// import "../src/index.css";
 import Head from "next/head";
 import { DefaultSeo } from "next-seo";
 import defaultSEOConfig from "../next-seo.config";
@@ -6,13 +5,13 @@ import DateFnsAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { SnackbarProvider } from "notistack";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider, styled } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import store, { persistor } from "app/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import MiniDrawer from "components/MiniDrawer";
-import theme from "theme2";
+import darkTheme from "style/themes/dark";
 
 export default function MyApp({ Component, pageProps }) {
   return (
@@ -31,7 +30,7 @@ export default function MyApp({ Component, pageProps }) {
       <DefaultSeo {...defaultSEOConfig} />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <ThemeProvider theme={theme}>
+          <ThemeProvider theme={darkTheme}>
             <SnackbarProvider maxSnack={3}>
               <LocalizationProvider dateAdapter={DateFnsAdapter}>
                 <CssBaseline />
@@ -47,14 +46,3 @@ export default function MyApp({ Component, pageProps }) {
     </>
   );
 }
-
-// <>
-//   <Provider store={store}>
-//     <PersistGate loading={null} persistor={persistor}>
-//       <SnackbarProvider maxSnack={3}>
-//         <CssBaseline />
-//         <App />
-//       </SnackbarProvider>
-//     </PersistGate>
-//   </Provider>
-// </>;

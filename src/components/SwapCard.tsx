@@ -3,7 +3,7 @@ import { VariantType, useSnackbar } from "notistack";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { styled } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { StyledLink } from "style/components/Link";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardHeader from "@mui/material/CardHeader";
@@ -34,14 +34,6 @@ import {
   submitDisputeTx,
   queryBids,
 } from "../api/peerswapAPI";
-
-const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  "&:hover": {
-    cursor: "pointer",
-    opacity: 0.9,
-  },
-}));
 
 const statusColorBackground = {
   open: blue[700],
@@ -385,14 +377,12 @@ function SwapCard({ swap, opened }) {
               </Grid>
               <Grid item>
                 <StyledLink
-                  to={`../bid/${swap.acceptedBid}`}
-                  // className={classes.link}
+                  href={`../bid/${swap.acceptedBid}`}
                 >
                   <Chip
                     label={shortenHex(swap.acceptedBid)}
                     size="small"
                     color="primary"
-                    // className={classes.link}
                   />
                 </StyledLink>
               </Grid>
@@ -412,14 +402,12 @@ function SwapCard({ swap, opened }) {
               </Grid>
               <Grid item>
                 <StyledLink
-                  to={`../contract/${swap.contractId}`}
-                  // className={classes.link}
+                  href={`../contract/${swap.contractId}`}
                 >
                   <Chip
                     label={shortenHex(swap.contractId)}
                     size="small"
                     color="primary"
-                    // className={classes.link}
                   />
                 </StyledLink>
               </Grid>
@@ -439,14 +427,12 @@ function SwapCard({ swap, opened }) {
               </Grid>
               <Grid item>
                 <StyledLink
-                  to={`../dispute/${swap.disputeId}`}
-                  // className={classes.link}
+                  href={`../dispute/${swap.disputeId}`}
                 >
                   <Chip
                     label={shortenHex(swap.disputeId)}
                     size="small"
                     color="primary"
-                    // className={classes.link}
                   />
                 </StyledLink>
               </Grid>
@@ -457,7 +443,7 @@ function SwapCard({ swap, opened }) {
       <CardActions disableSpacing>
         {wallet.handle !== swap.initiatorAlias && (
           <Tooltip title="bid on this swap" arrow>
-            <StyledLink to={`swap/${swap.id}`}>
+            <StyledLink href={`swap/${swap.id}`}>
               <IconButton
                 aria-label="bid on this swap"
                 disabled={swap.status !== "open"}
@@ -536,4 +522,3 @@ function SwapCard({ swap, opened }) {
 }
 
 export default SwapCard;
-// export default React.memo(SwapCard);

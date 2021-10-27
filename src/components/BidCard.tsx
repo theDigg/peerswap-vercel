@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { VariantType, useSnackbar } from "notistack";
-import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -24,6 +22,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { submitContractTx, submitReceiptFromBidTx } from "../api/peerswapAPI";
 import { formatDateTime, shortenHex } from "../utils/stringUtils";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import { StyledLink } from "style/components/Link";
 
 const statusColorBackground = {
   placed: blue[700],
@@ -38,14 +37,6 @@ const statusColorText = {
   disputing: common.white,
   complete: common.white,
 };
-
-const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  "&:hover": {
-    cursor: "pointer",
-    opacity: 0.9,
-  },
-}));
 
 function BidCard({ swap, bid }) {
   const [initiatorChainAddress, setInitiatorChainAddress] = useState("");
@@ -243,7 +234,7 @@ function BidCard({ swap, bid }) {
               </Typography>
             </Grid>
             <Grid item>
-              <StyledLink to={`../swap/${bid.swapId}`}>
+              <StyledLink href={`../swap/${bid.swapId}`}>
                 <Chip
                   label={shortenHex(bid.swapId)}
                   size="small"
@@ -267,8 +258,7 @@ function BidCard({ swap, bid }) {
               </Grid>
               <Grid item>
                 <StyledLink
-                  to={`../contract/${bid.contractId}`}
-                  // className={classes.link}
+                  href={`../contract/${bid.contractId}`}
                 >
                   <Chip
                     label={shortenHex(bid.contractId)}
@@ -294,14 +284,12 @@ function BidCard({ swap, bid }) {
               </Grid>
               <Grid item>
                 <StyledLink
-                  to={`../dispute/${bid.disputeId}`}
-                  // className={classes.link}
+                  href={`../dispute/${bid.disputeId}`}
                 >
                   <Chip
                     label={shortenHex(bid.disputeId)}
                     size="small"
                     color="primary"
-                    // className={classes.link}
                   />
                 </StyledLink>
               </Grid>
@@ -340,7 +328,7 @@ function BidCard({ swap, bid }) {
                       ? initiatorChainAddress
                       : swap.initiatorChainAddress,
                     wallet
-                  ).then(({result}: any) => {
+                  ).then(({ result }: any) => {
                     handleClickVariant(result.status, result.reason)();
                   });
                 }}
@@ -357,9 +345,11 @@ function BidCard({ swap, bid }) {
                 aria-label="bid-receipt"
                 disabled={bid.status !== "accepted"}
                 onClick={() => {
-                  submitReceiptFromBidTx(swap, wallet).then(({result}: any) => {
-                    handleClickVariant(result.status, result.reason)();
-                  });
+                  submitReceiptFromBidTx(swap, wallet).then(
+                    ({ result }: any) => {
+                      handleClickVariant(result.status, result.reason)();
+                    }
+                  );
                 }}
               >
                 <DoneAllIcon />

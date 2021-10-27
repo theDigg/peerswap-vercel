@@ -1,6 +1,6 @@
 import React from "react";
 import { VariantType, useSnackbar } from "notistack";
-import { Link } from "react-router-dom";
+import { StyledLink } from "style/components/Link";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -34,14 +34,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
-}));
-
-const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  "&:hover": {
-    cursor: "pointer",
-    opacity: 0.9,
-  },
 }));
 
 const statusColorBackground = {
@@ -477,7 +469,7 @@ export default function ContractCard({ contract }) {
               </Typography>
             </Grid>
             <Grid item>
-              <StyledLink to={`../swap/${contract.swapId}`}>
+              <StyledLink href={`../swap/${contract.swapId}`}>
                 <Chip
                   label={shortenHex(contract.swapId)}
                   size="small"
@@ -499,7 +491,7 @@ export default function ContractCard({ contract }) {
               </Typography>
             </Grid>
             <Grid item>
-              <StyledLink to={`../bid/${contract.bidId}`}>
+              <StyledLink href={`../bid/${contract.bidId}`}>
                 <Chip
                   label={shortenHex(contract.bidId)}
                   size="small"
@@ -522,13 +514,13 @@ export default function ContractCard({ contract }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <Link to={`../dispute/${contract.disputeId}`}>
+                <StyledLink href={`../dispute/${contract.disputeId}`}>
                   <Chip
                     label={shortenHex(contract.disputeId)}
                     size="small"
                     color="primary"
                   />
-                </Link>
+                </StyledLink>
               </Grid>
             </Grid>
           )}
