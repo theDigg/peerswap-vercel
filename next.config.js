@@ -6,7 +6,7 @@ module.exports = withPWA({
     dest: "public",
     register: true,
     skipWaiting: true,
-    // runtimeCaching,
+    runtimeCaching,
     disable: process.env.NODE_ENV === "development",
   },
   // swcMinify: true,
