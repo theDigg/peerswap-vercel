@@ -21,6 +21,10 @@ class MyDocument extends Document {
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="theme-color" content="#FFFFFF" />
+          <meta
+            name="google-site-verification"
+            content="Tt1iU9HliMbwxuCWX02QMchdTCRM7HHYQmKIcNiPRyM"
+          />
           <link
             rel="apple-touch-icon"
             sizes="192x192"
