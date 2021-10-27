@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import {
   DataGridPro,
   GridToolbar,
@@ -24,8 +24,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { StyledEngineProvider } from "@mui/material/styles";
-import { formatDateTime } from "../utils/stringUtils";
-import { BootstrapTooltip } from "../style/components/Tooltip";
+import { formatDateTime } from "utils/stringUtils";
+import { BootstrapTooltip } from "style/components/Tooltip";
 
 const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
@@ -365,7 +365,7 @@ const columns: GridColDef[] = [
     width: 130,
     renderCell: (params: GridRenderCellParams) => (
       <BootstrapTooltip title="Bid" placement="right">
-        <StyledLink to={`swap/${params.value}`}>
+        <StyledLink href={`swap/${params.value}`}>
           <IconButton aria-label="bid on this swap">
             <LocalOfferIcon />
           </IconButton>

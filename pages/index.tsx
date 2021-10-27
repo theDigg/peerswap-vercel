@@ -26,19 +26,23 @@ function Home({ history }) {
   const { filteredSwaps } = useSelector((state: RootState) => state.swaps);
   const { myBids } = useSelector((state: RootState) => state.bids);
 
-  useEffect(() => {
-    if (!wallet) {
-      router.push("/register");
-    }
-  }, [wallet]);
+  // useEffect(() => {
+  //   if (!wallet) {
+  //     router.push("/register");
+  //   }
+  // }, [wallet]);
 
   useEffect(() => {
-    getMySwaps(wallet.entry.address).then((swaps) => {
-      dispatch(setMySwaps(swaps));
-    });
-    getMyBids(wallet.entry.address).then((bids) => {
-      dispatch(setMyBids(bids));
-    });
+    if (!wallet) {
+      router.push("/welcome");
+    } else {
+      getMySwaps(wallet.entry.address).then((swaps) => {
+        dispatch(setMySwaps(swaps));
+      });
+      getMyBids(wallet.entry.address).then((bids) => {
+        dispatch(setMyBids(bids));
+      });
+    }
   }, [wallet]);
 
   const swaps = useMemo(

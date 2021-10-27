@@ -1,6 +1,8 @@
 import * as React from "react";
-// import { withRouter } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/rootReducer";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -78,10 +80,11 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const MiniDrawer = (props) => {
-  const { wallet, history } = props;
+const MiniDrawer = () => {
+  const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { wallet } = useSelector((state: RootState) => state.wallet);
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState(location.pathname.split("/")[1]);
   const itemsList = [
@@ -91,7 +94,7 @@ const MiniDrawer = (props) => {
       show: wallet === null,
       onClick: () => {
         setActive("welcome");
-        history.push("/welcome");
+        router.push("/welcome");
       },
     },
     {
@@ -104,7 +107,7 @@ const MiniDrawer = (props) => {
       show: wallet === null,
       onClick: () => {
         setActive("register");
-        history.push("/register");
+        router.push("/register");
       },
     },
     {
@@ -117,7 +120,7 @@ const MiniDrawer = (props) => {
       show: wallet === null,
       onClick: () => {
         setActive("import");
-        history.push("/import");
+        router.push("/import");
       },
     },
     {
@@ -126,7 +129,7 @@ const MiniDrawer = (props) => {
       show: wallet !== null,
       onClick: () => {
         setActive("");
-        history.push("/");
+        router.push("/");
       },
     },
     {
@@ -139,7 +142,7 @@ const MiniDrawer = (props) => {
       show: wallet !== null,
       onClick: () => {
         setActive("wallet");
-        history.push("/wallet");
+        router.push("/wallet");
       },
     },
     {
@@ -148,7 +151,7 @@ const MiniDrawer = (props) => {
       show: wallet !== null,
       onClick: () => {
         setActive("swaps");
-        history.push("/swaps");
+        router.push("/swaps");
       },
     },
     {
@@ -157,7 +160,7 @@ const MiniDrawer = (props) => {
       show: wallet !== null,
       onClick: () => {
         setActive("messages");
-        history.push("/messages");
+        router.push("/messages");
       },
     },
     {
@@ -170,7 +173,7 @@ const MiniDrawer = (props) => {
       show: wallet !== null,
       onClick: () => {
         setActive("transactions");
-        history.push("/transactions");
+        router.push("/transactions");
       },
     },
     {
@@ -181,7 +184,7 @@ const MiniDrawer = (props) => {
       show: wallet !== null,
       onClick: () => {
         setActive("economy");
-        history.push("/economy");
+        router.push("/economy");
       },
     },
     {
@@ -190,7 +193,7 @@ const MiniDrawer = (props) => {
       show: true,
       onClick: () => {
         setActive("settings");
-        history.push("/settings");
+        router.push("/settings");
       },
     },
     {
@@ -199,14 +202,14 @@ const MiniDrawer = (props) => {
       show: wallet !== null,
       onClick: () => {
         setActive("info");
-        history.push("/info");
+        router.push("/info");
       },
     },
     // {
     //   text: "Test",
     //   icon: <StyleIcon />,
     //   show: true,
-    //   onClick: () => history.push("/test"),
+    //   onClick: () => router.push("/test"),
     // },
     {
       text: "Sign out",
@@ -216,7 +219,7 @@ const MiniDrawer = (props) => {
       show: wallet !== null,
       onClick: () => {
         dispatch(setWallet(null));
-        history.push("/welcome");
+        router.push("/welcome");
       },
     },
   ];

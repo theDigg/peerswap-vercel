@@ -6,9 +6,13 @@ import DateFnsAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { SnackbarProvider } from "notistack";
 import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 import store, { persistor } from "app/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import MiniDrawer from "components/MiniDrawer";
+import theme from "theme2";
 
 export default function MyApp({ Component, pageProps }) {
   return (
@@ -27,12 +31,17 @@ export default function MyApp({ Component, pageProps }) {
       <DefaultSeo {...defaultSEOConfig} />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <SnackbarProvider maxSnack={3}>
-            <LocalizationProvider dateAdapter={DateFnsAdapter}>
-              <CssBaseline />
-              <Component {...pageProps} />
-            </LocalizationProvider>
-          </SnackbarProvider>
+          <ThemeProvider theme={theme}>
+            <SnackbarProvider maxSnack={3}>
+              <LocalizationProvider dateAdapter={DateFnsAdapter}>
+                <CssBaseline />
+                <Box sx={{ display: "flex" }}>
+                  <MiniDrawer />
+                  <Component {...pageProps} />
+                </Box>
+              </LocalizationProvider>
+            </SnackbarProvider>
+          </ThemeProvider>
         </PersistGate>
       </Provider>
     </>

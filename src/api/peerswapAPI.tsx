@@ -751,7 +751,7 @@ export async function getSwaps() {
 }
 
 export async function getSwap(url: string) {
-  const { data } = await axios.get(`${host}/swaps/single/${url.split("/")[2]}`);
+  const { data } = await axios.get(`${host}/swaps/single/${url}`);
   return data;
 }
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "app/rootReducer";
 import Typography from "@mui/material/Typography";
@@ -20,6 +21,7 @@ import { setAccount } from "features/account/accountSlice";
 import { _sleep } from "utils/sleep";
 
 export default function Register() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [status, setStatus] = useState("");
@@ -100,15 +102,16 @@ export default function Register() {
               variant="contained"
               color="secondary"
               disabled={severity !== "success"}
-              onClick={() =>
+              onClick={() => {
                 dispatch(
                   setWallet(
                     wallets.filter(
                       (wallet: any) => wallet.handle === username
                     )[0]
                   )
-                )
-              }
+                );
+                router.push("/");
+              }}
             >
               Login
             </Button>
@@ -131,6 +134,7 @@ export default function Register() {
                 dispatch(setWallets(wallet));
                 const { account } = await getAccountFromAlias(username);
                 dispatch(setAccount(account));
+                router.push("/");
               }}
             >
               Register
