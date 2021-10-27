@@ -7,14 +7,14 @@ import ContractCard from "components/ContractCard";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-export async function getServerSideProps({ params }) {
-  const { slug } = params;
-  const { account } = await getAccountData(slug);
+// export async function getServerSideProps({ params }) {
+//   const { slug } = params;
+//   const { account } = await getAccountData(slug);
 
-  return {
-    props: { contract: account },
-  };
-}
+//   return {
+//     props: { contract: account },
+//   };
+// }
 
 export default function Contract({ contract }) {
   return (
@@ -26,3 +26,12 @@ export default function Contract({ contract }) {
     </Box>
   );
 }
+
+Contract.getInitialProps = async ({ query }) => {
+  const { slug } = query;
+  const { account } = await getAccountData(slug);
+
+  return {
+    contract: account,
+  };
+};

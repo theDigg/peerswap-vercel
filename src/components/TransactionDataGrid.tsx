@@ -15,7 +15,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { StyledEngineProvider } from "@mui/material/styles";
-import { formatDateTime } from "../utils/stringUtils";
+import { formatDateTime } from "utils/stringUtils";
 
 type GridDataType = "Transactions";
 type GridDataThemeOption = "default" | "ant";

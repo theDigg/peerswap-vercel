@@ -15,12 +15,12 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 // import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
-import { alpha, Theme, styled } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
 // import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 // import { RootState } from "../app/rootReducer";
-import { setFilters } from "../features/swaps/swapsSlice";
+import { setFilters } from "features/swaps/swapsSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",

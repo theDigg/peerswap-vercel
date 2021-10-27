@@ -1,18 +1,17 @@
 import * as React from "react";
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/rootReducer";
-import { styled, alpha } from "@mui/material/styles";
+import { RootState } from "app/rootReducer";
+import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -22,8 +21,9 @@ import Notification from "./Notification/Notification";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
 import { Send as SendIcon } from "@mui/icons-material";
-import { setWallet } from "../features/wallet/walletSlice";
-import { setTheme } from "../features/theme/themeSlice";
+import { setWallet } from "features/wallet/walletSlice";
+import { setTheme } from "features/theme/themeSlice";
+import { stringAvatar, formatDate } from "utils/stringUtils";
 
 const drawerWidth = 200;
 
@@ -49,45 +49,45 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
+// const Search = styled("div")(({ theme }) => ({
+//   position: "relative",
+//   borderRadius: theme.shape.borderRadius,
+//   backgroundColor: alpha(theme.palette.common.white, 0.15),
+//   "&:hover": {
+//     backgroundColor: alpha(theme.palette.common.white, 0.25),
+//   },
+//   marginRight: theme.spacing(2),
+//   marginLeft: 0,
+//   width: "100%",
+//   [theme.breakpoints.up("sm")]: {
+//     marginLeft: theme.spacing(3),
+//     width: "auto",
+//   },
+// }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
+// const SearchIconWrapper = styled("div")(({ theme }) => ({
+//   padding: theme.spacing(0, 2),
+//   height: "100%",
+//   position: "absolute",
+//   pointerEvents: "none",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+// }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//   color: "inherit",
+//   "& .MuiInputBase-input": {
+//     padding: theme.spacing(1, 1, 1, 0),
+//     // vertical padding + font size from searchIcon
+//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//     transition: theme.transitions.create("width"),
+//     width: "100%",
+//     [theme.breakpoints.up("md")]: {
+//       width: "20ch",
+//     },
+//   },
+// }));
 
 const notifications = [
   { id: 0, color: "warning", message: "Someone has bid on your swap!" },
@@ -105,11 +105,8 @@ const notifications = [
   },
 ];
 
-export default function PrimarySearchAppBar({
-  open,
-  handleDrawerOpen,
-  history,
-}) {
+export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -137,13 +134,13 @@ export default function PrimarySearchAppBar({
   const handleMenuClose = (route: string) => {
     setAnchorEl(null);
     handleMobileMenuClose();
-    history.push(route);
+    router.push(route);
   };
 
   const handleMailMenuClose = (route: string) => {
     setMailMenu(null);
     handleMobileMenuClose();
-    history.push(route);
+    router.push(route);
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -277,8 +274,8 @@ export default function PrimarySearchAppBar({
             onClick={handleDrawerOpen}
             edge="start"
             sx={{
-              marginRight: "36px",
-              marginLeft: { xs: "-6px", sm: "-14px" },
+              mr: "36px",
+              ml: { xs: "-6px", sm: "-14px" },
               ...(open && { display: "none" }),
             }}
           >
@@ -401,13 +398,12 @@ export default function PrimarySearchAppBar({
           sx={{
             display: "flex",
             flexDirection: "column",
-            padding: 2,
+            p: 2,
           }}
         >
           <Typography variant="h4">New Messages</Typography>
           <Typography
             sx={{
-              fontSize: 16,
               textDecoration: "none",
               "&:hover": {
                 cursor: "pointer",
@@ -423,7 +419,6 @@ export default function PrimarySearchAppBar({
           <MenuItem
             key={id}
             sx={{
-              height: "auto",
               display: "flex",
               alignItems: "center",
               "&:hover, &:focus": {
@@ -437,7 +432,7 @@ export default function PrimarySearchAppBar({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                marginRight: 2,
+                mr: 2,
               }}
             >
               <Avatar {...stringAvatar(handle)} />
@@ -450,7 +445,7 @@ export default function PrimarySearchAppBar({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                marginRight: 2,
+                mr: 2,
               }}
             >
               <Typography gutterBottom>{handle}</Typography>
@@ -462,20 +457,11 @@ export default function PrimarySearchAppBar({
           variant="extended"
           color="primary"
           aria-label="Add"
-          sx={{
-            margin: 4,
-            marginTop: 2,
-            marginBottom: 2,
-            textTransform: "none",
-          }}
-          onClick={() => history.push("/messages")}
+          sx={{ m: 4, textTransform: "none" }}
+          onClick={() => router.push("/messages")}
         >
           Send New Message
-          <SendIcon
-            sx={{
-              marginLeft: 2,
-            }}
-          />
+          <SendIcon sx={{ ml: 2 }} />
         </Fab>
       </Menu>
       <Menu
@@ -483,9 +469,7 @@ export default function PrimarySearchAppBar({
         open={Boolean(notificationsMenu)}
         anchorEl={notificationsMenu}
         onClose={() => setNotificationsMenu(null)}
-        sx={{
-          marginTop: 2,
-        }}
+        sx={{ mt: 2 }}
         disableAutoFocusItem
       >
         {notifications.map((notification) => (
@@ -505,56 +489,5 @@ export default function PrimarySearchAppBar({
       {renderMobileMenu}
       {renderMenu}
     </Box>
-  );
-}
-
-function stringToColor(string: string) {
-  let hash = 0;
-  let i;
-
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  let color = "#";
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.substr(-2);
-  }
-  /* eslint-enable no-bitwise */
-
-  return color;
-}
-
-function stringAvatar(name: string) {
-  return {
-    sx: {
-      bgcolor: stringToColor(name.toUpperCase()),
-    },
-    children: `${name[0].toUpperCase()}`,
-  };
-}
-
-function formatDate(date) {
-  // var year = date.getFullYear(),
-  // month = date.getMonth() + 1, // months are zero indexed
-  // day = date.getDate(),
-  var hour = date.getHours(),
-    minute = date.getMinutes(),
-    // second = date.getSeconds(),
-    hourFormatted = hour % 12 || 12, // hour returned in 24 hour format
-    minuteFormatted = minute < 10 ? "0" + minute : minute,
-    morning = hour < 12 ? "am" : "pm";
-
-  return (
-    // month +
-    // '/' +
-    // day +
-    // '/' +
-    // year +
-    // ' ' +
-    hourFormatted + ":" + minuteFormatted + morning
   );
 }

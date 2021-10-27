@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 // import Typography from '@mui/material/Typography'
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -7,14 +7,14 @@ import BidCard from "components/BidCard";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-export async function getServerSideProps({ params }) {
-  const { slug } = params;
-  const { account } = await getAccountData(slug);
+// export async function getServerSideProps({ params }) {
+//   const { slug } = params;
+//   const { account } = await getAccountData(slug);
 
-  return {
-    props: { bid: account },
-  };
-}
+//   return {
+//     props: { bid: account },
+//   };
+// }
 
 export default function Bid({ bid }) {
   return (
@@ -26,3 +26,12 @@ export default function Bid({ bid }) {
     </Box>
   );
 }
+
+Bid.getInitialProps = async ({ query }) => {
+  const { slug } = query;
+  const { account } = await getAccountData(slug);
+
+  return {
+    bid: account,
+  };
+};

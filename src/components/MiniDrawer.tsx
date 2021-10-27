@@ -350,7 +350,6 @@ const MiniDrawer = () => {
       <NewAppBar
         open={open}
         handleDrawerOpen={handleDrawerOpen}
-        history={history}
       />
       <MuiDrawer
         container={container}

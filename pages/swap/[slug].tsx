@@ -101,15 +101,15 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
   );
 };
 
-export async function getServerSideProps({ params }) {
-  const { slug } = params;
-  const { swap } = await getSwap(slug);
-  const { bids } = await queryBids(swap.accountId);
+// export async function getServerSideProps({ params }) {
+//   const { slug } = params;
+//   const { swap } = await getSwap(slug);
+//   const { bids } = await queryBids(swap.accountId);
 
-  return {
-    props: { swap: swap.data, initialBids: bids },
-  };
-}
+//   return {
+//     props: { swap: swap.data, initialBids: bids },
+//   };
+// }
 
 export default function Swap({ swap, initialBids }) {
   const router = useRouter();
@@ -770,3 +770,14 @@ export default function Swap({ swap, initialBids }) {
     </Box>
   );
 }
+
+Swap.getInitialProps = async ({ query }) => {
+  const { slug } = query;
+  const { swap } = await getSwap(slug);
+  const { bids } = await queryBids(swap.accountId);
+
+  return {
+    swap: swap.data,
+    initialBids: bids,
+  };
+};
