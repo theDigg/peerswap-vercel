@@ -5,7 +5,9 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build",
-    "export": "next export"
+    "export": "next export",
+    "analyze": "cross-env ANALYZE=true yarn build",
+    "serve": "serve .next/analyze"
   },
   "dependencies": {
     "@emotion/react": "latest",
@@ -17,9 +19,11 @@
     "@mui/styles": "latest",
     "@mui/x-data-grid-generator": "next",
     "@mui/x-data-grid-pro": "next",
+    "@next/bundle-analyzer": "^12.0.1",
     "@reduxjs/toolkit": "latest",
     "axios": "^0.24.0",
     "classnames": "^2.3.1",
+    "cross-env": "^7.0.3",
     "date-fns": "^2.25.0",
     "fast-stable-stringify": "^1.0.0",
     "next": "^12.0.1",
@@ -38,6 +42,7 @@
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "next-sitemap": "^1.6.192",
+    "serve": "^12.0.1",
     "typescript": "^4.4.4",
     "workbox-precaching": "^6.3.0",
     "workbox-window": "^6.3.0"

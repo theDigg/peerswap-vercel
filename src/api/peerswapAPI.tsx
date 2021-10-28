@@ -1,11 +1,22 @@
 import axios from "axios";
-import crypto from "shardus-crypto-web";
+// import crypto from "shardus-crypto-web";
 import stringify from "fast-stable-stringify";
-crypto.initialize(
-  "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
-);
+// const crypto = eval("require('shardus-crypto-web')");
 
-// import("./Module").then((Module) => Module.method());
+let crypto = null
+
+async function useCrypto() {
+  if (crypto !== null) {
+    return
+  } else {
+    import("shardus-crypto-web").then(async (mod) => {
+      crypto = mod
+      await crypto.initialize(
+        "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
+      );
+    });
+  }
+}
 
 let archiver = {
   ip: "www.peerswap.org",
@@ -14,15 +25,17 @@ let archiver = {
 };
 
 let host = `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
-let network: any;
+let network: string = "9f202eb3e3b8d86c7fa943bfd802376b9831ab27404a20495c1999c01ff117e3"
+
+// crypto.initialize(
+//   "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
+// ).then(() => {
+//   network = crypto.hash("network")
+//   console.log(network)
+// })
 
 export async function init() {
-  await crypto.initialize(
-    "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
-  );
-  network = crypto.hash("network");
   host = await getRandomHost();
-  // localStorage.setItem("host", host);
 }
 
 export async function getRandomHost() {
@@ -69,6 +82,7 @@ export async function importWallet(sk: Wallet["entry"]["keys"]["secretKey"]) {
   const data = await getAccountData(keys.publicKey);
   const account = data.account;
   if (account.alias) {
+    await useCrypto()
     const entry = {
       address: keys.publicKey,
       id: crypto.hash(account.alias),
@@ -661,6 +675,7 @@ export async function getAccountData(id: string) {
 }
 
 export async function getAccountFromAlias(handle: string) {
+  await useCrypto();
   const url = `${host}/accounts/address/${crypto.hash(handle)}`;
   const { data } = await axios.get(url);
   return data;
@@ -778,6 +793,7 @@ export async function queryBids(swapId: string) {
 // }
 
 export async function getChats(account: Accounts.User, user: Wallet) {
+  await useCrypto();
   const userChats = account.data.chats;
   const chatData = Object.entries(userChats).map(async (entry) => {
     const { account } = await getAccountData(entry[0]);
@@ -819,6 +835,7 @@ export async function submitMessageTx(
       handle: user.handle,
       timestamp: Date.now(),
     });
+    await useCrypto();
     const encryptedMsg = crypto.encryptAB(
       messageData,
       targetAddress,
@@ -860,11 +877,13 @@ export async function submitTransferTx(
     amount: amount,
     timestamp: Date.now(),
   };
+  await useCrypto();
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   return injectTx(tx);
 }
 
 export async function registerAlias(handle: string, user: Wallet) {
+  await useCrypto();
   const tx = {
     type: "register",
     aliasHash: crypto.hash(handle),
@@ -907,6 +926,7 @@ export async function submitSwapTx(
     fixed: answers.fixed,
     timestamp: Date.now(),
   };
+  await useCrypto();
   tx.swapId = crypto.hashObj(tx);
   // console.log(tx)
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
@@ -936,6 +956,7 @@ export async function submitBidTx(
     providerChainAddress: answers.providerChainAddress,
     timestamp: Date.now(),
   };
+  await useCrypto();
   tx.bidId = crypto.hashObj(tx);
   // console.log(tx)
 
@@ -963,8 +984,8 @@ export async function submitContractTx(
     timestamp: Date.now(),
   };
 
+  await useCrypto();
   tx.contractId = crypto.hashObj(tx);
-
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   return injectTx(tx);
 }
@@ -979,6 +1000,7 @@ export async function submitReceiptTx(swap: Accounts.Swap, user: Wallet) {
     contractId: swap.contractId,
     timestamp: Date.now(),
   };
+  await useCrypto();
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   return injectTx(tx);
 }
@@ -1008,11 +1030,13 @@ export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
       timestamp: Date.now(),
     };
   }
+  await useCrypto();
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   return injectTx(tx);
 }
 
 export async function submitDisputeTx(swap: Accounts.Swap, user: Wallet) {
+  await useCrypto();
   const tx = {
     type: "dispute",
     disputeId: crypto.hash(swap.id + swap.acceptedBid + swap.contractId),
@@ -1030,6 +1054,7 @@ export async function submitDisputeTx(swap: Accounts.Swap, user: Wallet) {
 }
 
 export async function submitProposalTx(parameters: any, user: Wallet) {
+  await useCrypto();
   const issue = await getIssueCount();
   const proposal = await getProposalCount();
   const tx = {
@@ -1050,6 +1075,7 @@ export async function submitVoteTx(
   amount: Number,
   user: Wallet
 ) {
+  await useCrypto();
   const issue = await getIssueCount();
   const tx = {
     type: "vote",
