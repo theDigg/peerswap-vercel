@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { VariantType, useSnackbar } from "notistack";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
-import { styled } from "@mui/material/styles";
 import { StyledLink } from "style/components/Link";
+import { ExpandMore } from "style/components/Buttons";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardHeader from "@mui/material/CardHeader";
@@ -16,9 +16,9 @@ import Collapse from "@mui/material/Collapse";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red, blue, yellow, green, common } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import LoopIcon from "@mui/icons-material/Loop";
@@ -35,34 +35,27 @@ import {
   queryBids,
 } from "../api/peerswapAPI";
 
-const statusColorBackground = {
-  open: blue[700],
-  exchanging: yellow[700],
-  disputing: red[700],
-  complete: green[700],
+const statusColor = {
+  open: "info",
+  exchanging: "warning",
+  disputing: "error",
+  complete: "success",
 };
 
-const statusColorText = {
-  open: common.white,
-  exchanging: common.black,
-  disputing: common.white,
-  complete: common.white,
-};
+// interface ExpandMoreProps extends IconButtonProps {
+//   expand: boolean;
+// }
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+// const ExpandMore = styled((props: ExpandMoreProps) => {
+//   const { expand, ...other } = props;
+//   return <IconButton {...other} />;
+// })(({ theme, expand }) => ({
+//   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+//   marginLeft: "auto",
+//   transition: theme.transitions.create("transform", {
+//     duration: theme.transitions.duration.shortest,
+//   }),
+// }));
 
 function SwapCard({ swap, opened }) {
   const isCurrent = useRef(true);
@@ -128,10 +121,7 @@ function SwapCard({ swap, opened }) {
               <Chip
                 label={swap.status}
                 size="small"
-                style={{
-                  backgroundColor: statusColorBackground[swap.status],
-                  color: statusColorText[swap.status],
-                }}
+                color={statusColor[swap.status]}
               />
             </Grid>
           </Grid>
@@ -376,9 +366,7 @@ function SwapCard({ swap, opened }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <StyledLink
-                  href={`../bid/${swap.acceptedBid}`}
-                >
+                <StyledLink href={`../bid/${swap.acceptedBid}`}>
                   <Chip
                     label={shortenHex(swap.acceptedBid)}
                     size="small"
@@ -401,9 +389,7 @@ function SwapCard({ swap, opened }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <StyledLink
-                  href={`../contract/${swap.contractId}`}
-                >
+                <StyledLink href={`../contract/${swap.contractId}`}>
                   <Chip
                     label={shortenHex(swap.contractId)}
                     size="small"
@@ -426,9 +412,7 @@ function SwapCard({ swap, opened }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <StyledLink
-                  href={`../dispute/${swap.disputeId}`}
-                >
+                <StyledLink href={`../dispute/${swap.disputeId}`}>
                   <Chip
                     label={shortenHex(swap.disputeId)}
                     size="small"
@@ -460,7 +444,7 @@ function SwapCard({ swap, opened }) {
                 aria-label="mark swap as successful"
                 disabled={swap.status !== "exchanging"}
                 onClick={() => {
-                  submitReceiptTx(swap, wallet).then(({result}: any) => {
+                  submitReceiptTx(swap, wallet).then(({ result }: any) => {
                     handleClickVariant(result.status, result.reason)();
                   });
                 }}
@@ -476,10 +460,11 @@ function SwapCard({ swap, opened }) {
               <IconButton
                 aria-label="dispute swap"
                 disabled={
-                  wallet.handle !== swap.initiatorAlias || swap.status !== "exchanging"
+                  wallet.handle !== swap.initiatorAlias ||
+                  swap.status !== "exchanging"
                 }
                 onClick={() => {
-                  submitDisputeTx(swap, wallet).then(({result}: any) => {
+                  submitDisputeTx(swap, wallet).then(({ result }: any) => {
                     handleClickVariant(result.status, result.reason)();
                   });
                 }}

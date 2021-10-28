@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/rootReducer";
+import { RootState } from "app/rootReducer";
 import { VariantType, useSnackbar } from "notistack";
 import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
@@ -14,28 +14,21 @@ import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red, blue, yellow, green, common, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import CheckIcon from "@mui/icons-material/Check";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { submitContractTx, submitReceiptFromBidTx } from "../api/peerswapAPI";
-import { formatDateTime, shortenHex } from "../utils/stringUtils";
-import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import { submitContractTx, submitReceiptFromBidTx } from "api/peerswapAPI";
+import { formatDateTime, shortenHex } from "utils/stringUtils";
+import useCopyToClipboard from "hooks/useCopyToClipboard";
 import { StyledLink } from "style/components/Link";
 
-const statusColorBackground = {
-  placed: blue[700],
-  accepted: yellow[700],
-  disputing: red[700],
-  complete: green[700],
-};
-
-const statusColorText = {
-  placed: common.white,
-  accepted: common.black,
-  disputing: common.white,
-  complete: common.white,
+const statusColor = {
+  placed: "info",
+  accepted: "warning",
+  disputing: "error",
+  complete: "success",
 };
 
 function BidCard({ swap, bid }) {
@@ -79,14 +72,7 @@ function BidCard({ swap, bid }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Chip
-                label={bid.status}
-                size="small"
-                sx={{
-                  bgcolor: statusColorBackground[bid.status],
-                  color: statusColorText[bid.status],
-                }}
-              />
+              <Chip label={bid.status} size="small" color={statusColor[bid.status]} />
             </Grid>
           </Grid>
           <Grid
@@ -257,9 +243,7 @@ function BidCard({ swap, bid }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <StyledLink
-                  href={`../contract/${bid.contractId}`}
-                >
+                <StyledLink href={`../contract/${bid.contractId}`}>
                   <Chip
                     label={shortenHex(bid.contractId)}
                     size="small"
@@ -283,9 +267,7 @@ function BidCard({ swap, bid }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <StyledLink
-                  href={`../dispute/${bid.disputeId}`}
-                >
+                <StyledLink href={`../dispute/${bid.disputeId}`}>
                   <Chip
                     label={shortenHex(bid.disputeId)}
                     size="small"

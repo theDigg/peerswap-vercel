@@ -38,7 +38,6 @@ export default function Register() {
   };
 
   useEffect(() => {
-    // ! Figure out why this needs to be any ??
     if (wallets.some((wallet: any) => wallet.handle === username)) {
       setStatus("This wallet was found in your local storage!");
       setSeverity("success");
@@ -62,30 +61,12 @@ export default function Register() {
   }, [username, wallets]);
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        mt: 10,
-      }}
-    >
-      <Paper
-        elevation={3}
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          justifyContent: "center",
-        }}
-      >
+    <Container maxWidth="sm" sx={{ display: "flex", flexWrap: "wrap", mt: 10 }}>
+      <Paper elevation={3} sx={{ flexGrow: 1, p: 3, justifyContent: "center" }}>
         <Typography variant="h2" align="center">
           Register
         </Typography>
-        <FormGroup
-          sx={{
-            p: 5,
-          }}
-        >
+        <FormGroup sx={{ p: 5 }}>
           <Alert variant="filled" severity={severity} sx={{ mb: 2 }}>
             {status}
           </Alert>
@@ -110,7 +91,7 @@ export default function Register() {
                     )[0]
                   )
                 );
-                router.push("/");
+                router.push("/dashboard");
               }}
             >
               Login
@@ -134,20 +115,14 @@ export default function Register() {
                 dispatch(setWallets(wallet));
                 const { account } = await getAccountFromAlias(username);
                 dispatch(setAccount(account));
-                router.push("/");
+                router.push("/dashboard");
               }}
             >
               Register
             </Button>
           )}
           {loading && (
-            <LinearProgress
-              sx={{
-                width: "100%",
-                mt: 4,
-              }}
-              color="secondary"
-            />
+            <LinearProgress sx={{ width: "100%", mt: 4 }} color="secondary" />
           )}
         </FormGroup>
       </Paper>

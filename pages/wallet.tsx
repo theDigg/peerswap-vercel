@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "app/rootReducer";
 import { VariantType, useSnackbar } from "notistack";
 import Typography from "@mui/material/Typography";
@@ -28,6 +28,7 @@ import QRCode from "react-qr-code";
 import OfferForm from "components/Wallet/OfferForm";
 import RequestForm from "components/Wallet/RequestForm";
 import ImmediateForm from "components/Wallet/ImmediateForm";
+import { setTab } from 'features/wallet/walletSlice';
 import {
   getAccountFromAlias,
   submitTransferTx,
@@ -98,29 +99,17 @@ const tabMapping = {
 };
 
 export default function Wallet() {
-  const router = useRouter();
-  let currentTab = tabMapping[router.pathname.split("/")[2]];
-  const [value, setValue] = useState(currentTab !== undefined ? currentTab : 0);
+  const dispatch = useDispatch()
   const { account } = useSelector((state: RootState) => state.account);
-  const { wallet } = useSelector((state: RootState) => state.wallet);
+  const { wallet, tab } = useSelector((state: RootState) => state.wallet);
+
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+    dispatch(setTab(newValue));
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100%",
-      }}
-    >
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          padding: (theme) => theme.spacing(3),
-        }}
-      >
+    <Box sx={{ display: "flex", width: "100%" }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Offset />
         <Typography variant="h4" align="center" sx={{ m: 1 }}>
           {account && account.data.balance.toFixed(3)}
@@ -129,7 +118,7 @@ export default function Wallet() {
         <Paper sx={{ flexGrow: 1 }} elevation={9}>
           <Paper sx={{ flexGrow: 1 }} elevation={3}>
             <Tabs
-              value={value}
+              value={tab}
               onChange={handleChange}
               variant="fullWidth"
               indicatorColor="primary"
@@ -142,13 +131,13 @@ export default function Wallet() {
               <LinkTab icon={<CardGiftcardIcon />} label="Receive" />
             </Tabs>
           </Paper>
-          <TabPanel value={value} index={0}>
+          <TabPanel value={tab} index={0}>
             <SendTab wallet={wallet} />
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={tab} index={1}>
             <SwapTab wallet={wallet} />
           </TabPanel>
-          <TabPanel value={value} index={2}>
+          <TabPanel value={tab} index={2}>
             <ReceiveTab account={account} />
           </TabPanel>
         </Paper>

@@ -31,18 +31,8 @@ function Welcome() {
             }
             sx={{ mx: "10%" }}
           >
-            <Button
-              onClick={() => {
-                router.push("../register");
-              }}
-            >
-              Register
-            </Button>
-            <Button
-              onClick={() => {
-                router.push("../import");
-              }}
-            >
+            <Button onClick={() => router.push("/register")}>Register</Button>
+            <Button onClick={() => router.push("/import")}>
               Import private key
             </Button>
           </Stack>
@@ -52,4 +42,4 @@ function Welcome() {
   );
 }
 
-export default Welcome
+export default Welcome;

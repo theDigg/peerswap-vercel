@@ -21,7 +21,6 @@ function Dashboard() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { wallet } = useSelector((state: RootState) => state.wallet);
-  const { account } = useSelector((state: RootState) => state.account);
   const { mySwaps } = useSelector((state: RootState) => state.swaps);
   const { filteredSwaps } = useSelector((state: RootState) => state.swaps);
   const { myBids } = useSelector((state: RootState) => state.bids);
@@ -34,7 +33,7 @@ function Dashboard() {
 
   useEffect(() => {
     if (!wallet) {
-      router.push("/welcome");
+      router.push("/");
     } else {
       getMySwaps(wallet.entry.address).then((swaps) => {
         dispatch(setMySwaps(swaps));
@@ -61,7 +60,7 @@ function Dashboard() {
     <Box sx={{ display: "flex", width: "100%" }}>
       <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <Offset />
-        <AccountInfo history={history} account={account} />
+        <AccountInfo />
         <SwapFilterBar />
         <Divider orientation="horizontal" sx={{ my: 2 }}>
           <Chip

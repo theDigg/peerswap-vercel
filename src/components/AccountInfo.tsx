@@ -1,23 +1,31 @@
-import React from 'react'
+import React from "react";
+import { useRouter } from "next/router";
 import Card from "@mui/material/Card";
-import Container from '@mui/material/Container'
-import CardActions from '@mui/material/CardActions'
-import CardContent from '@mui/material/CardContent'
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
-import { styled } from '@mui/material/styles'
+import Container from "@mui/material/Container";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import { styled } from "@mui/material/styles";
+import { setTab } from "features/wallet/walletSlice";
+import { RootState } from "app/rootReducer";
+import { useSelector, useDispatch } from "react-redux";
 
-const Unit = styled('span')(({theme}) => ({
-  fontSize: '8px',
-  letterSpacing: '-.16px',
-  textAlign: 'left',
-  position: 'relative',
-  top: '-5px',
-  left: '5px',
-}))
+const Unit = styled("span")(({ theme }) => ({
+  fontSize: "8px",
+  letterSpacing: "-.16px",
+  textAlign: "left",
+  position: "relative",
+  top: "-5px",
+  left: "5px",
+}));
 
-export default function AccountInfo({ history, account }) {
+export default function AccountInfo() {
+  const { account } = useSelector((state: RootState) => state.account);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   return (
     <Card sx={{ mb: 3, minWidth: 300 }} elevation={5}>
       <CardContent>
@@ -49,7 +57,8 @@ export default function AccountInfo({ history, account }) {
           <Button
             variant="contained"
             onClick={() => {
-              history.push("/wallet/send");
+              dispatch(setTab(0));
+              router.push("/wallet");
             }}
           >
             Send
@@ -58,7 +67,8 @@ export default function AccountInfo({ history, account }) {
             color="secondary"
             variant="contained"
             onClick={() => {
-              history.push("/wallet/swap");
+              dispatch(setTab(1));
+              router.push("/wallet");
             }}
           >
             Swap
@@ -66,7 +76,8 @@ export default function AccountInfo({ history, account }) {
           <Button
             variant="contained"
             onClick={() => {
-              history.push("/wallet/receive");
+              dispatch(setTab(2));
+              router.push("/wallet");
             }}
           >
             Receive

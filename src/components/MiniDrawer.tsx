@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/rootReducer";
+import { RootState } from "app/rootReducer";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -27,14 +27,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
-import { setWallet } from "../features/wallet/walletSlice";
-import { setAccount } from "../features/account/accountSlice";
-import { setChats } from "../features/messages/messagesSlice";
-import { setMySwaps, setFilters } from "../features/swaps/swapsSlice";
-import { setMyBids } from "../features/bids/bidsSlice";
+import { setWallet } from "features/wallet/walletSlice";
+import { setAccount } from "features/account/accountSlice";
+import { setChats } from "features/messages/messagesSlice";
+import { setMySwaps, setFilters } from "features/swaps/swapsSlice";
+import { setMyBids } from "features/bids/bidsSlice";
 import NewAppBar from "./AppBarNew";
 import { BootstrapTooltip } from "style/components/Tooltip";
-import useInterval from "../hooks/useInterval";
+import useInterval from "hooks/useInterval";
 import { useSnackbar } from "notistack";
 import stringify from "fast-stable-stringify";
 import {
@@ -43,7 +43,7 @@ import {
   getMySwaps,
   getMyBids,
   init,
-} from "../api/peerswapAPI";
+} from "api/peerswapAPI";
 
 const drawerWidth = 200;
 
@@ -204,7 +204,9 @@ const MiniDrawer = () => {
     },
     {
       text: "Dashboard",
-      icon: <DashboardIcon color={active === "Dashboard" ? "primary" : "inherit"} />,
+      icon: (
+        <DashboardIcon color={active === "Dashboard" ? "primary" : "inherit"} />
+      ),
       show: wallet !== null,
       onClick: () => {
         setActive("Dashboard");
@@ -296,7 +298,7 @@ const MiniDrawer = () => {
       show: wallet !== null,
       onClick: () => {
         dispatch(setWallet(null));
-        router.push("/welcome");
+        router.push("/");
       },
     },
   ];
@@ -347,10 +349,7 @@ const MiniDrawer = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <NewAppBar
-        open={open}
-        handleDrawerOpen={handleDrawerOpen}
-      />
+      <NewAppBar open={open} handleDrawerOpen={handleDrawerOpen} />
       <MuiDrawer
         container={container}
         variant="temporary"
@@ -382,5 +381,4 @@ const MiniDrawer = () => {
   );
 };
 
-// export default withRouter(MiniDrawer);
 export default MiniDrawer;

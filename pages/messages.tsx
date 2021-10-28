@@ -181,7 +181,7 @@ function VerticalTabs({ wallet, chats, index, setIndex }) {
           label="New Chat"
           {...a11yProps(0)}
           key={0}
-          onClick={() => router.push(`../messages`)}
+          onClick={() => router.push(`/messages`)}
         />
         {chats &&
           Object.keys(chats).map((user, i) => (
@@ -189,7 +189,7 @@ function VerticalTabs({ wallet, chats, index, setIndex }) {
               label={user}
               {...a11yProps(i + 1)}
               key={user}
-              onClick={() => router.push(`../messages/${user}`)}
+              onClick={() => router.push(`/messages`)}
             />
           ))}
       </Tabs>

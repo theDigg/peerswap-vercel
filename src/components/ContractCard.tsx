@@ -1,7 +1,7 @@
 import React from "react";
 import { VariantType, useSnackbar } from "notistack";
 import { StyledLink } from "style/components/Link";
-import { styled } from "@mui/material/styles";
+import { ExpandMore } from "style/components/Buttons";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import CardHeader from "@mui/material/CardHeader";
@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red, green } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -21,25 +21,20 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import { formatDateTime, shortenHex } from "../utils/stringUtils";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
+// interface ExpandMoreProps extends IconButtonProps {
+//   expand: boolean;
+// }
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
-const statusColorBackground = {
-  incomplete: red[700],
-  complete: green[700],
-};
+// const ExpandMore = styled((props: ExpandMoreProps) => {
+//   const { expand, ...other } = props;
+//   return <IconButton {...other} />;
+// })(({ theme, expand }) => ({
+//   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+//   marginLeft: "auto",
+//   transition: theme.transitions.create("transform", {
+//     duration: theme.transitions.duration.shortest,
+//   }),
+// }));
 
 export default function ContractCard({ contract }) {
   const [, copy] = useCopyToClipboard();
@@ -290,12 +285,7 @@ export default function ContractCard({ contract }) {
                   contract.initiatorReceipt ? "complete" : "incomplete"
                 }`}
                 size="small"
-                style={{
-                  backgroundColor:
-                    statusColorBackground[
-                      contract.initiatorReceipt ? "complete" : "incomplete"
-                    ],
-                }}
+                color={contract.initiatorReceipt ? "success" : "error"}
               />
             </Grid>
           </Grid>
@@ -316,12 +306,7 @@ export default function ContractCard({ contract }) {
                   contract.providerReceipt ? "complete" : "incomplete"
                 }`}
                 size="small"
-                style={{
-                  backgroundColor:
-                    statusColorBackground[
-                      contract.providerReceipt ? "complete" : "incomplete"
-                    ],
-                }}
+                color={contract.providerReceipt ? "success" : "error"}
               />
             </Grid>
           </Grid>

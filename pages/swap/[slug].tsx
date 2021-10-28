@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "app/rootReducer";
 import { VariantType, useSnackbar } from "notistack";
@@ -18,7 +17,7 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red, green, yellow, blue } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import QueueIcon from "@mui/icons-material/Queue";
@@ -47,10 +46,10 @@ import { ExpandMore } from "style/components/Buttons";
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const statusColor = {
-  open: blue[700],
-  exchanging: yellow[700],
-  disputing: red[700],
-  complete: green[700],
+  open: "info",
+  exchanging: "warning",
+  disputing: "error",
+  complete: "success",
 };
 
 const OfferForm = ({ handleChange, setNumber }) => {
@@ -101,18 +100,7 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
   );
 };
 
-// export async function getServerSideProps({ params }) {
-//   const { slug } = params;
-//   const { swap } = await getSwap(slug);
-//   const { bids } = await queryBids(swap.accountId);
-
-//   return {
-//     props: { swap: swap.data, initialBids: bids },
-//   };
-// }
-
 export default function Swap({ swap, initialBids }) {
-  const router = useRouter();
   const isCurrent = React.useRef(true);
   const [, copy] = useCopyToClipboard();
   const [state, setState] = useState({
@@ -198,9 +186,7 @@ export default function Swap({ swap, initialBids }) {
                 avatar={
                   <Avatar
                     aria-label="swap-initiator"
-                    sx={{
-                      bgcolor: red[500],
-                    }}
+                    sx={{ bgcolor: red[500] }}
                   ></Avatar>
                 }
                 action={
@@ -232,7 +218,7 @@ export default function Swap({ swap, initialBids }) {
                       <Chip
                         label={swap.status}
                         size="small"
-                        style={{ backgroundColor: statusColor[swap.status] }}
+                        color={statusColor[swap.status]}
                       />
                     </Grid>
                   </Grid>
