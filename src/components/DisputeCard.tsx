@@ -48,16 +48,16 @@ const statusColor = {
 interface Dispute {
   id: string;
   type: string;
-  prosecuter: string;
-  prosecuterAlias: string;
-  defendent: string;
-  defendentAlias: string;
+  prosecutor: string;
+  prosecutorAlias: string;
+  defendant: string;
+  defendantAlias: string;
   reasonForDispute: string;
   swapId: string;
   bidId: string;
   contractId: string;
-  prosecuterEvidence: string; // Links of relevant documentation for making their case in the dispute
-  defendentEvidence: string; // Links of relevant documentation for making their case in the dispute
+  prosecutorEvidence: string; // Links of relevant documentation for making their case in the dispute
+  defendantEvidence: string; // Links of relevant documentation for making their case in the dispute
   jury: string[];
   juryVotes?: Array<{
     jurorId: string; // AccountId of the juror
@@ -81,18 +81,18 @@ interface Dispute {
 const dispute: Dispute = {
   id: "39d1935b5740de7b81fccd923fb52d211941167497f118b4e569eb44f0c65e9d",
   type: "DisputeAccount",
-  prosecuter:
+  prosecutor:
     "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
-  prosecuterAlias: "kyle",
-  defendent: "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
-  defendentAlias: "aamir",
+  prosecutorAlias: "kyle",
+  defendant: "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
+  defendantAlias: "aamir",
   swapId: "5d2862e10e2fc0ec3976915b12252b9ed0051a14dcf2215f6d37ecddd3cb7b9d",
   bidId: "14b218a052ec439b52fa6199f8bb5eed2b481290571092138a43db81271aa986",
   contractId:
     "01c02d4878ee6dff59605bb5231e82dd845c95c2c8f63752e364ab1ca8ea096e",
   reasonForDispute: "Aamir never sent me the offer he made in the contract.",
-  prosecuterEvidence: "",
-  defendentEvidence: "",
+  prosecutorEvidence: "",
+  defendantEvidence: "",
   jury: [],
   juryVotes: [],
   //   users: [],
@@ -227,7 +227,7 @@ export default function DisputeCard() {
             <MoreVertIcon />
           </IconButton>
         }
-        title={dispute.prosecuterAlias}
+        title={dispute.prosecutorAlias}
         subheader={formatDateTime(dispute.createdAt)}
       />
       <CardContent>
@@ -269,7 +269,7 @@ export default function DisputeCard() {
               </Typography>
             </Grid>
             <Grid item>
-              <Chip label={shortenHex(dispute.prosecuter)} size="small" />
+              <Chip label={shortenHex(dispute.prosecutor)} size="small" />
             </Grid>
           </Grid>
           <Grid
@@ -280,11 +280,11 @@ export default function DisputeCard() {
           >
             <Grid item>
               <Typography variant="body1" color="textPrimary" component="div">
-                Defendent:
+                defendant:
               </Typography>
             </Grid>
             <Grid item>
-              <Chip label={shortenHex(dispute.defendent)} size="small" />
+              <Chip label={shortenHex(dispute.defendant)} size="small" />
             </Grid>
           </Grid>
           <Grid

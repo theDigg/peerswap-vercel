@@ -19,12 +19,13 @@ async function useCrypto() {
 }
 
 let archiver = {
-  ip: "www.peerswap.org",
-  // ip: "localhost",
+  // ip: "www.peerswap.org",
+  ip: "localhost",
   port: 4000,
 };
 
-let host = `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
+// let host = `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
+let host = `http://${archiver.ip}:${9001}`;
 let network: string = "9f202eb3e3b8d86c7fa943bfd802376b9831ab27404a20495c1999c01ff117e3"
 
 // crypto.initialize(
@@ -40,8 +41,8 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
-    // `http://${archiver.ip}:${archiver.port}/nodelist`
+    // `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
+    `http://${archiver.ip}:${archiver.port}/nodelist`
   );
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -51,11 +52,11 @@ export async function getRandomHost() {
   }
   const { ip, port } = randomHost;
   console.log(
-    `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
-    // `Now using: ${archiver.ip}:${port} as host for query's and transactions`
+    // `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
+    `Now using: ${archiver.ip}:${port} as host for query's and transactions`
   );
-  return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
-  // return `http://${archiver.ip}:${port}`;
+  // return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
+  return `http://${archiver.ip}:${port}`;
 }
 
 export async function updateArchiveServer(ip: string, port: number) {
@@ -1007,7 +1008,6 @@ export async function submitReceiptTx(swap: Accounts.Swap, user: Wallet) {
 }
 
 export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
-  // console.log(typeof swapData, swapData)
   let tx: object;
   if (typeof swapData === "string") {
     const { swap } = await getSwapFromBid(swapData);
@@ -1038,15 +1038,31 @@ export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
 
 export async function submitDisputeTx(swap: any, user: Wallet) {
   await useCrypto();
+  const defendant = user.entry.address === swap.initiator ? swap.provider : swap.initiator;
   const tx = {
     type: "dispute",
     disputeId: crypto.hash(swap.id + swap.acceptedBid + swap.contractId),
-    initiator: user.entry.address,
+    prosecutor: user.entry.address,
+    defendant,
     swapId: swap.id,
     bidId: swap.acceptedBid,
     provider: swap.provider,
     contractId: swap.contractId,
     reasonForDispute: "Testing random reason",
+    timestamp: Date.now(),
+  };
+  crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
+  // console.log(tx)
+  return injectTx(tx);
+}
+
+export async function submitDisputeEvidence(disputeId: string, evidence: string, user: Wallet) {
+  await useCrypto();
+  const tx = {
+    type: "dispute_evidence",
+    disputeId,
+    from: user.entry.address,
+    evidence,
     timestamp: Date.now(),
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
