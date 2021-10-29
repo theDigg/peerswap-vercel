@@ -3,6 +3,7 @@ import { getAccountData } from "api/peerswapAPI";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box"
 import DisputeCard from "components/DisputeCard";
+import MarkdownPost from 'components/MarkdownPost'
 
 /*
     This page is where users can see more information regarding the dispute
@@ -19,6 +20,7 @@ export default function Dispute() {
     <Box p={1} m={2}>
       <Offset />
       <DisputeCard />
+      <MarkdownPost />
     </Box>
   );
 }
