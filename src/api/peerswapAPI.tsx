@@ -3,6 +3,7 @@ import axios from "axios";
 import stringify from "fast-stable-stringify";
 // const crypto = eval("require('shardus-crypto-web')");
 
+let KEY = "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc";
 let crypto = null
 
 async function useCrypto() {
@@ -11,9 +12,8 @@ async function useCrypto() {
   } else {
     import("shardus-crypto-web").then(async (mod) => {
       crypto = mod
-      await crypto.initialize(
-        "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
-      );
+      await crypto.initialize(KEY);
+      return crypto;
     });
   }
 }
@@ -676,6 +676,7 @@ export async function getAccountData(id: string) {
 
 export async function getAccountFromAlias(handle: string) {
   await useCrypto();
+  console.log(crypto)
   const url = `${host}/accounts/address/${crypto.hash(handle)}`;
   const { data } = await axios.get(url);
   return data;
@@ -1035,7 +1036,7 @@ export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
   return injectTx(tx);
 }
 
-export async function submitDisputeTx(swap: Accounts.Swap, user: Wallet) {
+export async function submitDisputeTx(swap: any, user: Wallet) {
   await useCrypto();
   const tx = {
     type: "dispute",

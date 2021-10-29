@@ -8,6 +8,7 @@ import proposalsReducer from "../features/proposals/proposalSlice";
 import messagesReducer from "../features/messages/messagesSlice";
 import archiverReducer from "../features/archiver/archiverSlice";
 import themeReducer from "../features/theme/themeSlice";
+import editorReducer from "../features/editor/editorSlice";
 
 const rootReducer = combineReducers({
   wallet: walletReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   messages: messagesReducer,
   archiver: archiverReducer,
   theme: themeReducer,
+  editor: editorReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>

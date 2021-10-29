@@ -60,14 +60,14 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     right: theme.spacing(2),
   },
   "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
-    top: theme.spacing(2),
+    top: theme.spacing(-2),
     left: theme.spacing(2),
   },
 }));
 
-export function PlaygroundSpeedDial() {
+export function PlaygroundSpeedDial({ dir }) {
   const [direction, setDirection] =
-    React.useState<SpeedDialProps["direction"]>("up");
+    React.useState<SpeedDialProps["direction"]>(dir);
   const [hidden, setHidden] = React.useState(false);
 
   const handleDirectionChange = (
@@ -83,8 +83,8 @@ export function PlaygroundSpeedDial() {
   };
 
   return (
-    <Box sx={{ transform: "translateZ(0px)", flexGrow: 1 }}>
-      <FormControlLabel
+    <Box sx={{ transform: "translateZ(0px)" }}>
+      {/* <FormControlLabel
         control={
           <Switch
             checked={hidden}
@@ -93,8 +93,8 @@ export function PlaygroundSpeedDial() {
           />
         }
         label="Hidden"
-      />
-      <FormControl component="fieldset" sx={{ mt: 1, display: "flex" }}>
+      /> */}
+      {/* <FormControl component="fieldset" sx={{ display: "flex" }}>
         <FormLabel component="legend">Direction</FormLabel>
         <RadioGroup
           aria-label="direction"
@@ -108,8 +108,8 @@ export function PlaygroundSpeedDial() {
           <FormControlLabel value="down" control={<Radio />} label="Down" />
           <FormControlLabel value="left" control={<Radio />} label="Left" />
         </RadioGroup>
-      </FormControl>
-      <Box sx={{ position: "relative", mt: 3, height: 320 }}>
+      </FormControl> */}
+      <Box sx={{ position: "relative", mt: 1 }}>
         <StyledSpeedDial
           ariaLabel="SpeedDial playground example"
           hidden={hidden}

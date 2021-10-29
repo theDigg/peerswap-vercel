@@ -427,6 +427,7 @@ function SwapCard({ swap, opened }) {
       <CardActions disableSpacing>
         {wallet.handle !== swap.initiatorAlias && (
           <Tooltip title="bid on this swap" arrow>
+            <span>
             <StyledLink href={`swap/${swap.id}`}>
               <IconButton
                 aria-label="bid on this swap"
@@ -435,6 +436,7 @@ function SwapCard({ swap, opened }) {
                 <AddIcon />
               </IconButton>
             </StyledLink>
+            </span>
           </Tooltip>
         )}
         {wallet.handle === swap.initiatorAlias && (
