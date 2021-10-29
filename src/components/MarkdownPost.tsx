@@ -32,6 +32,7 @@ export default function PostContent() {
           borderRadius: "6px",
           "& code": {
             backgroundColor: "inherit",
+            p: 0,
           },
         },
       }}
