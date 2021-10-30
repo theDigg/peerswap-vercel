@@ -76,7 +76,7 @@ const supportedLanguages = [
   { id: 56, name: "yaml" },
 ];
 
-const defineTheme = (theme) => {
+export const defineTheme = (theme) => {
   return new Promise<void>((res) => {
     Promise.all([
       loader.init(),
@@ -142,10 +142,11 @@ const Settings = () => {
         flexGrow: 1,
         pl: 2,
         "& button": { mr: 5 },
+        width: "100%",
       }}
     >
-      <Typography variant="h5">Settings</Typography>
-      <Divider />
+      {/* <Typography variant="h5">Settings</Typography>
+      <Divider /> */}
       <Box sx={{ width: "100%", my: 2 }}>
         <Typography sx={{ my: 1 }} variant="h6">
           Languages

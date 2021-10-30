@@ -1,9 +1,18 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import MonacoEditor from "@monaco-editor/react";
-import Settings from "./Settings";
+import Settings, { defineTheme } from "./Settings";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/rootReducer";
+import { setValue } from "features/editor/editorSlice";
+import CodeIcon from "@mui/icons-material/Code";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PreviewIcon from "@mui/icons-material/Preview";
+import MarkdownPost from "components/MarkdownPost"
+
+const defaultThemes = ["vs-dark", "light"];
 
 const supportedLanguages = [
   { id: 1, name: "apex" },
@@ -65,21 +74,27 @@ const supportedLanguages = [
 ];
 
 const Editor = () => {
-  const { options, languageId, monacoTheme } = useSelector(
+  const dispatch = useDispatch();
+  const { options, languageId, monacoTheme, value } = useSelector(
     (state: RootState) => state.editor
   );
 
-  const language = supportedLanguages.find(
-    ({ id }) => id === languageId
-  ).name;
+  const language = supportedLanguages.find(({ id }) => id === languageId).name;
 
   function handleEditorWillMount(monaco) {
+    if (!defaultThemes.includes(monacoTheme)) {
+      defineTheme(monacoTheme).then(() => monaco)
+    }
     monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
       target: monaco.languages.typescript.ScriptTarget.Latest,
       module: monaco.languages.typescript.ModuleKind.ES2015,
       allowNonTsExtensions: true,
       lib: ["es2018"],
     });
+  }
+
+  function handleInputChange(input) {
+    dispatch(setValue(input));
   }
 
   return (
@@ -89,23 +104,97 @@ const Editor = () => {
         height: "100%",
         display: "flex",
         justifyContent: "space-between",
-        p: 1,
-        pt: 1.5,
-        mb: 1.5,
+        // p: 1,
+        // pt: 1.5,
+        // mb: 1.5,
       }}
     >
       <MonacoEditor
         theme={monacoTheme}
         height="100vh"
         path={language}
-        defaultValue={""}
+        defaultValue={value}
         defaultLanguage={language}
         options={options}
         beforeMount={handleEditorWillMount}
+        onChange={handleInputChange}
       />
-      <Settings />
+      {/* <Settings /> */}
     </Box>
   );
 };
 
-export default Editor;
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`nav-tabpanel-${index}`}
+      aria-labelledby={`nav-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box>{children}</Box>}
+    </div>
+  );
+}
+
+interface LinkTabProps {
+  label?: string;
+  href?: string;
+  icon?: any;
+}
+
+function LinkTab(props: LinkTabProps) {
+  return (
+    <Tab
+      component="a"
+      onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.preventDefault();
+      }}
+      {...props}
+    />
+  );
+}
+
+function BasicTabs() {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <LinkTab icon={<CodeIcon />} label="Editor" />
+          <LinkTab icon={<PreviewIcon />} label="Preview" />
+          <LinkTab icon={<SettingsIcon />} label="Settings" />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        <Editor />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <MarkdownPost />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <Settings />
+      </TabPanel>
+    </Box>
+  );
+}
+
+export default BasicTabs;

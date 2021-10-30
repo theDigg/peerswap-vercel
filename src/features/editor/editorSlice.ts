@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface EditorState {
+  value: string;
   languageId: number;
   monacoTheme: any;
   options: any;
 }
 
 const initialState: EditorState = {
+  value: "",
   languageId: 24,
   monacoTheme: "vs-dark",
   options: {
@@ -74,6 +76,9 @@ const editorDetails = createSlice({
   name: "editorDetails",
   initialState,
   reducers: {
+    setValue(state, action: PayloadAction<any>) {
+      state.value = action.payload;
+    },
     setLanguageId(state, action: PayloadAction<any>) {
       state.languageId = action.payload;
     },
@@ -86,7 +91,7 @@ const editorDetails = createSlice({
   },
 });
 
-export const { setLanguageId, setMonacoTheme, setOptions } =
+export const { setValue, setLanguageId, setMonacoTheme, setOptions } =
   editorDetails.actions;
 
 export default editorDetails.reducer;

@@ -4,9 +4,12 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { markdownPost } from "mocks/markdownPost";
+import { useSelector } from 'react-redux'
+import { RootState } from "app/rootReducer";
 
 // UI component for main post content
 export default function PostContent() {
+  const { value } = useSelector((state: RootState) => state.editor)
   return (
     <Paper
       variant="outlined"
@@ -45,7 +48,7 @@ export default function PostContent() {
         </Link>{" "}
         on {"10/29/2021"}
       </span>
-      <ReactMarkdown>{markdownPost}</ReactMarkdown>
+      <ReactMarkdown>{value}</ReactMarkdown>
     </Paper>
   );
 }

@@ -92,12 +92,6 @@ function LinkTab(props: LinkTabProps) {
   );
 }
 
-const tabMapping = {
-  send: 0,
-  swap: 1,
-  receive: 2,
-};
-
 export default function Wallet() {
   const dispatch = useDispatch()
   const { account } = useSelector((state: RootState) => state.account);
