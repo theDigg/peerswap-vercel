@@ -8,9 +8,9 @@ let crypto = null
 
 async function useCrypto() {
   if (crypto !== null) {
-    return
+    return crypto
   } else {
-    import("shardus-crypto-web").then(async (mod) => {
+    return await import("shardus-crypto-web").then(async (mod) => {
       crypto = mod
       await crypto.initialize(KEY);
       return crypto;
@@ -676,8 +676,7 @@ export async function getAccountData(id: string) {
 }
 
 export async function getAccountFromAlias(handle: string) {
-  await useCrypto();
-  console.log(crypto)
+  crypto = await useCrypto();
   const url = `${host}/accounts/address/${crypto.hash(handle)}`;
   const { data } = await axios.get(url);
   return data;
