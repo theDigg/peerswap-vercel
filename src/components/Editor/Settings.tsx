@@ -77,13 +77,13 @@ const supportedLanguages = [
 ];
 
 export const defineTheme = (theme) => {
-  return new Promise<void>((res) => {
+  return new Promise<any>((res) => {
     Promise.all([
       loader.init(),
       import(`monaco-themes/themes/${monacoThemes[theme]}.json`),
     ]).then(([monaco, themeData]) => {
       monaco.editor.defineTheme(theme, themeData);
-      res();
+      res(themeData);
     });
   });
 };
@@ -120,6 +120,13 @@ const Settings = () => {
   function handleEditorDidMount(editor, monaco) {
     setIsEditorReady(true);
     editorRef.current = editor;
+    if (defaultThemes.includes(monacoTheme)) {
+      dispatch(setMonacoTheme(monacoTheme));
+    } else {
+      defineTheme(monacoTheme).then(() =>
+        dispatch(setMonacoTheme(monacoTheme))
+      );
+    }
   }
 
   function handleApply() {

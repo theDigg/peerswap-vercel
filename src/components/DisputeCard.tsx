@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "app/rootReducer";
 import { StyledLink } from "style/components/Link";
 import { ExpandMore } from "style/components/Buttons";
+import { BootstrapTooltip } from "style/components/Tooltip";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardHeader from "@mui/material/CardHeader";
@@ -25,13 +26,16 @@ import LoopIcon from "@mui/icons-material/Loop";
 import WarningIcon from "@mui/icons-material/Warning";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import AttachmentIcon from "@mui/icons-material/Attachment";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import GavelOutlinedIcon from "@mui/icons-material/GavelOutlined";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import BidCard from "./BidCard";
 import SwapCard from "./SwapCard";
-import { formatDateTime, shortenHex } from "../utils/stringUtils";
-import useCopyToClipboard from "../hooks/useCopyToClipboard";
-import { PlaygroundSpeedDial } from 'components/MUIDemo/SpeedDial'
+import { formatDateTime, shortenHex } from "utils/stringUtils";
+import useCopyToClipboard from "hooks/useCopyToClipboard";
+import { PlaygroundSpeedDial } from "components/MUIDemo/SpeedDial";
+import MarkdownPost from "components/MarkdownPost";
 import {
   submitReceiptTx,
   submitDisputeTx,
@@ -78,34 +82,34 @@ interface Dispute {
   timestamp: number;
 }
 
-const dispute: Dispute = {
-  id: "39d1935b5740de7b81fccd923fb52d211941167497f118b4e569eb44f0c65e9d",
-  type: "DisputeAccount",
-  prosecutor:
-    "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
-  prosecutorAlias: "kyle",
-  defendant: "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
-  defendantAlias: "aamir",
-  swapId: "5d2862e10e2fc0ec3976915b12252b9ed0051a14dcf2215f6d37ecddd3cb7b9d",
-  bidId: "14b218a052ec439b52fa6199f8bb5eed2b481290571092138a43db81271aa986",
-  contractId:
-    "01c02d4878ee6dff59605bb5231e82dd845c95c2c8f63752e364ab1ca8ea096e",
-  reasonForDispute: "Aamir never sent me the offer he made in the contract.",
-  prosecutorEvidence: "",
-  defendantEvidence: "",
-  jury: [],
-  juryVotes: [],
-  //   users: [],
-  //   userVotes: [],
-  createdAt: 1635377941270,
-  votingStarts: 1635378941270,
-  votingEnds: 1635379941270,
-  verdict: false,
-  innocent: "",
-  guilty: "",
-  timestamp: 1635377941270,
-  hash: "14eab9b349d2a82a85dca5d4c78a6a122c91c8ab946049b61649b9f2ba9fab4d",
-};
+// const dispute: Dispute = {
+//   id: "39d1935b5740de7b81fccd923fb52d211941167497f118b4e569eb44f0c65e9d",
+//   type: "DisputeAccount",
+//   prosecutor:
+//     "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
+//   prosecutorAlias: "kyle",
+//   defendant: "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
+//   defendantAlias: "aamir",
+//   swapId: "5d2862e10e2fc0ec3976915b12252b9ed0051a14dcf2215f6d37ecddd3cb7b9d",
+//   bidId: "14b218a052ec439b52fa6199f8bb5eed2b481290571092138a43db81271aa986",
+//   contractId:
+//     "01c02d4878ee6dff59605bb5231e82dd845c95c2c8f63752e364ab1ca8ea096e",
+//   reasonForDispute: "Aamir never sent me the offer he made in the contract.",
+//   prosecutorEvidence: "",
+//   defendantEvidence: "",
+//   jury: [],
+//   juryVotes: [],
+//   //   users: [],
+//   //   userVotes: [],
+//   createdAt: 1635377941270,
+//   votingStarts: 1635378941270,
+//   votingEnds: 1635379941270,
+//   verdict: false,
+//   innocent: "",
+//   guilty: "",
+//   timestamp: 1635377941270,
+//   hash: "14eab9b349d2a82a85dca5d4c78a6a122c91c8ab946049b61649b9f2ba9fab4d",
+// };
 
 const swap = {
   id: "5d2862e10e2fc0ec3976915b12252b9ed0051a14dcf2215f6d37ecddd3cb7b9d",
@@ -199,7 +203,7 @@ const bid = {
   type: "BidAccount",
 };
 
-export default function DisputeCard() {
+export default function DisputeCard({ dispute }) {
   const [, copy] = useCopyToClipboard();
   const { wallet } = useSelector((state: RootState) => state.wallet);
   const [expanded, setExpanded] = React.useState(false);
@@ -223,9 +227,13 @@ export default function DisputeCard() {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <BootstrapTooltip title="Submit Evidence" placement="left">
+            <StyledLink href={`../dispute/${dispute.id}/evidence`}>
+              <IconButton aria-label="settings">
+                <GavelOutlinedIcon />
+              </IconButton>
+            </StyledLink>
+          </BootstrapTooltip>
         }
         title={dispute.prosecutorAlias}
         subheader={formatDateTime(dispute.createdAt)}
@@ -353,7 +361,7 @@ export default function DisputeCard() {
         </Paper>
       </CardContent>
       <CardActions disableSpacing>
-        <PlaygroundSpeedDial dir="right" />
+        {/* <PlaygroundSpeedDial dir="right" /> */}
         {/* <Tooltip title="bid on this swap" arrow>
           <span>
             <StyledLink href={`swap/${swap.id}`}>
@@ -404,20 +412,29 @@ export default function DisputeCard() {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Divider orientation="horizontal" sx={{ mb: 2 }}>
+          <Divider orientation="horizontal" sx={{ my: 2 }}>
             <Chip
-              icon={<LocalOfferIcon />}
-              label="Evidence"
+              icon={<AttachmentIcon />}
+              label="Prosecutor Evidence"
+              variant="outlined"
+              size="small"
+              color="primary"
+            />
+          </Divider>
+          <Box sx={{ mt: 1 }}>
+            <MarkdownPost content={dispute.prosecutorEvidence || ""} />
+          </Box>
+          <Divider orientation="horizontal" sx={{ my: 2 }}>
+            <Chip
+              icon={<AttachmentIcon />}
+              label="Defendant Evidence"
               variant="outlined"
               size="small"
               color="secondary"
             />
           </Divider>
           <Box sx={{ mt: 1 }}>
-            <SwapCard swap={swap} opened={false} />
-          </Box>
-          <Box sx={{ mt: 1 }}>
-            <BidCard swap={swap} bid={bid} />
+            <MarkdownPost content={dispute.defendantEvidence || ""} />
           </Box>
         </CardContent>
       </Collapse>

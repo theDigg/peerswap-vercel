@@ -18,7 +18,7 @@
 
 const nextConfig = {
   // any configs you need
-  // swcMinify: true,
+  swcMinify: true,
 };
 
 module.exports = nextConfig;

@@ -1,16 +1,20 @@
 import React from "react";
+import { useRouter } from "next/router";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Button from "@mui/material/Button";
 import MonacoEditor from "@monaco-editor/react";
 import Settings, { defineTheme } from "./Settings";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/rootReducer";
-import { setValue } from "features/editor/editorSlice";
+import { setValue, setMonacoTheme } from "features/editor/editorSlice";
 import CodeIcon from "@mui/icons-material/Code";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PreviewIcon from "@mui/icons-material/Preview";
-import MarkdownPost from "components/MarkdownPost"
+import MarkdownPost from "components/MarkdownPost";
+import { submitDisputeEvidence } from "api/peerswapAPI";
+import { VariantType, useSnackbar } from "notistack";
 
 const defaultThemes = ["vs-dark", "light"];
 
@@ -73,7 +77,7 @@ const supportedLanguages = [
   { id: 56, name: "yaml" },
 ];
 
-const Editor = () => {
+const Editor = _ => {
   const dispatch = useDispatch();
   const { options, languageId, monacoTheme, value } = useSelector(
     (state: RootState) => state.editor
@@ -83,7 +87,9 @@ const Editor = () => {
 
   function handleEditorWillMount(monaco) {
     if (!defaultThemes.includes(monacoTheme)) {
-      defineTheme(monacoTheme).then(() => monaco)
+      defineTheme(monacoTheme).then(() =>
+        dispatch(setMonacoTheme(monacoTheme))
+      );
     }
     monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
       target: monaco.languages.typescript.ScriptTarget.Latest,
@@ -102,8 +108,6 @@ const Editor = () => {
       sx={{
         width: "100%",
         height: "100%",
-        display: "flex",
-        justifyContent: "space-between",
         // p: 1,
         // pt: 1.5,
         // mb: 1.5,
@@ -111,7 +115,7 @@ const Editor = () => {
     >
       <MonacoEditor
         theme={monacoTheme}
-        height="100vh"
+        height="80vh"
         path={language}
         defaultValue={value}
         defaultLanguage={language}
@@ -165,17 +169,35 @@ function LinkTab(props: LinkTabProps) {
 }
 
 function BasicTabs() {
-  const [value, setValue] = React.useState(0);
+  // const dispatch = useDispatch();
+  const router = useRouter();
+  const { value } = useSelector((state: RootState) => state.editor);
+  const { wallet } = useSelector((state: RootState) => state.wallet);
+  const { enqueueSnackbar } = useSnackbar();
+  const [tab, setTab] = React.useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const handleChange = (event: React.SyntheticEvent, newTab: number) => {
+    setTab(newTab);
   };
+
+  const handleClickVariant = (variant: VariantType, response: string) => () => {
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(response, { variant });
+  };
+
+  function handleSubmit() {
+    submitDisputeEvidence(router.query.slug as string, value, wallet).then(
+      ({ result }: any) => {
+        handleClickVariant(result.status, result.reason)();
+      }
+    );
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", display: "flex" }}>
         <Tabs
-          value={value}
+          value={tab}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
@@ -183,14 +205,18 @@ function BasicTabs() {
           <LinkTab icon={<PreviewIcon />} label="Preview" />
           <LinkTab icon={<SettingsIcon />} label="Settings" />
         </Tabs>
+        <Box sx={{ flexGrow: 1 }} />
+        <Button variant="contained" sx={{ my: "auto" }} onClick={handleSubmit}>
+          Submit Evidence
+        </Button>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tab} index={0}>
         <Editor />
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        <MarkdownPost />
+      <TabPanel value={tab} index={1}>
+        <MarkdownPost content={value} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={tab} index={2}>
         <Settings />
       </TabPanel>
     </Box>

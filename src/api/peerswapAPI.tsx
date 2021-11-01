@@ -1065,7 +1065,7 @@ export async function submitDisputeEvidence(disputeId: string, evidence: string,
     timestamp: Date.now(),
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
-  // console.log(tx)
+  console.log(tx)
   return injectTx(tx);
 }
 

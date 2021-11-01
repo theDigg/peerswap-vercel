@@ -8,8 +8,8 @@ import { useSelector } from 'react-redux'
 import { RootState } from "app/rootReducer";
 
 // UI component for main post content
-export default function PostContent() {
-  const { value } = useSelector((state: RootState) => state.editor)
+export default function PostContent({ content }) {
+  // const { value } = useSelector((state: RootState) => state.editor)
   return (
     <Paper
       variant="outlined"
@@ -40,15 +40,15 @@ export default function PostContent() {
         },
       }}
     >
-      <Typography variant="h5">{"Title"}</Typography>
+      {/* <Typography variant="h5">{"Title"}</Typography>
       <span>
         Written by
         <Link href={`https://www.codegolf.dev/kyle`}>
           <a className="text-info">@kyle</a>
         </Link>{" "}
         on {"10/29/2021"}
-      </span>
-      <ReactMarkdown>{value}</ReactMarkdown>
+      </span> */}
+      <ReactMarkdown>{content}</ReactMarkdown>
     </Paper>
   );
 }
