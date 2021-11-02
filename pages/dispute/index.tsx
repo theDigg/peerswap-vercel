@@ -17,7 +17,7 @@ export default function Dispute() {
   return (
     <Box p={1} m={2} width="100%">
       <Offset />
-      <DisputeCard />
+      {/* <DisputeCard /> */}
     </Box>
   );
 }
