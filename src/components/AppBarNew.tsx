@@ -454,16 +454,15 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
             </Box>
           </MenuItem>
         ))}
-        <Fab
+        {/* <Fab
           variant="extended"
           color="primary"
           aria-label="Add"
           sx={{ m: 4, textTransform: "none" }}
-          onClick={() => router.push("/messages")}
         >
           Send New Message
           <SendIcon sx={{ ml: 2 }} />
-        </Fab>
+        </Fab> */}
       </Menu>
       <Menu
         id="notifications-menu"
@@ -483,7 +482,7 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
               },
             }}
           >
-            <Notification {...notification} typographyVariant="inherit" />
+            <Notification {...notification} />
           </MenuItem>
         ))}
       </Menu>

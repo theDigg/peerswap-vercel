@@ -1,20 +1,21 @@
 import React from "react";
-import { Button } from "@mui/material";
-import {
-  NotificationsNone as NotificationsIcon,
-  ThumbUp as ThumbUpIcon,
-  ShoppingCart as ShoppingCartIcon,
-  LocalOffer as TicketIcon,
-  BusinessCenter as DeliveredIcon,
-  SmsFailed as FeedbackIcon,
-  DiscFull as DiscIcon,
-  Email as MessageIcon,
-  Report as ReportIcon,
-  Error as DefenceIcon,
-  AccountBox as CustomerIcon,
-  Done as ShippedIcon,
-  Publish as UploadIcon,
-} from "@mui/icons-material";
+import Button from "@mui/material/Button";
+// import {
+//   NotificationsNone as NotificationsIcon,
+//   ThumbUp as ThumbUpIcon,
+//   ShoppingCart as ShoppingCartIcon,
+//   LocalOffer as TicketIcon,
+//   BusinessCenter as DeliveredIcon,
+//   SmsFailed as FeedbackIcon,
+//   DiscFull as DiscIcon,
+//   Email as MessageIcon,
+//   Report as ReportIcon,
+//   Error as DefenceIcon,
+//   AccountBox as CustomerIcon,
+//   Done as ShippedIcon,
+//   Publish as UploadIcon,
+// } from "@mui/icons-material";
+import NotificationsNone from "@mui/icons-material/NotificationsNone";
 import { useTheme } from "@mui/styles";
 import classnames from "classnames";
 import tinycolor from "tinycolor2";
@@ -23,22 +24,22 @@ import tinycolor from "tinycolor2";
 import useStyles from "./styles";
 
 // components
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const typesIcons = {
-  "e-commerce": <ShoppingCartIcon />,
-  notification: <NotificationsIcon />,
-  offer: <TicketIcon />,
-  info: <ThumbUpIcon />,
-  message: <MessageIcon />,
-  feedback: <FeedbackIcon />,
-  customer: <CustomerIcon />,
-  shipped: <ShippedIcon />,
-  delivered: <DeliveredIcon />,
-  defence: <DefenceIcon />,
-  report: <ReportIcon />,
-  upload: <UploadIcon />,
-  disc: <DiscIcon />,
+  "e-commerce": <NotificationsNone />,
+  notification: <NotificationsNone />,
+  offer: <NotificationsNone />,
+  info: <NotificationsNone />,
+  message: <NotificationsNone />,
+  feedback: <NotificationsNone />,
+  customer: <NotificationsNone />,
+  shipped: <NotificationsNone />,
+  delivered: <NotificationsNone />,
+  defence: <NotificationsNone />,
+  report: <NotificationsNone />,
+  upload: <NotificationsNone />,
+  disc: <NotificationsNone />,
 };
 
 export default function Notification({ variant, ...props }: any) {
@@ -88,9 +89,7 @@ export default function Notification({ variant, ...props }: any) {
         {iconWithStyles}
       </div>
       <div className={classes.messageContainer}>
-        <Typography>
-          {props.message}
-        </Typography>
+        <Typography>{props.message}</Typography>
         {props.extraButton && props.extraButtonClick && (
           <Button
             onClick={props.extraButtonClick}
