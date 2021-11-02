@@ -4,14 +4,14 @@ import stringify from "fast-stable-stringify";
 // const crypto = eval("require('shardus-crypto-web')");
 
 let KEY = "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc";
-let crypto = null
+let crypto = null;
 
 async function useCrypto() {
   if (crypto !== null) {
-    return crypto
+    return crypto;
   } else {
     return await import("shardus-crypto-web").then(async (mod) => {
-      crypto = mod
+      crypto = mod;
       await crypto.initialize(KEY);
       return crypto;
     });
@@ -19,14 +19,15 @@ async function useCrypto() {
 }
 
 let archiver = {
-  // ip: "www.peerswap.org",
-  ip: "localhost",
+  ip: "www.peerswap.org",
+  // ip: "localhost",
   port: 4000,
 };
 
-// let host = `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
-let host = `http://${archiver.ip}:${9001}`;
-let network: string = "9f202eb3e3b8d86c7fa943bfd802376b9831ab27404a20495c1999c01ff117e3"
+let host = `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
+// let host = `http://${archiver.ip}:${9001}`;
+let network: string =
+  "9f202eb3e3b8d86c7fa943bfd802376b9831ab27404a20495c1999c01ff117e3";
 
 // crypto.initialize(
 //   "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
@@ -41,8 +42,8 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    // `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
-    `http://${archiver.ip}:${archiver.port}/nodelist`
+    `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
+    // `http://${archiver.ip}:${archiver.port}/nodelist`
   );
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -52,11 +53,11 @@ export async function getRandomHost() {
   }
   const { ip, port } = randomHost;
   console.log(
-    // `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
-    `Now using: ${archiver.ip}:${port} as host for query's and transactions`
+    `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
+    // `Now using: ${archiver.ip}:${port} as host for query's and transactions`
   );
-  // return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
-  return `http://${archiver.ip}:${port}`;
+  return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
+  // return `http://${archiver.ip}:${port}`;
 }
 
 export async function updateArchiveServer(ip: string, port: number) {
@@ -83,7 +84,7 @@ export async function importWallet(sk: Wallet["entry"]["keys"]["secretKey"]) {
   const data = await getAccountData(keys.publicKey);
   const account = data.account;
   if (account.alias) {
-    await useCrypto()
+    await useCrypto();
     const entry = {
       address: keys.publicKey,
       id: crypto.hash(account.alias),
@@ -1037,7 +1038,8 @@ export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
 
 export async function submitDisputeTx(swap: any, user: Wallet) {
   await useCrypto();
-  const defendant = user.entry.address === swap.initiator ? swap.provider : swap.initiator;
+  const defendant =
+    user.entry.address === swap.initiator ? swap.provider : swap.initiator;
   const tx = {
     type: "dispute",
     disputeId: crypto.hash(swap.id + swap.acceptedBid + swap.contractId),
@@ -1055,7 +1057,11 @@ export async function submitDisputeTx(swap: any, user: Wallet) {
   return injectTx(tx);
 }
 
-export async function submitDisputeEvidence(disputeId: string, evidence: string, user: Wallet) {
+export async function submitDisputeEvidence(
+  disputeId: string,
+  evidence: string,
+  user: Wallet
+) {
   await useCrypto();
   const tx = {
     type: "dispute_evidence",
@@ -1065,7 +1071,7 @@ export async function submitDisputeEvidence(disputeId: string, evidence: string,
     timestamp: Date.now(),
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
-  console.log(tx)
+  console.log(tx);
   return injectTx(tx);
 }
 
