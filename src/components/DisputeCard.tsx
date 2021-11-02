@@ -219,7 +219,7 @@ export default function DisputeCard({ dispute }) {
   };
 
   return (
-    <Card sx={{ width: "100%" }} elevation={4}>
+    <Card sx={{ width: '100%' }} elevation={4}>
       <CardHeader
         avatar={
           <Avatar aria-label="dispute-icon" sx={{ bgcolor: red[500] }}>
@@ -227,13 +227,23 @@ export default function DisputeCard({ dispute }) {
           </Avatar>
         }
         action={
-          <BootstrapTooltip title="Submit Evidence" placement="left">
-            <StyledLink href={`../dispute/${dispute.id}/evidence`}>
-              <IconButton aria-label="settings">
-                <GavelOutlinedIcon />
-              </IconButton>
-            </StyledLink>
-          </BootstrapTooltip>
+          wallet.entry.address === dispute.prosecutor || dispute.defendant ? (
+            <BootstrapTooltip title="Submit Evidence" placement="left">
+              <StyledLink href={`../dispute/${dispute.id}/evidence`}>
+                <IconButton aria-label="settings">
+                  <GavelOutlinedIcon />
+                </IconButton>
+              </StyledLink>
+            </BootstrapTooltip>
+          ) : (
+            <BootstrapTooltip title="Join the jury" placement="left">
+              <StyledLink href={`../dispute/${dispute.id}/jury`}>
+                <IconButton aria-label="jury-page-link">
+                  <GavelOutlinedIcon />
+                </IconButton>
+              </StyledLink>
+            </BootstrapTooltip>
+          )
         }
         title={dispute.prosecutorAlias}
         subheader={formatDateTime(dispute.createdAt)}
@@ -259,9 +269,9 @@ export default function DisputeCard({ dispute }) {
             </Grid>
             <Grid item>
               <Chip
-                label={dispute.verdict ? "Resolved" : "Disputing"}
+                label={dispute.verdict ? 'Resolved' : 'Disputing'}
                 size="small"
-                color={dispute.verdict ? "success" : "warning"}
+                color={dispute.verdict ? 'success' : 'warning'}
               />
             </Grid>
           </Grid>
@@ -422,7 +432,7 @@ export default function DisputeCard({ dispute }) {
             />
           </Divider>
           <Box sx={{ mt: 1 }}>
-            <MarkdownPost content={dispute.prosecutorEvidence || ""} />
+            <MarkdownPost content={dispute.prosecutorEvidence || ''} />
           </Box>
           <Divider orientation="horizontal" sx={{ my: 2 }}>
             <Chip
@@ -434,7 +444,7 @@ export default function DisputeCard({ dispute }) {
             />
           </Divider>
           <Box sx={{ mt: 1 }}>
-            <MarkdownPost content={dispute.defendantEvidence || ""} />
+            <MarkdownPost content={dispute.defendantEvidence || ''} />
           </Box>
         </CardContent>
       </Collapse>
