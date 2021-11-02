@@ -19,13 +19,15 @@ async function useCrypto() {
 }
 
 let archiver = {
-  ip: "www.peerswap.org",
-  // ip: "localhost",
+  ip: process.env.NODE_ENV === "development" ? "localhost" : "www.peerswap.org",
   port: 4000,
 };
 
-let host = `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
-// let host = `http://${archiver.ip}:${9001}`;
+let host =
+  process.env.NODE_ENV === "development"
+    ? `http://${archiver.ip}:${9001}`
+    : `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
+
 let network: string =
   "9f202eb3e3b8d86c7fa943bfd802376b9831ab27404a20495c1999c01ff117e3";
 
@@ -42,8 +44,9 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
-    // `http://${archiver.ip}:${archiver.port}/nodelist`
+    process.env.NODE_ENV === "development"
+      ? `http://${archiver.ip}:${archiver.port}/nodelist`
+      : `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
   );
   const nodeList = data.nodeList;
   const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -53,11 +56,13 @@ export async function getRandomHost() {
   }
   const { ip, port } = randomHost;
   console.log(
-    `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
-    // `Now using: ${archiver.ip}:${port} as host for query's and transactions`
+    process.env.NODE_ENV === "development"
+      ? `Now using: http://${archiver.ip}:${port} as host for query's and transactions`
+      : `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
   );
-  return `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
-  // return `http://${archiver.ip}:${port}`;
+  return process.env.NODE_ENV === "development"
+    ? `http://${archiver.ip}:${port}`
+    : `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
 }
 
 export async function updateArchiveServer(ip: string, port: number) {
@@ -780,6 +785,12 @@ export async function getSwapFromBid(swapId: string) {
 export async function queryBids(swapId: string) {
   const res = await axios.get(`${host}/bids/${swapId}`);
   return res.data;
+}
+
+export async function getDisputes() {
+  const { data } = await axios.get(`${host}/disputes`);
+  console.log(data)
+  return data;
 }
 
 // async function getMessages(to, from) {

@@ -1,7 +1,8 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import DisputeCard from "components/DisputeCard";
+import Masonry from "components/Masonry";
+import { getDisputes } from 'api/peerswapAPI'
 
 /*
     This page is where users can see dispute cards that are currently active
@@ -13,11 +14,20 @@ import DisputeCard from "components/DisputeCard";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-export default function Dispute() {
+export default function Disputes({ disputes }) {
   return (
-    <Box p={1} m={2} width="100%">
+    <Box p={1} m={1} width="100%">
       <Offset />
-      {/* <DisputeCard /> */}
+      <Masonry items={disputes} />
     </Box>
   );
 }
+
+Disputes.getInitialProps = async () => {
+  const { disputes } = await getDisputes();
+  console.log(disputes)
+
+  return {
+    disputes,
+  };
+};

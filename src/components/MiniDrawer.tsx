@@ -27,6 +27,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { setWallet } from "features/wallet/walletSlice";
 import { setAccount } from "features/account/accountSlice";
 import { setChats } from "features/messages/messagesSlice";
@@ -233,6 +234,15 @@ const MiniDrawer = () => {
       onClick: () => {
         setActive("swaps");
         router.push("/swaps");
+      },
+    },
+    {
+      text: "Disputes",
+      icon: <WarningAmberIcon color={active === "dispute" ? "primary" : "inherit"} />,
+      show: wallet !== null,
+      onClick: () => {
+        setActive("disputes");
+        router.push("/dispute");
       },
     },
     {

@@ -5,6 +5,7 @@ import Paper from "@mui/material/Paper";
 import Masonry from "@mui/lab/Masonry";
 import SwapCard from "./SwapCard";
 import BidCard from "./BidCard";
+import DisputeCard from "./DisputeCard";
 
 // const Item = styled(Paper)(({ theme }) => ({
 //   ...theme.typography.body2,
@@ -63,6 +64,9 @@ export default function BasicMasonry({ items }) {
               )}
               {item.type === "BidAccount" && (
                 <BidCard swap={item.swapId} bid={item} />
+              )}
+              {item.type === "DisputeAccount" && (
+                <DisputeCard dispute={item} />
               )}
             </Item>
           ))}
