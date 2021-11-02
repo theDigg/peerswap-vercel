@@ -9,8 +9,9 @@ import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import { importWallet } from "api/peerswapAPI";
 import { setWallets } from "features/wallet/walletSlice";
+import Page from 'components/Page';
 
-export default function Import() {
+const Import = () => {
   const dispatch = useDispatch();
   const [secretKey, setSecretKey] = useState("");
   const [status, setStatus] = useState("");
@@ -80,3 +81,11 @@ export default function Import() {
     </Container>
   );
 }
+
+const ImportPage = () => (
+  <Page name="Import" path="/import">
+    <Import />
+  </Page>
+);
+
+export default ImportPage;

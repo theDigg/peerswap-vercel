@@ -8,10 +8,11 @@ import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import Timeline from "components/MUIDemo/Timeline";
+import Page from 'components/Page';
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-function Welcome() {
+const Index = () => {
   const router = useRouter();
   return (
     <Box display="flex" sx={{ width: "100%" }}>
@@ -42,4 +43,10 @@ function Welcome() {
   );
 }
 
-export default Welcome;
+const IndexPage = () => (
+  <Page name="Intoduction" path="/">
+    <Index />
+  </Page>
+);
+
+export default IndexPage;

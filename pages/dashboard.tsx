@@ -14,6 +14,7 @@ import { setMyBids } from "features/bids/bidsSlice";
 import { getMySwaps, getMyBids } from "api/peerswapAPI";
 import AccountInfo from "components/AccountInfo";
 import { useRouter } from "next/router";
+import Page from "components/Page";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -87,4 +88,10 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+const DashboardPage = () => (
+  <Page name="Dashboard" path="/dashboard">
+    <Dashboard />
+  </Page>
+);
+
+export default DashboardPage;

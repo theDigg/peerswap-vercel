@@ -1,8 +1,9 @@
-import React from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Masonry from "components/Masonry";
-import { getDisputes } from 'api/peerswapAPI'
+import React from 'react';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Masonry from 'components/Masonry';
+import { getDisputes } from 'api/peerswapAPI';
+import Page from 'components/Page';
 
 /*
     This page is where users can see dispute cards that are currently active
@@ -12,22 +13,30 @@ import { getDisputes } from 'api/peerswapAPI'
     Any user can view the disputes and vote, but jurors have more sway in the outcome.
 */
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-export default function Disputes({ disputes }) {
+const Disputes = ({ disputes }) => {
   return (
     <Box p={1} m={1} width="100%">
       <Offset />
       <Masonry items={disputes} />
     </Box>
   );
-}
+};
 
-Disputes.getInitialProps = async () => {
+const DisputesPage = ({ disputes }) => (
+  <Page name="Disputes" path="/disputes">
+    <Disputes disputes={disputes}/>
+  </Page>
+);
+
+DisputesPage.getInitialProps = async () => {
   const { disputes } = await getDisputes();
-  console.log(disputes)
+  console.log(disputes);
 
   return {
-    disputes,
+    disputes
   };
 };
+
+export default DisputesPage;

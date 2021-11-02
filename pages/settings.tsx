@@ -15,10 +15,11 @@ import { styled } from "@mui/material/styles";
 import { setArchiver } from "features/archiver/archiverSlice";
 import { updateArchiveServer } from "api/peerswapAPI";
 import { LightPaper, DimPaper } from "style/components/Papers";
+import Page from 'components/Page';
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-export default function Settings() {
+const Settings = () => {
   const dispatch = useDispatch();
   const { archiver } = useSelector((state: RootState) => state.archiver);
   const [ip, setIp] = useState("");
@@ -129,3 +130,11 @@ export default function Settings() {
     </Box>
   );
 }
+
+const SettingsPage = () => (
+  <Page name="Settings" path="/settings">
+    <Settings />
+  </Page>
+);
+
+export default SettingsPage;

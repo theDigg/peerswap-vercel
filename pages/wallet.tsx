@@ -1,55 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "app/rootReducer";
-import { VariantType, useSnackbar } from "notistack";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-import Alert from "@mui/material/Alert";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import TextField from "@mui/material/TextField";
-import Checkbox from "@mui/material/Checkbox";
-import Button from "@mui/material/Button";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-import SwapCallsIcon from "@mui/icons-material/SwapCalls";
-import SendIcon from "@mui/icons-material/Send";
-import QRCode from "react-qr-code";
-import OfferForm from "components/Wallet/OfferForm";
-import RequestForm from "components/Wallet/RequestForm";
-import ImmediateForm from "components/Wallet/ImmediateForm";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'app/rootReducer';
+import { VariantType, useSnackbar } from 'notistack';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import SwapCallsIcon from '@mui/icons-material/SwapCalls';
+import SendIcon from '@mui/icons-material/Send';
+import QRCode from 'react-qr-code';
+import OfferForm from 'components/Wallet/OfferForm';
+import RequestForm from 'components/Wallet/RequestForm';
+import ImmediateForm from 'components/Wallet/ImmediateForm';
 import { setTab } from 'features/wallet/walletSlice';
 import {
   getAccountFromAlias,
   submitTransferTx,
-  submitSwapTx,
-} from "api/peerswapAPI";
+  submitSwapTx
+} from 'api/peerswapAPI';
+import Page from 'components/Page';
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const Unit = styled("span")(({ theme }) => ({
-  fontSize: "16px",
-  letterSpacing: "-.16px",
-  textAlign: "left",
-  position: "relative",
-  top: "-25px",
-  left: "5px",
+const Unit = styled('span')(({ theme }) => ({
+  fontSize: '16px',
+  letterSpacing: '-.16px',
+  textAlign: 'left',
+  position: 'relative',
+  top: '-25px',
+  left: '5px'
 }));
 
-const Form = styled("form")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  width: "100%",
+const Form = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%'
 }));
 
 interface TabPanelProps {
@@ -92,8 +93,8 @@ function LinkTab(props: LinkTabProps) {
   );
 }
 
-export default function Wallet() {
-  const dispatch = useDispatch()
+const Wallet = () => {
+  const dispatch = useDispatch();
   const { account } = useSelector((state: RootState) => state.account);
   const { wallet, tab } = useSelector((state: RootState) => state.wallet);
 
@@ -102,7 +103,7 @@ export default function Wallet() {
   };
 
   return (
-    <Box sx={{ display: "flex", width: "100%" }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Offset />
         <Typography variant="h4" align="center" sx={{ m: 1 }}>
@@ -138,13 +139,13 @@ export default function Wallet() {
       </Box>
     </Box>
   );
-}
+};
 
 function SendTab({ wallet }) {
-  const [target, setTarget] = useState("");
+  const [target, setTarget] = useState('');
   const [amount, setAmount] = useState(0);
-  const [status, setStatus] = useState("");
-  const [severity, setSeverity] = useState("success");
+  const [status, setStatus] = useState('');
+  const [severity, setSeverity] = useState('success');
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -152,15 +153,15 @@ function SendTab({ wallet }) {
       getAccountFromAlias(target).then((res) => {
         if (res.error) {
           setStatus("This user doesn't exist.");
-          setSeverity("error");
+          setSeverity('error');
         } else {
-          setStatus("User found! Safe to submit");
-          setSeverity("success");
+          setStatus('User found! Safe to submit');
+          setSeverity('success');
         }
       });
     } else {
       setStatus("Enter the user's alias to send them tokens");
-      setSeverity("info");
+      setSeverity('info');
     }
   }, [target]);
 
@@ -173,7 +174,7 @@ function SendTab({ wallet }) {
     <Box
       sx={{
         flexGrow: 1,
-        padding: (theme) => theme.spacing(3),
+        padding: (theme) => theme.spacing(3)
       }}
     >
       <Container maxWidth="sm">
@@ -216,7 +217,7 @@ function SendTab({ wallet }) {
             size="large"
             sx={{ mt: (theme) => theme.spacing(2) }}
             startIcon={<SendIcon />}
-            disabled={severity === "error"}
+            disabled={severity === 'error'}
           >
             Send
           </Button>
@@ -231,7 +232,7 @@ function ReceiveTab({ account }) {
     <Box
       sx={{
         flexGrow: 1,
-        padding: (theme) => theme.spacing(3),
+        padding: (theme) => theme.spacing(3)
       }}
     >
       <Typography variant="body1" align="center">
@@ -243,7 +244,7 @@ function ReceiveTab({ account }) {
         color="primary"
         sx={{
           mt: (theme) => theme.spacing(2),
-          wordBreak: "break-all",
+          wordBreak: 'break-all'
         }}
       >
         {account.alias}
@@ -252,7 +253,7 @@ function ReceiveTab({ account }) {
         align="center"
         sx={{
           mt: (theme) => theme.spacing(2),
-          wordBreak: "break-all",
+          wordBreak: 'break-all'
         }}
       >
         <QRCode value={account.alias} size={150} />
@@ -262,7 +263,7 @@ function ReceiveTab({ account }) {
         align="center"
         sx={{
           mt: (theme) => theme.spacing(2),
-          wordBreak: "break-all",
+          wordBreak: 'break-all'
         }}
       >
         Share your address
@@ -273,7 +274,7 @@ function ReceiveTab({ account }) {
         color="primary"
         sx={{
           mt: (theme) => theme.spacing(2),
-          wordBreak: "break-all",
+          wordBreak: 'break-all'
         }}
       >
         {account.id}
@@ -282,7 +283,7 @@ function ReceiveTab({ account }) {
         align="center"
         sx={{
           mt: (theme) => theme.spacing(2),
-          wordBreak: "break-all",
+          wordBreak: 'break-all'
         }}
       >
         <QRCode value={account.id} size={150} />
@@ -293,32 +294,32 @@ function ReceiveTab({ account }) {
 
 function SwapTab({ wallet }) {
   const [state, setState] = React.useState({
-    type: "swap",
-    swapType: "",
-    initiator: "",
-    tokenRequested: "",
+    type: 'swap',
+    swapType: '',
+    initiator: '',
+    tokenRequested: '',
     amountRequested: 0,
-    tokenOffered: "",
+    tokenOffered: '',
     amountOffered: 0,
     maxTimeToSend: 3600,
     maxTimeToReceive: 3600,
     fixed: false,
     collateral: 0,
-    initiatorChainAddress: "",
+    initiatorChainAddress: ''
   });
   const { enqueueSnackbar } = useSnackbar();
 
   const handleChange = (event, field) => {
     setState({
       ...state,
-      [field]: event.target.value,
+      [field]: event.target.value
     });
   };
 
   const handleNumberChange = (event, field) => {
     setState({
       ...state,
-      [field]: parseFloat(event.target.value),
+      [field]: parseFloat(event.target.value)
     });
   };
 
@@ -340,7 +341,7 @@ function SwapTab({ wallet }) {
       <FormControl component="fieldset">
         <Container
           maxWidth="sm"
-          sx={{ display: "flex", flexDirection: "column" }}
+          sx={{ display: 'flex', flexDirection: 'column' }}
         >
           <FormLabel component="legend" sx={{ my: 1 }}>
             Swap Type
@@ -349,11 +350,11 @@ function SwapTab({ wallet }) {
             aria-label="swap-type"
             name="swap-type"
             value={state.swapType}
-            onChange={(e) => handleChange(e, "swapType")}
+            onChange={(e) => handleChange(e, 'swapType')}
             sx={{
               my: 1,
-              display: "flex",
-              flexDirection: { xs: "column", sm: "row" },
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' }
             }}
             row
           >
@@ -369,19 +370,19 @@ function SwapTab({ wallet }) {
               label="Immediate"
             />
           </RadioGroup>
-          {state.swapType === "offer" && (
+          {state.swapType === 'offer' && (
             <OfferForm
               handleChange={handleChange}
               setNumber={handleNumberChange}
             />
           )}
-          {state.swapType === "request" && (
+          {state.swapType === 'request' && (
             <RequestForm
               handleChange={handleChange}
               setNumber={handleNumberChange}
             />
           )}
-          {state.swapType === "immediate" && (
+          {state.swapType === 'immediate' && (
             <ImmediateForm
               handleChange={handleChange}
               setNumber={handleNumberChange}
@@ -396,7 +397,7 @@ function SwapTab({ wallet }) {
             onChange={(e) =>
               setState({
                 ...state,
-                maxTimeToSend: parseFloat(e.target.value),
+                maxTimeToSend: parseFloat(e.target.value)
               })
             }
             sx={{ my: 1 }}
@@ -411,7 +412,7 @@ function SwapTab({ wallet }) {
             onChange={(e) =>
               setState({
                 ...state,
-                maxTimeToReceive: parseFloat(e.target.value),
+                maxTimeToReceive: parseFloat(e.target.value)
               })
             }
             sx={{ my: 1 }}
@@ -425,7 +426,7 @@ function SwapTab({ wallet }) {
             onChange={(e) =>
               setState({
                 ...state,
-                collateral: parseFloat(e.target.value),
+                collateral: parseFloat(e.target.value)
               })
             }
             sx={{ my: 1 }}
@@ -466,3 +467,11 @@ function SwapTab({ wallet }) {
     </Form>
   );
 }
+
+const WalletPage = () => (
+  <Page name="Wallet" path="/wallet">
+    <Wallet />
+  </Page>
+);
+
+export default WalletPage;

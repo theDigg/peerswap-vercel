@@ -19,8 +19,9 @@ import {
 import { setWallets, setWallet } from "features/wallet/walletSlice";
 import { setAccount } from "features/account/accountSlice";
 import { _sleep } from "utils/sleep";
+import Page from 'components/Page';
 
-export default function Register() {
+const Register = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
@@ -129,3 +130,11 @@ export default function Register() {
     </Container>
   );
 }
+
+const RegisterPage = () => (
+  <Page name="Register" path="/register">
+    <Register />
+  </Page>
+);
+
+export default RegisterPage;

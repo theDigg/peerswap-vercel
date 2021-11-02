@@ -10,10 +10,11 @@ import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import Timeline from "components/MUIDemo/Timeline";
 import { setTab } from 'features/wallet/walletSlice'
+import Page from 'components/Page';
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-function Info() {
+const Info = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   return (
@@ -48,4 +49,10 @@ function Info() {
   );
 }
 
-export default Info;
+const InfoPage = () => (
+  <Page name="Info" path="/info">
+    <Info />
+  </Page>
+);
+
+export default InfoPage;

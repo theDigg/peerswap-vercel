@@ -19,6 +19,7 @@ import {
 import Proposal from "components/Proposal";
 import { formatDateTime } from "utils/stringUtils";
 import { Android12Switch } from "style/components/Switches";
+import Page from 'components/Page';
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -41,7 +42,7 @@ const windowNameFormat = {
   applyWindow: "Apply Window",
 };
 
-export default function Vote() {
+const Vote = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [state, setState] = useState({
@@ -275,3 +276,11 @@ export default function Vote() {
     </Box>
   );
 }
+
+const VotePage = () => (
+  <Page name="Vote" path="/vote">
+    <Vote />
+  </Page>
+);
+
+export default VotePage;

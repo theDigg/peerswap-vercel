@@ -18,12 +18,13 @@ import {
   getAccountFromAlias,
 } from "api/peerswapAPI";
 import { setChats } from "features/messages/messagesSlice";
+import Page from 'components/Page';
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 // TODO: Refactor this into smaller components
 
-function Messages() {
+const Messages = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { chats } = useSelector((state: RootState) => state.messages);
@@ -264,4 +265,10 @@ function VerticalTabs({ wallet, chats, index, setIndex }) {
   );
 }
 
-export default Messages
+const MessagesPage = () => (
+  <Page name="Messages" path="/messages">
+    <Messages />
+  </Page>
+);
+
+export default MessagesPage;

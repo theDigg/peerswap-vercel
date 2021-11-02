@@ -16,6 +16,7 @@ import { RedditTextField } from "style/components/TextFields";
 import { Android12Switch } from "style/components/Switches";
 import { getParameters, submitProposalTx, getWindow } from "api/peerswapAPI";
 import { formatDateTime } from "utils/stringUtils";
+import Page from 'components/Page';
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -75,7 +76,7 @@ const windowNameFormat = {
   applyWindow: "Apply Window",
 };
 
-export default function Economy() {
+const Economy = () => {
   const router = useRouter();
   const [state, setState] = useState({
     checked: false,
@@ -381,3 +382,11 @@ export default function Economy() {
     </Box>
   );
 }
+
+const EconomyPage = () => (
+  <Page name="Economy" path="/economy">
+    <Economy />
+  </Page>
+);
+
+export default EconomyPage;

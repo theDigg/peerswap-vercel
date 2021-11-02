@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CodeEditor from "components/Editor";
+import Page from 'components/Page';
 
 /*
     This page is where users can see dispute cards that are currently active
@@ -13,7 +14,7 @@ import CodeEditor from "components/Editor";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-export default function Editor() {
+const Editor = () => {
   return (
     <Box p={1} m={1} width="100%">
       <Offset />
@@ -21,3 +22,11 @@ export default function Editor() {
     </Box>
   );
 }
+
+const EditorPage = () => (
+  <Page name="Editor" path="/editor">
+    <Editor />
+  </Page>
+);
+
+export default EditorPage;

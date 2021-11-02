@@ -18,7 +18,8 @@
 
 const nextConfig = {
   // any configs you need
-  // swcMinify: true,
+  reactStrictMode: process.env.NODE_ENV === 'development' ? true : false,
+  swcMinify: process.env.NODE_ENV === 'development' ? true : false
 };
 
 module.exports = nextConfig;
