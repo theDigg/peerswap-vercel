@@ -1,22 +1,22 @@
-import React, { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "app/rootReducer";
-import Divider from "@mui/material/Divider";
-import LoopIcon from "@mui/icons-material/Loop";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import Masonry from "components/Masonry";
-import Box from "@mui/material/Box";
-import SwapFilterBar from "components/SwapFilterBar";
-import Chip from "@mui/material/Chip";
-import { styled } from "@mui/material/styles";
-import { setMySwaps } from "features/swaps/swapsSlice";
-import { setMyBids } from "features/bids/bidsSlice";
-import { getMySwaps, getMyBids } from "api/peerswapAPI";
-import AccountInfo from "components/AccountInfo";
-import { useRouter } from "next/router";
-import Page from "components/Page";
+import React, { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'app/rootReducer';
+import Divider from '@mui/material/Divider';
+import LoopIcon from '@mui/icons-material/Loop';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import Masonry from 'components/Masonry';
+import Box from '@mui/material/Box';
+import SwapFilterBar from 'components/SwapFilterBar';
+import Chip from '@mui/material/Chip';
+import { styled } from '@mui/material/styles';
+import { setMySwaps } from 'features/swaps/swapsSlice';
+import { setMyBids } from 'features/bids/bidsSlice';
+import { getMySwaps, getMyBids } from 'api/peerswapAPI';
+import AccountInfo from 'components/AccountInfo';
+import { useRouter } from 'next/router';
+import Page from 'components/Page';
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 function Dashboard() {
   const router = useRouter();
@@ -26,15 +26,9 @@ function Dashboard() {
   const { filteredSwaps } = useSelector((state: RootState) => state.swaps);
   const { myBids } = useSelector((state: RootState) => state.bids);
 
-  // useEffect(() => {
-  //   if (!wallet) {
-  //     router.push("/register");
-  //   }
-  // }, [wallet]);
-
   useEffect(() => {
     if (!wallet) {
-      router.push("/");
+      router.push('/');
     } else {
       getMySwaps(wallet.entry.address).then((swaps) => {
         dispatch(setMySwaps(swaps));
@@ -58,7 +52,7 @@ function Dashboard() {
   const bids = useMemo(() => <Masonry items={myBids} />, [myBids]);
 
   return (
-    <Box sx={{ display: "flex", width: "100%" }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <Offset />
         <AccountInfo />

@@ -1,16 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 // import crypto from "shardus-crypto-web";
-import stringify from "fast-stable-stringify";
+import stringify from 'fast-stable-stringify';
 // const crypto = eval("require('shardus-crypto-web')");
 
-let KEY = "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc";
+let KEY = '69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc';
 let crypto = null;
 
 async function useCrypto() {
   if (crypto !== null) {
     return crypto;
   } else {
-    return await import("shardus-crypto-web").then(async (mod) => {
+    return await import('shardus-crypto-web').then(async (mod) => {
       crypto = mod;
       await crypto.initialize(KEY);
       return crypto;
@@ -19,17 +19,17 @@ async function useCrypto() {
 }
 
 let archiver = {
-  ip: process.env.NODE_ENV === "development" ? "localhost" : "www.peerswap.org",
-  port: 4000,
+  ip: process.env.NODE_ENV === 'development' ? 'localhost' : 'www.peerswap.org',
+  port: 4000
 };
 
 let host =
-  process.env.NODE_ENV === "development"
+  process.env.NODE_ENV === 'development'
     ? `http://${archiver.ip}:${9001}`
     : `https://www.peerswap.org/rproxy/${archiver.ip}:${9001}`;
 
 let network: string =
-  "9f202eb3e3b8d86c7fa943bfd802376b9831ab27404a20495c1999c01ff117e3";
+  '9f202eb3e3b8d86c7fa943bfd802376b9831ab27404a20495c1999c01ff117e3';
 
 // crypto.initialize(
 //   "69fa4195670576c0160d660c3be36556ff8d504725be8a59b5a96509e0c994bc"
@@ -44,7 +44,7 @@ export async function init() {
 
 export async function getRandomHost() {
   const { data } = await axios.get(
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV === 'development'
       ? `http://${archiver.ip}:${archiver.port}/nodelist`
       : `https://www.peerswap.org/rproxy/${archiver.ip}:${archiver.port}/nodelist`
   );
@@ -52,15 +52,15 @@ export async function getRandomHost() {
   const randomIndex = Math.floor(Math.random() * nodeList.length);
   const randomHost = nodeList[randomIndex];
   if (!randomHost) {
-    throw new Error("Unable to get random host");
+    throw new Error('Unable to get random host');
   }
   const { ip, port } = randomHost;
   console.log(
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV === 'development'
       ? `Now using: http://${archiver.ip}:${port} as host for query's and transactions`
       : `Now using: https://www.peerswap.org/rproxy/${archiver.ip}:${port} as host for query's and transactions`
   );
-  return process.env.NODE_ENV === "development"
+  return process.env.NODE_ENV === 'development'
     ? `http://${archiver.ip}:${port}`
     : `https://www.peerswap.org/rproxy/${archiver.ip}:${port}`;
 }
@@ -81,10 +81,10 @@ export interface Wallet {
   };
 }
 
-export async function importWallet(sk: Wallet["entry"]["keys"]["secretKey"]) {
+export async function importWallet(sk: Wallet['entry']['keys']['secretKey']) {
   const keys = {
     publicKey: sk.slice(64),
-    secretKey: sk,
+    secretKey: sk
   };
   const data = await getAccountData(keys.publicKey);
   const account = data.account;
@@ -93,11 +93,11 @@ export async function importWallet(sk: Wallet["entry"]["keys"]["secretKey"]) {
     const entry = {
       address: keys.publicKey,
       id: crypto.hash(account.alias),
-      keys,
+      keys
     };
     return {
       handle: account.alias,
-      entry,
+      entry
     };
   } else {
     return { error: true };
@@ -113,8 +113,8 @@ export function createAccount(
     entry: {
       address: keys.publicKey,
       id: crypto.hash(handle),
-      keys,
-    },
+      keys
+    }
   };
 }
 
@@ -329,7 +329,7 @@ export interface Stake {
 
 export interface Swap {
   type: string;
-  swapType: "offer" | "request" | "immediate";
+  swapType: 'offer' | 'request' | 'immediate';
   swapId: string;
   initiator: string;
   tokenOffered?: string; // If they only specify the amount of tokenRequested, this can be null
@@ -474,7 +474,7 @@ export declare namespace Accounts {
   interface Swap {
     id: string;
     type: string;
-    swapType: "offer" | "request" | "immediate";
+    swapType: 'offer' | 'request' | 'immediate';
     status: string;
     initiator: string;
     initiatorAlias: string;
@@ -661,17 +661,17 @@ export async function injectTx(tx: any) {
     // console.log(data)
     return {
       result: {
-        status: data.result.success ? "success" : "warning",
-        reason: data.result.reason,
-      },
+        status: data.result.success ? 'success' : 'warning',
+        reason: data.result.reason
+      }
     };
   } catch (err: any) {
     // console.log(err.message)
     return {
       result: {
-        status: "error",
-        reason: err.message,
-      },
+        status: 'error',
+        reason: err.message
+      }
     };
   }
 }
@@ -691,7 +691,7 @@ export async function getAccountFromAlias(handle: string) {
 export async function getParameters() {
   const url = `${host}/network/parameters`;
   const {
-    data: { parameters },
+    data: { parameters }
   } = await axios.get(url);
   // console.log(parameters)
   return parameters;
@@ -700,25 +700,23 @@ export async function getParameters() {
 export function getWindow(windows: Windows, timestamp: number) {
   if (inRange(timestamp, windows.proposalWindow))
     return {
-      proposalWindow: Math.round(
-        (windows.proposalWindow[1] - timestamp) / 1000
-      ),
+      proposalWindow: Math.round((windows.proposalWindow[1] - timestamp) / 1000)
     };
   else if (inRange(timestamp, windows.votingWindow))
     return {
-      votingWindow: Math.round((windows.votingWindow[1] - timestamp) / 1000),
+      votingWindow: Math.round((windows.votingWindow[1] - timestamp) / 1000)
     };
   else if (inRange(timestamp, windows.graceWindow))
     return {
-      graceWindow: Math.round((windows.graceWindow[1] - timestamp) / 1000),
+      graceWindow: Math.round((windows.graceWindow[1] - timestamp) / 1000)
     };
   else if (inRange(timestamp, windows.applyWindow))
     return {
-      applyWindow: Math.round((windows.applyWindow[1] - timestamp) / 1000),
+      applyWindow: Math.round((windows.applyWindow[1] - timestamp) / 1000)
     };
   else
     return {
-      applyWindow: Math.round((windows.proposalWindow[0] - timestamp) / 1000),
+      applyWindow: Math.round((windows.proposalWindow[0] - timestamp) / 1000)
     };
 
   function inRange(now: number, times: any) {
@@ -740,7 +738,7 @@ export async function getLatestIssue() {
 // QUERY'S THE CURRENT NETWORK ISSUE COUNT
 export async function getIssueCount() {
   const {
-    data: { count },
+    data: { count }
   } = await axios.get(`${host}/issues/count`);
   return count;
 }
@@ -754,7 +752,7 @@ export async function getProposals() {
 // QUERY'S ALL PROPOSALS ON THE LATEST ISSUE
 export async function queryLatestProposals() {
   const {
-    data: { proposals },
+    data: { proposals }
   } = await axios.get(`${host}/proposals/latest`);
   return proposals;
 }
@@ -762,7 +760,7 @@ export async function queryLatestProposals() {
 // QUERY'S THE CURRENT ISSUE'S PROPOSAL COUNT
 export async function getProposalCount() {
   const {
-    data: { count },
+    data: { count }
   } = await axios.get(`${host}/proposals/count`);
   return count;
 }
@@ -789,7 +787,7 @@ export async function queryBids(swapId: string) {
 
 export async function getDisputes() {
   const { data } = await axios.get(`${host}/disputes`);
-  console.log(data)
+  console.log(data);
   return data;
 }
 
@@ -846,7 +844,7 @@ export async function submitMessageTx(
     const messageData = stringify({
       body: message,
       handle: user.handle,
-      timestamp: Date.now(),
+      timestamp: Date.now()
     });
     await useCrypto();
     const encryptedMsg = crypto.encryptAB(
@@ -855,23 +853,23 @@ export async function submitMessageTx(
       user.entry.keys.secretKey
     );
     const tx = {
-      type: "message",
+      type: 'message',
       network,
       from: user.entry.address,
       to: targetAddress,
       chatId: crypto.hash([user.entry.address, targetAddress].sort().join(``)),
       message: encryptedMsg,
-      timestamp: Date.now(),
+      timestamp: Date.now()
     };
     crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
     return injectTx(tx);
   } catch (err) {
     return {
       result: {
-        status: "error",
+        status: 'error',
         reason:
-          "This user doesn't exist dummy, it say's it right up there in that big red alert box.",
-      },
+          "This user doesn't exist dummy, it say's it right up there in that big red alert box."
+      }
     };
   }
 }
@@ -883,12 +881,12 @@ export async function submitTransferTx(
 ) {
   const { address } = await getAccountFromAlias(target);
   const tx = {
-    type: "transfer",
+    type: 'transfer',
     network,
     from: user.entry.address,
     to: address,
     amount: amount,
-    timestamp: Date.now(),
+    timestamp: Date.now()
   };
   await useCrypto();
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
@@ -898,11 +896,11 @@ export async function submitTransferTx(
 export async function registerAlias(handle: string, user: Wallet) {
   await useCrypto();
   const tx = {
-    type: "register",
+    type: 'register',
     aliasHash: crypto.hash(handle),
     from: user.entry.address,
     alias: handle,
-    timestamp: Date.now(),
+    timestamp: Date.now()
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   return injectTx(tx);
@@ -924,8 +922,8 @@ export async function submitSwapTx(
   user: Wallet
 ) {
   const tx = {
-    type: "swap",
-    swapId: "",
+    type: 'swap',
+    swapId: '',
     swapType: answers.swapType,
     initiator: user.entry.address,
     tokenOffered: answers.tokenOffered,
@@ -937,7 +935,7 @@ export async function submitSwapTx(
     collateral: answers.collateral,
     initiatorChainAddress: answers.initiatorChainAddress,
     fixed: answers.fixed,
-    timestamp: Date.now(),
+    timestamp: Date.now()
   };
   await useCrypto();
   tx.swapId = crypto.hashObj(tx);
@@ -958,8 +956,8 @@ export async function submitBidTx(
   user: Wallet
 ) {
   const tx = {
-    type: "bid",
-    bidId: "",
+    type: 'bid',
+    bidId: '',
     provider: user.entry.address,
     swapId: answers.swapId,
     tokenOffered: answers.tokenOffered,
@@ -967,7 +965,7 @@ export async function submitBidTx(
     tokenRequested: answers.tokenRequested,
     amountRequested: answers.amountRequested,
     providerChainAddress: answers.providerChainAddress,
-    timestamp: Date.now(),
+    timestamp: Date.now()
   };
   await useCrypto();
   tx.bidId = crypto.hashObj(tx);
@@ -986,15 +984,15 @@ export async function submitContractTx(
   user: Wallet
 ) {
   let tx = {
-    type: "create_contract",
+    type: 'create_contract',
     swapType,
-    contractId: "",
+    contractId: '',
     initiator: user.entry.address,
     initiatorChainAddress,
     swapId,
     bidId,
     provider,
-    timestamp: Date.now(),
+    timestamp: Date.now()
   };
 
   await useCrypto();
@@ -1005,13 +1003,13 @@ export async function submitContractTx(
 
 export async function submitReceiptTx(swap: Accounts.Swap, user: Wallet) {
   const tx = {
-    type: "receipt",
+    type: 'receipt',
     initiator: user.entry.address,
     swapId: swap.id,
     bidId: swap.acceptedBid,
     provider: swap.provider,
     contractId: swap.contractId,
-    timestamp: Date.now(),
+    timestamp: Date.now()
   };
   await useCrypto();
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
@@ -1020,26 +1018,26 @@ export async function submitReceiptTx(swap: Accounts.Swap, user: Wallet) {
 
 export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
   let tx: object;
-  if (typeof swapData === "string") {
+  if (typeof swapData === 'string') {
     const { swap } = await getSwapFromBid(swapData);
     tx = {
-      type: "receipt",
+      type: 'receipt',
       initiator: swap.data.initiator,
       swapId: swap.data.id,
       bidId: swap.data.acceptedBid,
       provider: user.entry.address,
       contractId: swap.data.contractId,
-      timestamp: Date.now(),
+      timestamp: Date.now()
     };
   } else {
     tx = {
-      type: "receipt",
+      type: 'receipt',
       initiator: swapData.initiator,
       swapId: swapData.id,
       bidId: swapData.acceptedBid,
       provider: user.entry.address,
       contractId: swapData.contractId,
-      timestamp: Date.now(),
+      timestamp: Date.now()
     };
   }
   await useCrypto();
@@ -1047,21 +1045,31 @@ export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
   return injectTx(tx);
 }
 
-export async function submitDisputeTx(swap: any, user: Wallet) {
+export async function submitDisputeTx(explanation: string, swap: any, user: Wallet) {
+  let swapData = swap;
+  if (typeof swap === 'string') {
+    let { account } = await getAccountData(swap);
+    swapData = account;
+  }
+  console.log(swapData);
   await useCrypto();
   const defendant =
-    user.entry.address === swap.initiator ? swap.provider : swap.initiator;
+    user.entry.address === swapData.initiator
+      ? swapData.provider
+      : swapData.initiator;
   const tx = {
-    type: "dispute",
-    disputeId: crypto.hash(swap.id + swap.acceptedBid + swap.contractId),
+    type: 'dispute',
+    disputeId: crypto.hash(
+      swapData.id + swapData.acceptedBid + swapData.contractId
+    ),
     prosecutor: user.entry.address,
     defendant,
-    swapId: swap.id,
-    bidId: swap.acceptedBid,
-    provider: swap.provider,
-    contractId: swap.contractId,
-    reasonForDispute: "Testing random reason",
-    timestamp: Date.now(),
+    swapId: swapData.id,
+    bidId: swapData.acceptedBid,
+    provider: swapData.provider,
+    contractId: swapData.contractId,
+    reasonForDispute: explanation,
+    timestamp: Date.now()
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   // console.log(tx)
@@ -1075,11 +1083,27 @@ export async function submitDisputeEvidence(
 ) {
   await useCrypto();
   const tx = {
-    type: "dispute_evidence",
+    type: 'dispute_evidence',
     disputeId,
     from: user.entry.address,
     evidence,
-    timestamp: Date.now(),
+    timestamp: Date.now()
+  };
+  crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
+  console.log(tx);
+  return injectTx(tx);
+}
+
+export async function submitJoinDisputeTx(
+  disputeId: string,
+  user: Wallet
+) {
+  await useCrypto();
+  const tx = {
+    type: 'join_dispute',
+    disputeId,
+    from: user.entry.address,
+    timestamp: Date.now()
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   console.log(tx);
@@ -1091,13 +1115,13 @@ export async function submitProposalTx(parameters: any, user: Wallet) {
   const issue = await getIssueCount();
   const proposal = await getProposalCount();
   const tx = {
-    type: "proposal",
+    type: 'proposal',
     network,
     from: user.entry.address,
     proposal: crypto.hash(`issue-${issue}-proposal-${proposal + 1}`),
     issue: crypto.hash(`issue-${issue}`),
     parameters,
-    timestamp: Date.now(),
+    timestamp: Date.now()
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   return injectTx(tx);
@@ -1111,13 +1135,13 @@ export async function submitVoteTx(
   await useCrypto();
   const issue = await getIssueCount();
   const tx = {
-    type: "vote",
+    type: 'vote',
     network,
     from: user.entry.address,
     issue: crypto.hash(`issue-${issue}`),
     proposal: proposal.id,
     amount,
-    timestamp: Date.now(),
+    timestamp: Date.now()
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
   return injectTx(tx);
