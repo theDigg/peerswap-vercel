@@ -29,7 +29,12 @@ export default async function handler(
 }
 
 async function getAccountFromAlias(handle: string) {
-  const url = `http://localhost:9001/accounts/address/${crypto.hash(handle)}`;
+  const url =
+    process.env.NODE_ENV === 'development'
+      ? `http://localhost:9001/accounts/address/${crypto.hash(handle)}`
+      : `https://www.peerswap.org/rproxy/www.peerswap.org:9001/accounts/address/${crypto.hash(
+          handle
+        )}`;
   const { data } = await axios.get(url);
   return data;
 }

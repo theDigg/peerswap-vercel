@@ -45,26 +45,26 @@ const Register = () => {
       setFound(true);
     } else if (username.length > 3) {
       setFound(false);
-      fetch(`/api/user/${username}`)
-        .then((res) => res.json())
-        .then(({ data }) => {
-          if (data.error) {
-            setStatus('This username is available!');
-            setSeverity('success');
-          } else {
-            setStatus('This username is already taken');
-            setSeverity('error');
-          }
-        });
-      // getAccountFromAlias(username).then((res) => {
-      //   if (res.error) {
-      //     setStatus("This username is available!");
-      //     setSeverity("success");
-      //   } else {
-      //     setStatus("This username is already taken");
-      //     setSeverity("error");
-      //   }
-      // });
+      // fetch(`/api/user/${username}`)
+      //   .then((res) => res.json())
+      //   .then(({ data }) => {
+      //     if (data.error) {
+      //       setStatus('This username is available!');
+      //       setSeverity('success');
+      //     } else {
+      //       setStatus('This username is already taken');
+      //       setSeverity('error');
+      //     }
+      //   });
+      getAccountFromAlias(username).then((res) => {
+        if (res.error) {
+          setStatus('This username is available!');
+          setSeverity('success');
+        } else {
+          setStatus('This username is already taken');
+          setSeverity('error');
+        }
+      });
     } else {
       setFound(false);
       setStatus('Username must be longer than 3 characters');
