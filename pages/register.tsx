@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "app/rootReducer";
-import Typography from "@mui/material/Typography";
-import { VariantType, useSnackbar } from "notistack";
-import LinearProgress from "@mui/material/LinearProgress";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import Alert, { AlertColor } from "@mui/material/Alert";
-import FormGroup from "@mui/material/FormGroup";
-import { RedditTextField } from "style/components/TextFields";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'app/rootReducer';
+import Typography from '@mui/material/Typography';
+import { VariantType, useSnackbar } from 'notistack';
+import LinearProgress from '@mui/material/LinearProgress';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Alert, { AlertColor } from '@mui/material/Alert';
+import FormGroup from '@mui/material/FormGroup';
+import { RedditTextField } from 'style/components/TextFields';
 import {
   getAccountFromAlias,
   createAccount,
-  registerAlias,
-} from "api/peerswapAPI";
-import { setWallets, setWallet } from "features/wallet/walletSlice";
-import { setAccount } from "features/account/accountSlice";
-import { _sleep } from "utils/sleep";
+  registerAlias
+} from 'api/peerswapAPI';
+import { setWallets, setWallet } from 'features/wallet/walletSlice';
+import { setAccount } from 'features/account/accountSlice';
+import { _sleep } from 'utils/sleep';
 import Page from 'components/Page';
 
 const Register = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
-  const [status, setStatus] = useState("");
+  const [username, setUsername] = useState('');
+  const [status, setStatus] = useState('');
   const [found, setFound] = useState(false);
-  const [severity, setSeverity] = useState<AlertColor>("success");
+  const [severity, setSeverity] = useState<AlertColor>('success');
   const [loading, setLoading] = useState(false);
   const { wallets } = useSelector((state: RootState) => state.wallet);
 
@@ -40,30 +40,41 @@ const Register = () => {
 
   useEffect(() => {
     if (wallets.some((wallet: any) => wallet.handle === username)) {
-      setStatus("This wallet was found in your local storage!");
-      setSeverity("success");
+      setStatus('This wallet was found in your local storage!');
+      setSeverity('success');
       setFound(true);
     } else if (username.length > 3) {
       setFound(false);
-      getAccountFromAlias(username).then((res) => {
-        if (res.error) {
-          setStatus("This username is available!");
-          setSeverity("success");
-        } else {
-          setStatus("This username is already taken");
-          setSeverity("error");
-        }
-      });
+      fetch(`/api/user/${username}`)
+        .then((res) => res.json())
+        .then(({ data }) => {
+          if (data.error) {
+            setStatus('This username is available!');
+            setSeverity('success');
+          } else {
+            setStatus('This username is already taken');
+            setSeverity('error');
+          }
+        });
+      // getAccountFromAlias(username).then((res) => {
+      //   if (res.error) {
+      //     setStatus("This username is available!");
+      //     setSeverity("success");
+      //   } else {
+      //     setStatus("This username is already taken");
+      //     setSeverity("error");
+      //   }
+      // });
     } else {
       setFound(false);
-      setStatus("Username must be longer than 3 characters");
-      setSeverity("warning");
+      setStatus('Username must be longer than 3 characters');
+      setSeverity('warning');
     }
   }, [username, wallets]);
 
   return (
-    <Container maxWidth="sm" sx={{ display: "flex", flexWrap: "wrap", mt: 10 }}>
-      <Paper elevation={3} sx={{ flexGrow: 1, p: 3, justifyContent: "center" }}>
+    <Container maxWidth="sm" sx={{ display: 'flex', flexWrap: 'wrap', mt: 10 }}>
+      <Paper elevation={3} sx={{ flexGrow: 1, p: 3, justifyContent: 'center' }}>
         <Typography variant="h2" align="center">
           Register
         </Typography>
@@ -83,7 +94,7 @@ const Register = () => {
               type="submit"
               variant="contained"
               color="secondary"
-              disabled={severity !== "success"}
+              disabled={severity !== 'success'}
               onClick={() => {
                 dispatch(
                   setWallet(
@@ -92,7 +103,7 @@ const Register = () => {
                     )[0]
                   )
                 );
-                router.push("/dashboard");
+                router.push('/dashboard');
               }}
             >
               Login
@@ -102,9 +113,9 @@ const Register = () => {
               type="submit"
               variant="contained"
               color="secondary"
-              disabled={loading || severity !== "success"}
+              disabled={loading || severity !== 'success'}
               onClick={async () => {
-                let wallet = createAccount(username);
+                let wallet = await createAccount(username);
                 registerAlias(username, wallet).then(({ result }: any) => {
                   handleClickVariant(result.status, result.reason)();
                 });
@@ -116,20 +127,20 @@ const Register = () => {
                 dispatch(setWallets(wallet));
                 const { account } = await getAccountFromAlias(username);
                 dispatch(setAccount(account));
-                router.push("/dashboard");
+                router.push('/dashboard');
               }}
             >
               Register
             </Button>
           )}
           {loading && (
-            <LinearProgress sx={{ width: "100%", mt: 4 }} color="secondary" />
+            <LinearProgress sx={{ width: '100%', mt: 4 }} color="secondary" />
           )}
         </FormGroup>
       </Paper>
     </Container>
   );
-}
+};
 
 const RegisterPage = () => (
   <Page name="Register" path="/register">

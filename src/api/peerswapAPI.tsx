@@ -104,10 +104,9 @@ export async function importWallet(sk: Wallet['entry']['keys']['secretKey']) {
   }
 }
 
-export function createAccount(
-  handle: string,
-  keys = crypto.generateKeypair()
-): Wallet {
+export async function createAccount(handle: string): Promise<Wallet> {
+  await useCrypto();
+  const keys = crypto.generateKeypair();
   return {
     handle: handle,
     entry: {
@@ -1045,7 +1044,11 @@ export async function submitReceiptFromBidTx(swapData: any, user: Wallet) {
   return injectTx(tx);
 }
 
-export async function submitDisputeTx(explanation: string, swap: any, user: Wallet) {
+export async function submitDisputeTx(
+  explanation: string,
+  swap: any,
+  user: Wallet
+) {
   let swapData = swap;
   if (typeof swap === 'string') {
     let { account } = await getAccountData(swap);
@@ -1094,10 +1097,7 @@ export async function submitDisputeEvidence(
   return injectTx(tx);
 }
 
-export async function submitJoinDisputeTx(
-  disputeId: string,
-  user: Wallet
-) {
+export async function submitJoinDisputeTx(disputeId: string, user: Wallet) {
   await useCrypto();
   const tx = {
     type: 'join_dispute',

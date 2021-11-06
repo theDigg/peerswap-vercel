@@ -26,17 +26,28 @@ const Disputes = ({ disputes }) => {
 
 const DisputesPage = ({ disputes }) => (
   <Page name="Disputes" path="/disputes">
-    <Disputes disputes={disputes}/>
+    <Disputes disputes={disputes} />
   </Page>
 );
 
-DisputesPage.getInitialProps = async () => {
+export async function getServerSideProps() {
   const { disputes } = await getDisputes();
   console.log(disputes);
 
   return {
-    disputes
+    props: {
+      disputes
+    }
   };
-};
+}
+
+// DisputesPage.getInitialProps = async () => {
+//   const { disputes } = await getDisputes();
+//   console.log(disputes);
+
+//   return {
+//     disputes
+//   };
+// };
 
 export default DisputesPage;

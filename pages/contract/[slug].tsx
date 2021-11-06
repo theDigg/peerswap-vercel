@@ -18,11 +18,22 @@ export default function Contract({ contract }) {
   );
 }
 
-Contract.getInitialProps = async ({ query }) => {
+export async function getServerSideProps({ query }) {
   const { slug } = query;
   const { account } = await getAccountData(slug);
 
   return {
-    contract: account,
+    props: {
+      contract: account
+    }
   };
-};
+}
+
+// Contract.getInitialProps = async ({ query }) => {
+//   const { slug } = query;
+//   const { account } = await getAccountData(slug);
+
+//   return {
+//     contract: account,
+//   };
+// };

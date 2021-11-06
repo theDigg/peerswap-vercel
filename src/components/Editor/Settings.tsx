@@ -1,86 +1,86 @@
-import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "app/rootReducer";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import Link from "@mui/material/Link";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Editor, { loader } from "@monaco-editor/react";
-import monacoThemes from "monaco-themes/themes/themelist.json";
+import React, { useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'app/rootReducer';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Editor, { loader } from '@monaco-editor/react';
+import monacoThemes from 'monaco-themes/themes/themelist.json';
 import {
   setLanguageId,
   setMonacoTheme,
-  setOptions,
-} from "features/editor/editorSlice";
+  setOptions
+} from 'features/editor/editorSlice';
 
-const defaultThemes = ["vs-dark", "light"];
+const defaultThemes = ['vs-dark', 'light'];
 const supportedLanguages = [
-  { id: 1, name: "apex" },
-  { id: 2, name: "azcli" },
-  { id: 3, name: "bat" },
-  { id: 4, name: "c" },
-  { id: 5, name: "clojure" },
-  { id: 6, name: "coffeescript" },
-  { id: 7, name: "cpp" },
-  { id: 8, name: "csharp" },
-  { id: 9, name: "csp" },
-  { id: 10, name: "css" },
-  { id: 11, name: "dockerfile" },
-  { id: 12, name: "fsharp" },
-  { id: 13, name: "go" },
-  { id: 14, name: "graphql" },
-  { id: 15, name: "handlebars" },
-  { id: 16, name: "html" },
-  { id: 17, name: "ini" },
-  { id: 18, name: "java" },
-  { id: 19, name: "javascript" },
-  { id: 20, name: "json" },
-  { id: 21, name: "kotlin" },
-  { id: 22, name: "less" },
-  { id: 23, name: "lua" },
-  { id: 24, name: "markdown" },
-  { id: 25, name: "msdax" },
-  { id: 26, name: "mysql" },
-  { id: 27, name: "objective-c" },
-  { id: 28, name: "pascal" },
-  { id: 29, name: "perl" },
-  { id: 30, name: "pgsql" },
-  { id: 31, name: "php" },
-  { id: 32, name: "plaintext" },
-  { id: 33, name: "postiats" },
-  { id: 34, name: "powerquery" },
-  { id: 35, name: "powershell" },
-  { id: 36, name: "pug" },
-  { id: 37, name: "python" },
-  { id: 38, name: "r" },
-  { id: 39, name: "razor" },
-  { id: 40, name: "redis" },
-  { id: 41, name: "redshift" },
-  { id: 42, name: "ruby" },
-  { id: 43, name: "rust" },
-  { id: 44, name: "sb" },
-  { id: 45, name: "scheme" },
-  { id: 46, name: "scss" },
-  { id: 47, name: "shell" },
-  { id: 48, name: "sol" },
-  { id: 49, name: "sql" },
-  { id: 50, name: "st" },
-  { id: 51, name: "swift" },
-  { id: 52, name: "tcl" },
-  { id: 53, name: "typescript" },
-  { id: 54, name: "vb" },
-  { id: 55, name: "xml" },
-  { id: 56, name: "yaml" },
+  { id: 1, name: 'apex' },
+  { id: 2, name: 'azcli' },
+  { id: 3, name: 'bat' },
+  { id: 4, name: 'c' },
+  { id: 5, name: 'clojure' },
+  { id: 6, name: 'coffeescript' },
+  { id: 7, name: 'cpp' },
+  { id: 8, name: 'csharp' },
+  { id: 9, name: 'csp' },
+  { id: 10, name: 'css' },
+  { id: 11, name: 'dockerfile' },
+  { id: 12, name: 'fsharp' },
+  { id: 13, name: 'go' },
+  { id: 14, name: 'graphql' },
+  { id: 15, name: 'handlebars' },
+  { id: 16, name: 'html' },
+  { id: 17, name: 'ini' },
+  { id: 18, name: 'java' },
+  { id: 19, name: 'javascript' },
+  { id: 20, name: 'json' },
+  { id: 21, name: 'kotlin' },
+  { id: 22, name: 'less' },
+  { id: 23, name: 'lua' },
+  { id: 24, name: 'markdown' },
+  { id: 25, name: 'msdax' },
+  { id: 26, name: 'mysql' },
+  { id: 27, name: 'objective-c' },
+  { id: 28, name: 'pascal' },
+  { id: 29, name: 'perl' },
+  { id: 30, name: 'pgsql' },
+  { id: 31, name: 'php' },
+  { id: 32, name: 'plaintext' },
+  { id: 33, name: 'postiats' },
+  { id: 34, name: 'powerquery' },
+  { id: 35, name: 'powershell' },
+  { id: 36, name: 'pug' },
+  { id: 37, name: 'python' },
+  { id: 38, name: 'r' },
+  { id: 39, name: 'razor' },
+  { id: 40, name: 'redis' },
+  { id: 41, name: 'redshift' },
+  { id: 42, name: 'ruby' },
+  { id: 43, name: 'rust' },
+  { id: 44, name: 'sb' },
+  { id: 45, name: 'scheme' },
+  { id: 46, name: 'scss' },
+  { id: 47, name: 'shell' },
+  { id: 48, name: 'sol' },
+  { id: 49, name: 'sql' },
+  { id: 50, name: 'st' },
+  { id: 51, name: 'swift' },
+  { id: 52, name: 'tcl' },
+  { id: 53, name: 'typescript' },
+  { id: 54, name: 'vb' },
+  { id: 55, name: 'xml' },
+  { id: 56, name: 'yaml' }
 ];
 
 export const defineTheme = (theme) => {
   return new Promise<any>((res) => {
     Promise.all([
       loader.init(),
-      import(`monaco-themes/themes/${monacoThemes[theme]}.json`),
+      import(`monaco-themes/themes/${monacoThemes[theme]}.json`)
     ]).then(([monaco, themeData]) => {
       monaco.editor.defineTheme(theme, themeData);
       res(themeData);
@@ -148,13 +148,13 @@ const Settings = () => {
       sx={{
         flexGrow: 1,
         pl: 2,
-        "& button": { mr: 5 },
-        width: "100%",
+        '& button': { mr: 5 },
+        width: '100%'
       }}
     >
       {/* <Typography variant="h5">Settings</Typography>
       <Divider /> */}
-      <Box sx={{ width: "100%", my: 2 }}>
+      <Box sx={{ width: '100%', my: 2 }}>
         <Typography sx={{ my: 1 }} variant="h6">
           Languages
         </Typography>
@@ -207,10 +207,10 @@ const Settings = () => {
           Options
         </Typography>
         <Typography variant="subtitle2" gutterBottom>
-          For full list of options with descriptions visit{" "}
+          For full list of options with descriptions visit{' '}
           <Link
             href={
-              "https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditoroptions.html#acceptsuggestiononcommitcharacter"
+              'https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditoroptions.html#acceptsuggestiononcommitcharacter'
             }
             rel="noreferrer"
             target="_blank"
@@ -227,6 +227,7 @@ const Settings = () => {
             theme={monacoTheme}
             language="json"
             height={400}
+            options={options}
             value={JSON.stringify(options, null, 2)}
             onMount={handleEditorDidMount}
           />

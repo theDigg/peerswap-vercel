@@ -25,11 +25,22 @@ export default function Dispute({ dispute }) {
   );
 }
 
-Dispute.getInitialProps = async ({ query }) => {
+export async function getServerSideProps({ query }) {
   const { slug } = query;
   const { account } = await getAccountData(slug);
 
   return {
-    dispute: account,
+    props: {
+      dispute: account
+    }
   };
-};
+}
+
+// Dispute.getInitialProps = async ({ query }) => {
+//   const { slug } = query;
+//   const { account } = await getAccountData(slug);
+
+//   return {
+//     dispute: account,
+//   };
+// };

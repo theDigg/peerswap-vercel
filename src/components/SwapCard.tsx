@@ -546,11 +546,6 @@ function SwapCard({ swap, opened }) {
                     swap.status !== 'exchanging'
                   }
                   onClick={handleOpen}
-                  // onClick={() => {
-                  //   submitDisputeTx(swap, wallet).then(({ result }: any) => {
-                  //     handleClickVariant(result.status, result.reason)();
-                  //   });
-                  // }}
                 >
                   <WarningIcon />
                 </IconButton>

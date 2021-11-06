@@ -1,55 +1,73 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "app/rootReducer";
-import { VariantType, useSnackbar } from "notistack";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
-import CardHeader from "@mui/material/CardHeader";
-import Tooltip from "@mui/material/Tooltip";
-import Chip from "@mui/material/Chip";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import QueueIcon from "@mui/icons-material/Queue";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import WarningIcon from "@mui/icons-material/Warning";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
-import { formatDateTime, shortenHex } from "utils/stringUtils";
-import BidCard from "components/BidCard";
-import useInterval from "hooks/useInterval";
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'app/rootReducer';
+import { VariantType, useSnackbar } from 'notistack';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
+import CardHeader from '@mui/material/CardHeader';
+import { BootstrapTooltip } from 'style/components/Tooltip';
+import Chip from '@mui/material/Chip';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import QueueIcon from '@mui/icons-material/Queue';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import WarningIcon from '@mui/icons-material/Warning';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import { styled } from '@mui/material/styles';
+import { formatDateTime, shortenHex } from 'utils/stringUtils';
+import BidCard from 'components/BidCard';
+import useInterval from 'hooks/useInterval';
+import Modal from '@mui/material/Modal';
 import {
   getSwap,
   submitBidTx,
   submitReceiptTx,
   submitDisputeTx,
-  queryBids,
-} from "api/peerswapAPI";
-import useCopyToClipboard from "hooks/useCopyToClipboard";
-import { StyledLink } from "style/components/Link";
-import { ExpandMore } from "style/components/Buttons";
+  queryBids
+} from 'api/peerswapAPI';
+import useCopyToClipboard from 'hooks/useCopyToClipboard';
+import { StyledLink } from 'style/components/Link';
+import { ExpandMore } from 'style/components/Buttons';
+import { RedditTextField } from 'style/components/TextFields';
+// import useSWR from 'swr';
+
+// const fetcher = (url) => fetch(url).then((res) => res.json());
 
 // TODO: Refactor THIS
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  minWidth: 400,
+  width: '50%',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4
+};
+
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const statusColor = {
-  open: "info",
-  exchanging: "warning",
-  disputing: "error",
-  complete: "success",
+  open: 'info',
+  exchanging: 'warning',
+  disputing: 'error',
+  complete: 'success'
 };
 
 const OfferForm = ({ handleChange, setNumber }) => {
@@ -59,7 +77,7 @@ const OfferForm = ({ handleChange, setNumber }) => {
         id="filled-basic"
         label="Token Offered"
         variant="filled"
-        onChange={(e) => handleChange(e, "tokenOffered")}
+        onChange={(e) => handleChange(e, 'tokenOffered')}
         sx={{ my: 1 }}
         fullWidth
       />
@@ -68,7 +86,7 @@ const OfferForm = ({ handleChange, setNumber }) => {
         label="Amount Offered"
         type="number"
         variant="filled"
-        onChange={(e) => setNumber(e, "amountOffered")}
+        onChange={(e) => setNumber(e, 'amountOffered')}
         sx={{ my: 1 }}
         fullWidth
       />
@@ -83,7 +101,7 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
         id="filled-basic"
         label={`Token Requested for sending ${requestedToken}`}
         variant="filled"
-        onChange={(e) => handleChange(e, "tokenRequested")}
+        onChange={(e) => handleChange(e, 'tokenRequested')}
         sx={{ my: 1 }}
         fullWidth
       />
@@ -92,7 +110,7 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
         label="Amount Requested"
         type="number"
         variant="filled"
-        onChange={(e) => setNumber(e, "amountRequested")}
+        onChange={(e) => setNumber(e, 'amountRequested')}
         sx={{ my: 1 }}
         fullWidth
       />
@@ -101,21 +119,26 @@ const RequestForm = ({ handleChange, setNumber, requestedToken }) => {
 };
 
 export default function Swap({ swap, initialBids }) {
+  //   const { node } = useSelector((state: RootState) => state.archiver);
   const isCurrent = React.useRef(true);
   const [, copy] = useCopyToClipboard();
   const [state, setState] = useState({
-    swapId: "",
-    tokenOffered: "",
+    swapId: '',
+    tokenOffered: '',
     amountOffered: 0,
-    tokenRequested: "",
+    tokenRequested: '',
     amountRequested: 0,
     providerCollateral: 0,
-    providerChainAddress: "",
+    providerChainAddress: ''
   });
   const [expanded, setExpanded] = useState(true);
   const [bids, setBids] = useState(initialBids);
   const { wallet } = useSelector((state: RootState) => state.wallet);
   const { enqueueSnackbar } = useSnackbar();
+  const [open, setOpen] = React.useState(false);
+  const [explanation, setExplanation] = React.useState('');
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleClickVariant = (variant: VariantType, response: string) => () => {
     // variant could be success, error, warning, info, or default
@@ -123,27 +146,27 @@ export default function Swap({ swap, initialBids }) {
   };
 
   useEffect(() => {
-    if (swap.swapType === "offer") {
+    if (swap.swapType === 'offer') {
       setState({
         ...state,
         tokenRequested: swap.tokenOffered,
-        amountRequested: swap.amountOffered,
+        amountRequested: swap.amountOffered
       });
     }
-    if (swap.swapType === "request") {
+    if (swap.swapType === 'request') {
+      setState({
+        ...state,
+        tokenOffered: swap.tokenRequested,
+        amountOffered: swap.amountRequested
+      });
+    }
+    if (swap.swapType === 'immediate') {
       setState({
         ...state,
         tokenOffered: swap.tokenRequested,
         amountOffered: swap.amountRequested,
-      });
-    }
-    if (swap.swapType === "immediate") {
-      setState({
-        ...state,
-        tokenOffered: swap.tokenRequested,
-        amountOffered: swap.amountRequested,
         tokenRequested: swap.tokenOffered,
-        amountRequested: swap.amountOffered,
+        amountRequested: swap.amountOffered
       });
     }
     return () => {
@@ -164,24 +187,24 @@ export default function Swap({ swap, initialBids }) {
   const handleChange = (event, field) => {
     setState({
       ...state,
-      [field]: event.target.value,
+      [field]: event.target.value
     });
   };
 
   const handleNumberChange = (event, field) => {
     setState({
       ...state,
-      [field]: parseFloat(event.target.value),
+      [field]: parseFloat(event.target.value)
     });
   };
 
   return (
-    <Box sx={{ display: "flex", width: "100%" }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Offset />
         {swap && (
           <>
-            <Card sx={{ width: "100%" }} elevation={9}>
+            <Card sx={{ width: '100%' }} elevation={9}>
               <CardHeader
                 avatar={
                   <Avatar
@@ -348,15 +371,15 @@ export default function Swap({ swap, initialBids }) {
                           onClick={() => {
                             copy(swap.initiatorChainAddress);
                             handleClickVariant(
-                              "success",
-                              "Copied address to clipboard"
+                              'success',
+                              'Copied address to clipboard'
                             )();
                           }}
                         />
                       </Grid>
                     </Grid>
                   )}
-                  {swap.initiatorChainMemo !== "None" && (
+                  {swap.initiatorChainMemo !== 'None' && (
                     <Grid
                       container
                       direction="row"
@@ -379,8 +402,8 @@ export default function Swap({ swap, initialBids }) {
                           onClick={() => {
                             copy(swap.initiatorChainMemo);
                             handleClickVariant(
-                              "success",
-                              "Copied memo to clipboard"
+                              'success',
+                              'Copied memo to clipboard'
                             )();
                           }}
                         />
@@ -426,7 +449,7 @@ export default function Swap({ swap, initialBids }) {
                       </Grid>
                       <Grid item>
                         <Chip
-                          label={swap.maxTimeToSend / 60 + " Minutes"}
+                          label={swap.maxTimeToSend / 60 + ' Minutes'}
                           size="small"
                         />
                       </Grid>
@@ -450,7 +473,7 @@ export default function Swap({ swap, initialBids }) {
                       </Grid>
                       <Grid item>
                         <Chip
-                          label={swap.maxTimeToReceive / 60 + " Minutes"}
+                          label={swap.maxTimeToReceive / 60 + ' Minutes'}
                           size="small"
                         />
                       </Grid>
@@ -473,7 +496,7 @@ export default function Swap({ swap, initialBids }) {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Chip label={swap.collateral + " DAI"} size="small" />
+                        <Chip label={swap.collateral + ' DAI'} size="small" />
                       </Grid>
                     </Grid>
                   )}
@@ -523,7 +546,7 @@ export default function Swap({ swap, initialBids }) {
                             label={shortenHex(swap.acceptedBid)}
                             size="small"
                             color="primary"
-                            sx={{ cursor: "pointer" }}
+                            sx={{ cursor: 'pointer' }}
                           />
                         </StyledLink>
                       </Grid>
@@ -551,7 +574,7 @@ export default function Swap({ swap, initialBids }) {
                             label={shortenHex(swap.contractId)}
                             size="small"
                             color="primary"
-                            sx={{ cursor: "pointer" }}
+                            sx={{ cursor: 'pointer' }}
                           />
                         </StyledLink>
                       </Grid>
@@ -587,13 +610,13 @@ export default function Swap({ swap, initialBids }) {
                 </Paper>
               </CardContent>
               <CardActions disableSpacing>
-                <Tooltip title="mark swap as successful" arrow>
+                <BootstrapTooltip title="mark swap as successful" arrow>
                   <span>
                     <IconButton
                       aria-label="mark swap as successful"
                       disabled={
                         wallet.handle !== swap.initiatorAlias ||
-                        swap.status !== "exchanging"
+                        swap.status !== 'exchanging'
                       }
                       onClick={() => {
                         submitReceiptTx(swap, wallet).then(
@@ -606,27 +629,21 @@ export default function Swap({ swap, initialBids }) {
                       <DoneAllIcon />
                     </IconButton>
                   </span>
-                </Tooltip>
-                <Tooltip title="dispute this swap" arrow>
+                </BootstrapTooltip>
+                <BootstrapTooltip title="dispute this swap" arrow>
                   <span>
                     <IconButton
                       aria-label="dispute swap"
                       disabled={
                         wallet.handle !== swap.initiatorAlias ||
-                        swap.status !== "exchanging"
+                        swap.status !== 'exchanging'
                       }
-                      onClick={() => {
-                        submitDisputeTx(swap, wallet).then(
-                          ({ result }: any) => {
-                            handleClickVariant(result.status, result.reason)();
-                          }
-                        );
-                      }}
+                      onClick={handleOpen}
                     >
                       <WarningIcon />
                     </IconButton>
                   </span>
-                </Tooltip>
+                </BootstrapTooltip>
                 <ExpandMore
                   expand={expanded}
                   onClick={handleExpandClick}
@@ -639,12 +656,12 @@ export default function Swap({ swap, initialBids }) {
               <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <Container maxWidth="md">
                   <CardContent>
-                    {swap.status === "open" && (
+                    {swap.status === 'open' && (
                       <Box
                         component="form"
                         sx={{
-                          display: "flex",
-                          flexDirection: "column",
+                          display: 'flex',
+                          flexDirection: 'column'
                         }}
                         noValidate
                         autoComplete="off"
@@ -658,7 +675,7 @@ export default function Swap({ swap, initialBids }) {
                           });
                         }}
                       >
-                        {swap.swapType === "offer" && (
+                        {swap.swapType === 'offer' && (
                           <>
                             <OfferForm
                               handleChange={handleChange}
@@ -667,20 +684,20 @@ export default function Swap({ swap, initialBids }) {
                             <TextField
                               sx={{ my: 1 }}
                               id="blockchain-address"
-                              label={swap.tokenOffered + " Address"}
+                              label={swap.tokenOffered + ' Address'}
                               variant="filled"
                               color="primary"
                               fullWidth
                               onChange={(e) =>
                                 setState({
                                   ...state,
-                                  providerChainAddress: e.target.value,
+                                  providerChainAddress: e.target.value
                                 })
                               }
                             />
                           </>
                         )}
-                        {swap.swapType === "request" && (
+                        {swap.swapType === 'request' && (
                           <>
                             <RequestForm
                               handleChange={handleChange}
@@ -690,31 +707,31 @@ export default function Swap({ swap, initialBids }) {
                             <TextField
                               sx={{ my: 1 }}
                               id="blockchain-address"
-                              label={state.tokenRequested + " Address"}
+                              label={state.tokenRequested + ' Address'}
                               variant="filled"
                               color="primary"
                               fullWidth
                               onChange={(e) =>
                                 setState({
                                   ...state,
-                                  providerChainAddress: e.target.value,
+                                  providerChainAddress: e.target.value
                                 })
                               }
                             />
                           </>
                         )}
-                        {swap.swapType === "immediate" && (
+                        {swap.swapType === 'immediate' && (
                           <TextField
                             sx={{ my: 1 }}
                             id="blockchain-address"
-                            label={state.tokenRequested + " Address"}
+                            label={state.tokenRequested + ' Address'}
                             variant="filled"
                             color="primary"
                             fullWidth
                             onChange={(e) =>
                               setState({
                                 ...state,
-                                providerChainAddress: e.target.value,
+                                providerChainAddress: e.target.value
                               })
                             }
                           />
@@ -750,6 +767,40 @@ export default function Swap({ swap, initialBids }) {
                 </Container>
               </Collapse>
             </Card>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Explain your reasoning for opening a dispute
+                </Typography>
+                <RedditTextField
+                  id="modal-modal-description"
+                  sx={{ mt: 2 }}
+                  label="Explanation"
+                  multiline
+                  fullWidth
+                  rows={4}
+                  onChange={(e) => setExplanation(e.target.value)}
+                />
+                <Button
+                  variant="contained"
+                  sx={{ mt: 2 }}
+                  onClick={() => {
+                    submitDisputeTx(explanation, swap, wallet).then(
+                      ({ result }: any) => {
+                        handleClickVariant(result.status, result.reason)();
+                      }
+                    );
+                  }}
+                >
+                  Submit
+                </Button>
+              </Box>
+            </Modal>
           </>
         )}
       </Box>
@@ -757,13 +808,28 @@ export default function Swap({ swap, initialBids }) {
   );
 }
 
-Swap.getInitialProps = async ({ query }) => {
-  const { slug } = query;
-  const { swap } = await getSwap(slug);
+// This gets called on every request
+export async function getServerSideProps({ query }) {
+  // Fetch data from external API
+  const { id } = query;
+  const { swap } = await getSwap(id);
   const { bids } = await queryBids(swap.accountId);
 
   return {
-    swap: swap.data,
-    initialBids: bids,
+    props: {
+      swap: swap.data,
+      initialBids: bids
+    }
   };
-};
+}
+
+// Swap.getInitialProps = async ({ query }) => {
+//   const { id } = query;
+//   const { swap } = await getSwap(id);
+//   const { bids } = await queryBids(swap.accountId);
+
+//   return {
+//     swap: swap.data,
+//     initialBids: bids
+//   };
+// };

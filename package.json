@@ -12,7 +12,7 @@
   "dependencies": {
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
-    "@monaco-editor/react": "^4.3.1",
+    "@monaco-editor/react": "latest",
     "@mui/icons-material": "latest",
     "@mui/lab": "latest",
     "@mui/material": "latest",
@@ -20,7 +20,7 @@
     "@mui/styles": "latest",
     "@mui/x-data-grid-generator": "next",
     "@mui/x-data-grid-pro": "next",
-    "@next/bundle-analyzer": "^12.0.1",
+    "@next/bundle-analyzer": "^12.0.3",
     "@reduxjs/toolkit": "latest",
     "axios": "^0.24.0",
     "classnames": "^2.3.1",
@@ -28,10 +28,9 @@
     "date-fns": "^2.25.0",
     "fast-stable-stringify": "^1.0.0",
     "monaco-themes": "^0.4.0",
-    "next": "^12.0.2",
-    "next-pwa": "^5.4.0",
+    "next": "^12.0.3",
     "next-seo": "^4.28.1",
-    "notistack": "^2.0.2",
+    "notistack": "^2.0.3",
     "react": "latest",
     "react-dom": "latest",
     "react-markdown": "^7.1.0",
@@ -39,15 +38,14 @@
     "react-redux": "latest",
     "redux-persist": "^6.0.0",
     "shardus-crypto-web": "git+https://gitlab.com/shardus/shardus-crypto-web.git#updateDeps",
+    "swr": "^1.0.1",
     "tinycolor2": "^1.4.2"
   },
   "devDependencies": {
-    "@types/react": "^17.0.33",
-    "@types/react-dom": "^17.0.10",
-    "next-sitemap": "^1.6.192",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
+    "next-sitemap": "^1.6.203",
     "serve": "^12.0.1",
-    "typescript": "^4.4.4",
-    "workbox-precaching": "^6.3.0",
-    "workbox-window": "^6.3.0"
+    "typescript": "^4.4.4"
   }
 }

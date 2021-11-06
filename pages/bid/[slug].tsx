@@ -27,11 +27,22 @@ export default function Bid({ bid }) {
   );
 }
 
-Bid.getInitialProps = async ({ query }) => {
+export async function getServerSideProps({ query }) {
   const { slug } = query;
   const { account } = await getAccountData(slug);
 
   return {
-    bid: account,
+    props: {
+      bid: account
+    }
   };
-};
+}
+
+// Bid.getInitialProps = async ({ query }) => {
+//   const { slug } = query;
+//   const { account } = await getAccountData(slug);
+
+//   return {
+//     bid: account,
+//   };
+// };
