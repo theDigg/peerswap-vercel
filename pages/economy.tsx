@@ -1,88 +1,87 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from 'next/router'
-import { useSelector } from "react-redux";
-import { RootState } from "app/rootReducer";
-import { VariantType, useSnackbar } from "notistack";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
-import Card from "@mui/material/Card";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import ParameterTable from "components/Parameters";
-import { styled } from "@mui/material/styles";
-import { RedditTextField } from "style/components/TextFields";
-import { Android12Switch } from "style/components/Switches";
-import { getParameters, submitProposalTx, getWindow } from "api/peerswapAPI";
-import { formatDateTime } from "utils/stringUtils";
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { RootState } from 'app/rootReducer';
+import { VariantType, useSnackbar } from 'notistack';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import ParameterTable from 'components/Parameters';
+import { styled } from '@mui/material/styles';
+import { RedditTextField } from 'style/components/TextFields';
+import { Android12Switch } from 'style/components/Switches';
+import { getParameters, submitProposalTx, getWindow } from 'api/peerswapAPI';
+import { formatDateTime } from 'utils/stringUtils';
 import Page from 'components/Page';
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const styles = {
   root: {
-    display: "flex",
-    width: "100%",
+    display: 'flex',
+    width: '100%'
   },
   content: {
     flexGrow: 1,
-    padding: 3,
+    padding: 3
   },
   card: {
-    width: "100%",
+    width: '100%',
     marginBottom: 2,
-    paddingBottom: 0,
+    paddingBottom: 0
   },
   active: {
-    width: "100%",
+    width: '100%',
     marginBottom: 2,
     paddingBottom: 0,
-    border: "2px solid green",
+    border: '2px solid green'
   },
   cardContent: {
     padding: 0,
-    paddingBottom: 0,
+    paddingBottom: 0
   },
   cardTitle: {
-    margin: 1,
+    margin: 1
   },
   windowInfo: {
-    display: "flex",
-    justifyContent: "space-between",
-    margin: 1,
+    display: 'flex',
+    justifyContent: 'space-between',
+    margin: 1
   },
   input: {
     marginTop: 3,
-    width: "100%",
+    width: '100%'
   },
   button: {
-    width: "100%",
+    width: '100%',
     marginTop: 3,
-    marginBottom: 2,
+    marginBottom: 2
   },
   mb: {
-    marginBottom: 2,
+    marginBottom: 2
   },
   table: {
-    minWidth: 350,
-  },
+    minWidth: 350
+  }
 };
 
 const windowNameFormat = {
-  proposalWindow: "Proposal Window",
-  votingWindow: "Voting Window",
-  graceWindow: "Grace Window",
-  applyWindow: "Apply Window",
+  proposalWindow: 'Proposal Window',
+  votingWindow: 'Voting Window',
+  graceWindow: 'Grace Window',
+  applyWindow: 'Apply Window'
 };
 
 const Economy = () => {
-  const router = useRouter();
   const [state, setState] = useState({
     checked: false,
     parameters: {
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       proposalFee: 0,
       maintenanceFee: 0,
       maintenanceInterval: 0,
@@ -92,8 +91,8 @@ const Economy = () => {
       stakeRequired: 0,
       transactionFee: 0,
       faucetAmount: 0,
-      defaultToll: 0,
-    },
+      defaultToll: 0
+    }
   });
   const [parameters, setParameters] = useState({} as any);
   const [windows, setWindows] = useState({} as any);
@@ -132,8 +131,8 @@ const Economy = () => {
       ...state,
       parameters: {
         ...state.parameters,
-        [event.target.name]: event.target.value,
-      },
+        [event.target.name]: event.target.value
+      }
     });
   };
 
@@ -144,8 +143,8 @@ const Economy = () => {
       ...state,
       parameters: {
         ...state.parameters,
-        [event.target.name]: event.target.value || 0,
-      },
+        [event.target.name]: event.target.value || 0
+      }
     });
   };
 
@@ -171,13 +170,11 @@ const Economy = () => {
               }
               label="Show all windows"
             />
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => router.push("/vote")}
-            >
-              Vote
-            </Button>
+            <Link href="/vote">
+              <Button color="primary" variant="contained">
+                Vote
+              </Button>
+            </Link>
           </Box>
 
           {!state.checked && windows[currentWindowName] && (
@@ -210,7 +207,7 @@ const Economy = () => {
             <div>
               <Card
                 sx={
-                  currentWindowName === "proposalWindow"
+                  currentWindowName === 'proposalWindow'
                     ? styles.active
                     : styles.card
                 }
@@ -241,7 +238,7 @@ const Economy = () => {
               </Card>
               <Card
                 sx={
-                  currentWindowName === "votingWindow"
+                  currentWindowName === 'votingWindow'
                     ? styles.active
                     : styles.card
                 }
@@ -272,7 +269,7 @@ const Economy = () => {
               </Card>
               <Card
                 sx={
-                  currentWindowName === "graceWindow"
+                  currentWindowName === 'graceWindow'
                     ? styles.active
                     : styles.card
                 }
@@ -303,7 +300,7 @@ const Economy = () => {
               </Card>
               <Card
                 sx={
-                  currentWindowName === "applyWindow"
+                  currentWindowName === 'applyWindow'
                     ? styles.active
                     : styles.card
                 }
@@ -373,15 +370,15 @@ const Economy = () => {
             Submit Proposal
           </Button>
           <Typography color="textSecondary" variant="body2">
-            Submitting a proposal will cost{" "}
-            <strong>{parameters.proposalFee}</strong> coins + Transaction Fee:{" "}
+            Submitting a proposal will cost{' '}
+            <strong>{parameters.proposalFee}</strong> coins + Transaction Fee:{' '}
             <strong>{parameters.transactionFee}</strong> coins
           </Typography>
         </Container>
       </Box>
     </Box>
   );
-}
+};
 
 const EconomyPage = () => (
   <Page name="Economy" path="/economy">

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useRouter } from "next/router";
+import Link from 'next/link';
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "app/rootReducer";
@@ -96,7 +96,6 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const MiniDrawer = () => {
-  const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
   const { mySwaps } = useSelector((state: RootState) => state.swaps);
@@ -169,132 +168,160 @@ const MiniDrawer = () => {
 
   const itemsList = [
     {
-      text: "Welcome",
-      icon: <HomeIcon color={active === "welcome" ? "primary" : "inherit"} />,
-      show: wallet === null,
-      onClick: () => {
-        setActive("welcome");
-        router.push("/");
-      },
-    },
-    {
-      text: "Register",
+      text: 'Welcome',
       icon: (
-        <AppRegistrationIcon
-          color={active === "register" ? "primary" : "inherit"}
-        />
+        <Link href="/">
+          <HomeIcon color={active === 'welcome' ? 'primary' : 'inherit'} />
+        </Link>
       ),
       show: wallet === null,
       onClick: () => {
-        setActive("register");
-        router.push("/register");
-      },
+        setActive('welcome');
+      }
     },
     {
-      text: "Import",
+      text: 'Register',
       icon: (
-        <DownloadTwoToneIcon
-          color={active === "import" ? "primary" : "inherit"}
-        />
+        <Link href="/register">
+          <AppRegistrationIcon
+            color={active === 'register' ? 'primary' : 'inherit'}
+          />
+        </Link>
       ),
       show: wallet === null,
       onClick: () => {
-        setActive("import");
-        router.push("/import");
-      },
+        setActive('register');
+      }
     },
     {
-      text: "Dashboard",
+      text: 'Import',
       icon: (
-        <DashboardIcon color={active === "Dashboard" ? "primary" : "inherit"} />
+        <Link href="/import">
+          <DownloadTwoToneIcon
+            color={active === 'import' ? 'primary' : 'inherit'}
+          />
+        </Link>
+      ),
+      show: wallet === null,
+      onClick: () => {
+        setActive('import');
+      }
+    },
+    {
+      text: 'Dashboard',
+      icon: (
+        <Link href="/dashboard">
+          <DashboardIcon
+            color={active === 'Dashboard' ? 'primary' : 'inherit'}
+          />
+        </Link>
       ),
       show: wallet !== null,
       onClick: () => {
-        setActive("Dashboard");
-        router.push("/dashboard");
-      },
+        setActive('Dashboard');
+      }
     },
     {
-      text: "Wallet",
+      text: 'Wallet',
       icon: (
-        <AccountBalanceIcon
-          color={active === "wallet" ? "primary" : "inherit"}
-        />
+        <Link href="/wallet">
+          <AccountBalanceIcon
+            color={active === 'wallet' ? 'primary' : 'inherit'}
+          />
+        </Link>
       ),
       show: wallet !== null,
       onClick: () => {
-        setActive("wallet");
-        router.push("/wallet");
-      },
+        setActive('wallet');
+      }
     },
     {
-      text: "Swaps",
-      icon: <LoopIcon color={active === "swaps" ? "primary" : "inherit"} />,
-      show: wallet !== null,
-      onClick: () => {
-        setActive("swaps");
-        router.push("/swaps");
-      },
-    },
-    {
-      text: "Disputes",
-      icon: <WarningAmberIcon color={active === "dispute" ? "primary" : "inherit"} />,
-      show: wallet !== null,
-      onClick: () => {
-        setActive("disputes");
-        router.push("/dispute");
-      },
-    },
-    {
-      text: "Messages",
-      icon: <MailIcon color={active === "messages" ? "primary" : "inherit"} />,
-      show: wallet !== null,
-      onClick: () => {
-        setActive("messages");
-        router.push("/messages");
-      },
-    },
-    {
-      text: "Tx History",
+      text: 'Swaps',
       icon: (
-        <HistoryIcon
-          color={active === "transactions" ? "primary" : "inherit"}
-        />
+        <Link href="/swaps">
+          <LoopIcon color={active === 'swaps' ? 'primary' : 'inherit'} />
+        </Link>
       ),
       show: wallet !== null,
       onClick: () => {
-        setActive("transactions");
-        router.push("/transactions");
-      },
+        setActive('swaps');
+      }
     },
     {
-      text: "Economy",
+      text: 'Disputes',
       icon: (
-        <BarChartIcon color={active === "economy" ? "primary" : "inherit"} />
+        <Link href="/disputes">
+          <WarningAmberIcon
+            color={active === 'dispute' ? 'primary' : 'inherit'}
+          />
+        </Link>
       ),
       show: wallet !== null,
       onClick: () => {
-        setActive("economy");
-        router.push("/economy");
-      },
+        setActive('disputes');
+      }
     },
     {
-      text: "Settings",
-      icon: <TuneIcon color={active === "settings" ? "primary" : "inherit"} />,
+      text: 'Messages',
+      icon: (
+        <Link href="/messages">
+          <MailIcon color={active === 'messages' ? 'primary' : 'inherit'} />
+        </Link>
+      ),
+      show: wallet !== null,
+      onClick: () => {
+        setActive('messages');
+      }
+    },
+    {
+      text: 'Tx History',
+      icon: (
+        <Link href="/transactions">
+          <HistoryIcon
+            color={active === 'transactions' ? 'primary' : 'inherit'}
+          />
+        </Link>
+      ),
+      show: wallet !== null,
+      onClick: () => {
+        setActive('transactions');
+      }
+    },
+    {
+      text: 'Economy',
+      icon: (
+        <Link href="/economy">
+          <BarChartIcon color={active === 'economy' ? 'primary' : 'inherit'} />
+        </Link>
+      ),
+      show: wallet !== null,
+      onClick: () => {
+        setActive('economy');
+      }
+    },
+    {
+      text: 'Settings',
+      icon: (
+        <Link href="/settings">
+          <TuneIcon color={active === 'settings' ? 'primary' : 'inherit'} />
+        </Link>
+      ),
       show: true,
       onClick: () => {
-        setActive("settings");
-        router.push("/settings");
-      },
+        setActive('settings');
+      }
     },
     {
-      text: "Info",
-      icon: <InfoIcon color={active === "info" ? "primary" : "inherit"} />,
+      text: 'Info',
+      icon: (
+        <Link href="/info">
+          <InfoIcon color={active === 'info' ? 'primary' : 'inherit'} />
+        </Link>
+      ),
       show: wallet !== null,
       onClick: () => {
-        setActive("info");
-        router.push("/info");
-      },
+        setActive('info');
+      }
     },
     // {
     //   text: "Test",
@@ -303,14 +330,17 @@ const MiniDrawer = () => {
     //   onClick: () => router.push("/test"),
     // },
     {
-      text: "Sign out",
-      icon: <ExitToAppIcon />,
+      text: 'Sign out',
+      icon: (
+        <Link href="/">
+          <ExitToAppIcon />
+        </Link>
+      ),
       show: wallet !== null,
       onClick: () => {
         dispatch(setWallet(null));
-        router.push("/");
-      },
-    },
+      }
+    }
   ];
 
   const handleDrawerOpen = () => {

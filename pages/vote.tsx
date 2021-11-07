@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import Link from 'next/link';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "app/rootReducer";
 import { setProposals } from "features/proposals/proposalSlice";
@@ -43,7 +43,6 @@ const windowNameFormat = {
 };
 
 const Vote = () => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const [state, setState] = useState({
     checked: false,
@@ -74,12 +73,12 @@ const Vote = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", width: "100%" }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: (theme) => theme.spacing(3),
+          p: (theme) => theme.spacing(3)
         }}
       >
         <Offset />
@@ -109,16 +108,14 @@ const Vote = () => {
               }
               label="Show all windows"
             />
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => router.push("/economy")}
-            >
-              Proposal
-            </Button>
+            <Link href="/economy">
+              <Button color="primary" variant="contained">
+                Proposal
+              </Button>
+            </Link>
           </WindowInfo>
           {!state.checked && windows[currentWindowName] && (
-            <CardInfo elevation={6} sx={{ border: "2px solid green" }}>
+            <CardInfo elevation={6} sx={{ border: '2px solid green' }}>
               <Typography
                 variant="body1"
                 color="textPrimary"
@@ -148,7 +145,7 @@ const Vote = () => {
               <CardInfo
                 sx={{
                   border:
-                    currentWindowName === "proposalWindow" && "2px solid green",
+                    currentWindowName === 'proposalWindow' && '2px solid green'
                 }}
                 elevation={6}
               >
@@ -178,7 +175,7 @@ const Vote = () => {
               <CardInfo
                 sx={{
                   border:
-                    currentWindowName === "votingWindow" && "2px solid green",
+                    currentWindowName === 'votingWindow' && '2px solid green'
                 }}
                 elevation={6}
               >
@@ -208,7 +205,7 @@ const Vote = () => {
               <CardInfo
                 sx={{
                   border:
-                    currentWindowName === "graceWindow" && "2px solid green",
+                    currentWindowName === 'graceWindow' && '2px solid green'
                 }}
                 elevation={6}
               >
@@ -238,7 +235,7 @@ const Vote = () => {
               <CardInfo
                 sx={{
                   border:
-                    currentWindowName === "applyWindow" && "2px solid green",
+                    currentWindowName === 'applyWindow' && '2px solid green'
                 }}
                 elevation={6}
               >

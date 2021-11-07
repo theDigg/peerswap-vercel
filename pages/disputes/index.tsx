@@ -32,7 +32,6 @@ const DisputesPage = ({ disputes }) => (
 
 export async function getServerSideProps() {
   const { disputes } = await getDisputes();
-  console.log(disputes);
 
   return {
     props: {
