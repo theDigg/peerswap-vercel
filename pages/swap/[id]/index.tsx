@@ -597,7 +597,7 @@ export default function Swap({ swap, initialBids }) {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <StyledLink href={`../dispute/${swap.disputeId}`}>
+                        <StyledLink href={`../disputes/${swap.disputeId}`}>
                           <Chip
                             label={shortenHex(swap.disputeId)}
                             size="small"

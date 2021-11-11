@@ -1,21 +1,23 @@
-import React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { RedditTextField } from "../style/components/TextFields";
-import { StyledTableCell, StyledTableRow } from "../style/components/Tables";
+import React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import UserCard from 'components/UserCard';
+import Paper from '@mui/material/Paper';
+import { RedditTextField } from '../style/components/TextFields';
+import { StyledTableCell, StyledTableRow } from '../style/components/Tables';
+import Box from '@mui/material/Box';
 
 export default function Parameters({
   parameters,
   nextParameters,
-  changeParameters,
+  changeParameters
 }) {
   const rows = [
     createData(
-      "Network Proposal Fee",
+      'Network Proposal Fee',
       parameters.proposalFee,
       <RedditTextField
         label="Proposal Fee"
@@ -28,7 +30,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Maintenance Fee",
+      'Maintenance Fee',
       parameters.maintenanceFee,
       <RedditTextField
         label="Maintenance Fee"
@@ -41,7 +43,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Maintenance Interval",
+      'Maintenance Interval',
       parameters.maintenanceInterval,
       <RedditTextField
         label="Maintenance Interval"
@@ -54,7 +56,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Node Penalty",
+      'Node Penalty',
       parameters.nodePenalty,
       <RedditTextField
         label="Node Penalty"
@@ -67,7 +69,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Node Reward Amount",
+      'Node Reward Amount',
       parameters.nodeRewardAmount,
       <RedditTextField
         label="Node Reward"
@@ -80,7 +82,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Node Reward Interval",
+      'Node Reward Interval',
       parameters.nodeRewardInterval,
       <RedditTextField
         label="Node Reward Interval"
@@ -93,7 +95,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Stake Required",
+      'Stake Required',
       parameters.stakeRequired,
       <RedditTextField
         label="Stake Required"
@@ -106,7 +108,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Transaction Fee",
+      'Transaction Fee',
       parameters.transactionFee,
       <RedditTextField
         label="TX Fee"
@@ -119,7 +121,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Faucet Amount",
+      'Faucet Amount',
       parameters.faucetAmount,
       <RedditTextField
         label="Faucet Amount"
@@ -132,7 +134,7 @@ export default function Parameters({
       />
     ),
     createData(
-      "Default Toll",
+      'Default Toll',
       parameters.defaultToll,
       <RedditTextField
         label="Default Toll"
@@ -143,14 +145,14 @@ export default function Parameters({
         name="defaultToll"
         onChange={changeParameters}
       />
-    ),
+    )
   ];
 
   return (
     <TableContainer component={Paper} elevation={9}>
       <Table
         sx={{
-          minWidth: 350,
+          minWidth: 350
         }}
         size="small"
         aria-label="customized table"
@@ -174,6 +176,18 @@ export default function Parameters({
               <StyledTableCell align="right">{row.next}</StyledTableCell>
             </StyledTableRow>
           ))}
+          <StyledTableRow key={parameters.proposedBy.id}>
+            <StyledTableCell component="th" scope="row">
+              Submitted by:
+            </StyledTableCell>
+            <StyledTableCell align="center">
+            </StyledTableCell>
+            <StyledTableCell align="right">
+              <Box sx={{ mr: -1, float: 'right' }}>
+                <UserCard user={parameters.proposedBy} />
+              </Box>
+            </StyledTableCell>
+          </StyledTableRow>
         </TableBody>
       </Table>
     </TableContainer>

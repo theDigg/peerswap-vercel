@@ -67,11 +67,11 @@ export function stringToColor(string: string) {
   return color;
 }
 
-export function stringAvatar(name: string) {
+export function stringAvatar(user: any) {
   return {
     sx: {
-      bgcolor: stringToColor(name.toUpperCase()),
+      bgcolor: stringToColor(user.id),
     },
-    children: `${name[0].toUpperCase()}`,
+    children: `${user.emoji}`,
   };
 }

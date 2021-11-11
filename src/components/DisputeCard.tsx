@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import Link from 'next/link'
 import { VariantType, useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
@@ -34,7 +35,7 @@ import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import BidCard from './BidCard';
 import SwapCard from './SwapCard';
-import { formatDateTime, shortenHex } from 'utils/stringUtils';
+import { formatDateTime, shortenHex, stringAvatar } from 'utils/stringUtils';
 import useCopyToClipboard from 'hooks/useCopyToClipboard';
 import { PlaygroundSpeedDial } from 'components/MUIDemo/SpeedDial';
 import MarkdownPost from 'components/MarkdownPost';
@@ -225,34 +226,62 @@ export default function DisputeCard({ dispute }) {
     <Card sx={{ width: '100%' }} elevation={4}>
       <CardHeader
         avatar={
-          <Avatar aria-label="dispute-icon" sx={{ bgcolor: red[500] }}>
-            <WarningAmberIcon />
-          </Avatar>
+          <BootstrapTooltip title="Dispute Page" placement="top">
+            <span>
+              <Link href={`../disputes/${dispute.id}`}>
+                <IconButton aria-label="swap-page-link">
+                  <Avatar aria-label="swap-icon" sx={{ bgcolor: red[500] }}>
+                    <WarningAmberIcon />
+                  </Avatar>
+                </IconButton>
+              </Link>
+            </span>
+          </BootstrapTooltip>
         }
         action={
-          wallet.entry.address === dispute.prosecutor ||
-          wallet.entry.address === dispute.defendant ? (
-            <BootstrapTooltip title="Submit Evidence" placement="left">
-              <span>
-                <StyledLink href={`../dispute/${dispute.id}/evidence`}>
-                  <IconButton aria-label="settings">
-                    <PostAddIcon />
-                  </IconButton>
-                </StyledLink>
-              </span>
+          <>
+            <BootstrapTooltip title="Prosecutor Profile" placement="top">
+              <IconButton aria-label="prosecutor-profile">
+                <Avatar
+                  alt={dispute.prosecutorData.alias}
+                  {...stringAvatar(dispute.prosecutorData)}
+                />
+              </IconButton>
             </BootstrapTooltip>
-          ) : (
-            <BootstrapTooltip title="Submit Verdict" placement="left">
-              <span>
-                <StyledLink href={`../dispute/${dispute.id}/jury`}>
-                  <IconButton aria-label="jury-page-link">
-                    <GavelOutlinedIcon />
-                  </IconButton>
-                </StyledLink>
-              </span>
+            <BootstrapTooltip title="Defendant Profile" placement="top">
+              <IconButton aria-label="defendant-profile">
+                <Avatar
+                  alt={dispute.defendantData.alias}
+                  {...stringAvatar(dispute.defendantData)}
+                />
+              </IconButton>
             </BootstrapTooltip>
-          )
+          </>
         }
+        // action={
+        //   wallet.entry.address === dispute.prosecutor ||
+        //   wallet.entry.address === dispute.defendant ? (
+        //     <BootstrapTooltip title="Submit Evidence" placement="left">
+        //       <span>
+        //         <StyledLink href={`../disputes/${dispute.id}/evidence`}>
+        //           <IconButton aria-label="settings">
+        //             <PostAddIcon />
+        //           </IconButton>
+        //         </StyledLink>
+        //       </span>
+        //     </BootstrapTooltip>
+        //   ) : (
+        //     <BootstrapTooltip title="Submit Verdict" placement="left">
+        //       <span>
+        //         <StyledLink href={`../disputes/${dispute.id}/jury`}>
+        //           <IconButton aria-label="jury-page-link">
+        //             <GavelOutlinedIcon />
+        //           </IconButton>
+        //         </StyledLink>
+        //       </span>
+        //     </BootstrapTooltip>
+        //   )
+        // }
         title={dispute.prosecutorAlias}
         subheader={formatDateTime(dispute.createdAt)}
       />
@@ -376,10 +405,10 @@ export default function DisputeCard({ dispute }) {
               </StyledLink>
             </Grid>
           </Grid>
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="h6" align="center">
-              Jury
-            </Typography>
+          <Typography variant="h6" align="center">
+            Jury
+          </Typography>
+          <Box sx={{ mr: '50%' }}>
             <GroupAvatars users={dispute.jury} />
           </Box>
         </Paper>
@@ -408,6 +437,28 @@ export default function DisputeCard({ dispute }) {
             </IconButton>
           </span>
         </BootstrapTooltip>
+        {wallet.entry.address === dispute.prosecutor ||
+        wallet.entry.address === dispute.defendant ? (
+          <BootstrapTooltip title="Submit Evidence" placement="bottom">
+            <span>
+              <StyledLink href={`../disputes/${dispute.id}/evidence`}>
+                <IconButton aria-label="settings">
+                  <PostAddIcon />
+                </IconButton>
+              </StyledLink>
+            </span>
+          </BootstrapTooltip>
+        ) : (
+          <BootstrapTooltip title="Submit Verdict" placement="left">
+            <span>
+              <StyledLink href={`../disputes/${dispute.id}/jury`}>
+                <IconButton aria-label="jury-page-link">
+                  <GavelOutlinedIcon />
+                </IconButton>
+              </StyledLink>
+            </span>
+          </BootstrapTooltip>
+        )}
         {/* <Tooltip title="mark swap as successful" arrow>
           <span>
             <IconButton

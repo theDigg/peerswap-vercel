@@ -1,24 +1,26 @@
-import React from "react";
-import { useRouter } from "next/router";
-import Card from "@mui/material/Card";
-import Container from "@mui/material/Container";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import { styled } from "@mui/material/styles";
-import { setTab } from "features/wallet/walletSlice";
-import { RootState } from "app/rootReducer";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react';
+import { useRouter } from 'next/router';
+import Card from '@mui/material/Card';
+import Container from '@mui/material/Container';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import UserCard from 'components/UserCard';
+import { styled } from '@mui/material/styles';
+import { setTab } from 'features/wallet/walletSlice';
+import { RootState } from 'app/rootReducer';
+import { useSelector, useDispatch } from 'react-redux';
+import Box from '@mui/material/Box';
 
-const Unit = styled("span")(({ theme }) => ({
-  fontSize: "8px",
-  letterSpacing: "-.16px",
-  textAlign: "left",
-  position: "relative",
-  top: "-5px",
-  left: "5px",
+const Unit = styled('span')(({ theme }) => ({
+  fontSize: '8px',
+  letterSpacing: '-.16px',
+  textAlign: 'left',
+  position: 'relative',
+  top: '-5px',
+  left: '5px'
 }));
 
 export default function AccountInfo() {
@@ -29,6 +31,9 @@ export default function AccountInfo() {
   return (
     <Card sx={{ mb: 3, minWidth: 300 }} elevation={5}>
       <CardContent>
+        {/* <Box sx={{ m: 'auto' }}>
+          <UserCard user={account} />
+        </Box> */}
         <Typography variant="h6" color="primary" align="center" gutterBottom>
           @{account?.alias}
         </Typography>
@@ -49,16 +54,16 @@ export default function AccountInfo() {
       <Container maxWidth="sm">
         <CardActions
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-evenly",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-evenly'
           }}
         >
           <Button
             variant="contained"
             onClick={() => {
               dispatch(setTab(0));
-              router.push("/wallet");
+              router.push('/wallet');
             }}
           >
             Send
@@ -68,7 +73,7 @@ export default function AccountInfo() {
             variant="contained"
             onClick={() => {
               dispatch(setTab(1));
-              router.push("/wallet");
+              router.push('/wallet');
             }}
           >
             Swap
@@ -77,7 +82,7 @@ export default function AccountInfo() {
             variant="contained"
             onClick={() => {
               dispatch(setTab(2));
-              router.push("/wallet");
+              router.push('/wallet');
             }}
           >
             Receive

@@ -18,9 +18,12 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import BallotIcon from '@mui/icons-material/Ballot';
 import { RedditTextField } from "../style/components/TextFields";
 import { submitVoteTx } from "../api/peerswapAPI";
-import { formatDate } from "../utils/stringUtils";
+import { formatDate, stringAvatar } from "../utils/stringUtils";
+import { BootstrapTooltip } from "style/components/Tooltip";
+import Avatar from "@mui/material/Avatar";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -84,22 +87,30 @@ export default function Proposal({ proposal }) {
   return (
     <Card
       sx={{
-        width: "100%",
-        mt: 3,
+        width: '100%',
+        mt: 3
       }}
       elevation={6}
     >
       <CardHeader
-        // avatar={
-        //   <IconButton aria-label="settings">
-        //     <ExpandMoreIcon />
-        //   </IconButton>
-        // }
-        // action={
-        //   <IconButton aria-label="settings">
-        //     <MoreVertIcon />
-        //   </IconButton>
-        // }
+        avatar={
+          <IconButton aria-label="proposal">
+            <BallotIcon />
+          </IconButton>
+        }
+        action={
+          <BootstrapTooltip title={
+            proposal.parameters.proposedBy.alias === "Initial Network Config" ? 'Network Stats' : 'User Profile'
+          } placement="top">
+            <IconButton aria-label="user-profile">
+              <Avatar
+                alt={proposal.parameters.proposedBy.alias}
+                {...stringAvatar(proposal.parameters.proposedBy)}
+              />
+              {/* <MoreVertIcon /> */}
+            </IconButton>
+          </BootstrapTooltip>
+        }
         title={proposal.parameters.title}
         subheader={proposal.parameters.description}
       />
@@ -188,10 +199,10 @@ export default function Proposal({ proposal }) {
         </Container>
         <Box
           sx={{
-            display: "flex",
+            display: 'flex',
             marginTop: (theme) => theme.spacing(3),
-            width: "100%",
-            justifyContent: "space-between",
+            width: '100%',
+            justifyContent: 'space-between'
           }}
         >
           <Typography variant="body1" color="textPrimary">
@@ -219,7 +230,7 @@ export default function Proposal({ proposal }) {
         <CardContent>
           <Divider />
           <RedditTextField
-            sx={{ width: "100%", mt: 3 }}
+            sx={{ width: '100%', mt: 3 }}
             id="vote-amount"
             label="Vote Amount"
             variant="filled"
@@ -235,12 +246,12 @@ export default function Proposal({ proposal }) {
             color="primary"
             size="large"
             sx={{
-              width: "100%",
-              my: 2,
+              width: '100%',
+              my: 2
             }}
             startIcon={<DoneAllIcon />}
             onClick={() => {
-              submitVoteTx(proposal, amount, wallet).then(({result}: any) => {
+              submitVoteTx(proposal, amount, wallet).then(({ result }: any) => {
                 handleClickVariant(result.status, result.reason)();
               });
             }}

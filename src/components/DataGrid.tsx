@@ -589,7 +589,7 @@ export default function FullFeaturedDemo({ swaps }) {
         />
         <DataGridPro
           className={isAntDesign ? antDesignClasses.root : undefined}
-          rows={[...swaps]}
+          rows={swaps}
           columns={columns}
           components={{
             Toolbar: GridToolbar,

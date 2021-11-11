@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { VariantType, useSnackbar } from 'notistack';
@@ -19,7 +20,6 @@ import { grey } from '@mui/material/colors';
 import CheckIcon from '@mui/icons-material/Check';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import WarningIcon from '@mui/icons-material/Warning';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
@@ -29,7 +29,7 @@ import {
   submitReceiptFromBidTx,
   submitDisputeTx
 } from 'api/peerswapAPI';
-import { formatDateTime, shortenHex } from 'utils/stringUtils';
+import { formatDateTime, shortenHex, stringAvatar } from 'utils/stringUtils';
 import useCopyToClipboard from 'hooks/useCopyToClipboard';
 import { StyledLink } from 'style/components/Link';
 
@@ -73,14 +73,27 @@ function BidCard({ swap, bid }) {
       <Card sx={{ width: '100%' }} elevation={4}>
         <CardHeader
           avatar={
-            <Avatar aria-label="recipe" sx={{ bgcolor: grey[600] }}>
-              <LocalOfferIcon />
-            </Avatar>
+            <BootstrapTooltip title="Bid Page" placement="top">
+              <span>
+                <Link href={`../bid/${bid.id}`}>
+                  <IconButton aria-label="bid-page-link">
+                    <Avatar aria-label="bid-icon" sx={{ bgcolor: grey[600] }}>
+                      <LocalOfferIcon />
+                    </Avatar>
+                  </IconButton>
+                </Link>
+              </span>
+            </BootstrapTooltip>
           }
           action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
+            <BootstrapTooltip title="User Profile" placement="right">
+              <IconButton aria-label="settings">
+                <Avatar
+                  alt={bid.providerData.alias}
+                  {...stringAvatar(bid.providerData)}
+                />
+              </IconButton>
+            </BootstrapTooltip>
           }
           title={bid.providerAlias}
           subheader={formatDateTime(bid.createdAt)}
@@ -313,7 +326,7 @@ function BidCard({ swap, bid }) {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <StyledLink href={`../dispute/${bid.disputeId}`}>
+                  <StyledLink href={`../disputes/${bid.disputeId}`}>
                     <Chip
                       label={shortenHex(bid.disputeId)}
                       size="small"

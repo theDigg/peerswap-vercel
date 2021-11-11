@@ -28,6 +28,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import BiotechIcon from '@mui/icons-material/Biotech';
 import { setWallet } from "features/wallet/walletSlice";
 import { setAccount } from "features/account/accountSlice";
 import { setChats } from "features/messages/messagesSlice";
@@ -323,12 +324,18 @@ const MiniDrawer = () => {
         setActive('info');
       }
     },
-    // {
-    //   text: "Test",
-    //   icon: <StyleIcon />,
-    //   show: true,
-    //   onClick: () => router.push("/test"),
-    // },
+    {
+      text: 'Test',
+      icon: (
+        <Link href="/test">
+          <BiotechIcon color={active === 'info' ? 'primary' : 'inherit'} />
+        </Link>
+      ),
+      show: true,
+      onClick: () => {
+        setActive('test');
+      }
+    },
     {
       text: 'Sign out',
       icon: (

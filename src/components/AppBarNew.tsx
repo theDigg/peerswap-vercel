@@ -1,30 +1,30 @@
-import * as React from "react";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "app/rootReducer";
-import { styled, alpha } from "@mui/material/styles";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Fab from "@mui/material/Fab";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import Notification from "./Notification/Notification";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import Avatar from "@mui/material/Avatar";
-import { Send as SendIcon } from "@mui/icons-material";
-import { setWallet } from "features/wallet/walletSlice";
-import { setTheme } from "features/theme/themeSlice";
-import { stringToColor, stringAvatar, formatDate } from "utils/stringUtils";
+import * as React from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'app/rootReducer';
+import { styled, alpha } from '@mui/material/styles';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import InputBase from '@mui/material/InputBase';
+import Badge from '@mui/material/Badge';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+// import Fab from '@mui/material/Fab';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+// import AccountCircle from '@mui/icons-material/AccountCircle';
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Notification from './Notification/Notification';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import Avatar from '@mui/material/Avatar';
+// import { Send as SendIcon } from '@mui/icons-material';
+import { setWallet } from 'features/wallet/walletSlice';
+import { setTheme } from 'features/theme/themeSlice';
+import { stringAvatar, formatDate } from 'utils/stringUtils';
 
 const drawerWidth = 200;
 
@@ -33,77 +33,77 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open'
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
+  transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
+      duration: theme.transitions.duration.enteringScreen
+    })
+  })
 }));
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25)
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
-    width: "auto",
-  },
+    width: 'auto'
+  }
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
+  color: 'inherit',
+  '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch'
+    }
+  }
 }));
 
 const notifications = [
-  { id: 0, color: "warning", message: "Someone has bid on your swap!" },
+  { id: 0, color: 'warning', message: 'Someone has bid on your swap!' },
   {
     id: 1,
-    color: "success",
-    type: "info",
-    message: "Your swap is complete!",
+    color: 'success',
+    type: 'info',
+    message: 'Your swap is complete!'
   },
   {
     id: 2,
-    color: "secondary",
-    type: "notification",
-    message: "This is just a simple notification",
-  },
+    color: 'secondary',
+    type: 'notification',
+    message: 'This is just a simple notification'
+  }
 ];
 
 export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
@@ -118,6 +118,7 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
   var [isMailsUnread, setIsMailsUnread] = React.useState(true);
   var [isNotificationsUnread, setIsNotificationsUnread] = React.useState(true);
   const { wallet } = useSelector((state: RootState) => state.wallet);
+  const { account } = useSelector((state: RootState) => state.account);
   const { recentMessages } = useSelector((state: RootState) => state.messages);
   const { theme } = useSelector((state: RootState) => state.theme);
 
@@ -132,16 +133,16 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = (route: string) => {
+  const handleMenuClose = (route?: string) => {
     setAnchorEl(null);
     handleMobileMenuClose();
-    router.push(route);
+    if (route) router.push(route);
   };
 
-  const handleMailMenuClose = (route: string) => {
+  const handleMailMenuClose = (route?: string) => {
     setMailMenu(null);
     handleMobileMenuClose();
-    router.push(route);
+    if (route) router.push(route);
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -149,30 +150,30 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
   };
 
   const handleThemeClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (theme === "light") {
-      dispatch(setTheme("dark"));
+    if (theme === 'light') {
+      dispatch(setTheme('dark'));
     } else {
-      dispatch(setTheme("light"));
+      dispatch(setTheme('light'));
     }
   };
 
-  const menuId = "primary-search-account-menu";
+  const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
-      onClose={handleMenuClose}
+      onClose={() => handleMenuClose()}
     >
-      <MenuItem onClick={() => handleMenuClose("/")}>Profile</MenuItem>
-      <MenuItem onClick={() => handleMenuClose("/settings")}>Settings</MenuItem>
-      <MenuItem onClick={() => handleMenuClose("/email")}>Email</MenuItem>
+      <MenuItem onClick={() => handleMenuClose('/')}>Profile</MenuItem>
+      <MenuItem onClick={() => handleMenuClose('/settings')}>Settings</MenuItem>
+      <MenuItem onClick={() => handleMenuClose('/email')}>Email</MenuItem>
       <MenuItem
         onClick={() => {
-          handleMenuClose("/");
+          handleMenuClose('/');
           dispatch(setWallet(null));
         }}
       >
@@ -181,14 +182,14 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
     </Menu>
   );
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
+  const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
@@ -256,10 +257,12 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
             aria-haspopup="true"
             color="inherit"
           >
-            <AccountCircle />
+            {/* <Box sx={{ width: '30px' }}> */}
+              <span>{account?.emoji}</span>
+            {/* </Box> */}
           </IconButton>
           <p>Account</p>
-        </MenuItem>,
+        </MenuItem>
       ]}
     </Menu>
   );
@@ -275,9 +278,9 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
             onClick={handleDrawerOpen}
             edge="start"
             sx={{
-              mr: "36px",
-              ml: { xs: "-6px", sm: "-14px" },
-              ...(open && { display: "none" }),
+              mr: '36px',
+              ml: { xs: '-6px', sm: '-14px' },
+              ...(open && { display: 'none' })
             }}
           >
             <MenuIcon />
@@ -286,7 +289,7 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             Peerswap
           </Typography>
@@ -300,7 +303,7 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
             />
           </Search> */}
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
               edge="start"
               aria-label="toggle-dark-theme"
@@ -355,7 +358,6 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
                 </Badge>
               </IconButton>,
               <IconButton
-                size="large"
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
@@ -364,11 +366,14 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
                 color="inherit"
                 key="account"
               >
-                <AccountCircle />
-              </IconButton>,
+                {/* <AccountCircle /> */}
+                <Box sx={{ width: '30px'}}>
+                  <span>{account?.emoji}</span>
+                </Box>
+              </IconButton>
             ]}
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -388,27 +393,27 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
         anchorEl={mailMenu}
         onClose={() => setMailMenu(null)}
         sx={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           mt: 2,
-          minWidth: 265,
+          minWidth: 265
         }}
         disableAutoFocusItem
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            p: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            p: 2
           }}
         >
           <Typography variant="h4">New Messages</Typography>
           <Typography
             sx={{
-              textDecoration: "none",
-              "&:hover": {
-                cursor: "pointer",
-              },
+              textDecoration: 'none',
+              '&:hover': {
+                cursor: 'pointer'
+              }
             }}
             component="a"
             color="secondary"
@@ -420,20 +425,20 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
           <MenuItem
             key={id}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              "&:hover, &:focus": {
-                backgroundColor: (theme) => theme.palette.background.default,
-              },
+              display: 'flex',
+              alignItems: 'center',
+              '&:hover, &:focus': {
+                backgroundColor: (theme) => theme.palette.background.default
+              }
             }}
             onClick={() => handleMailMenuClose(`/messages/${handle}`)}
           >
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                mr: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                mr: 2
               }}
             >
               <Avatar {...stringAvatar(handle)} />
@@ -443,10 +448,10 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
             </Box>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                mr: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                mr: 2
               }}
             >
               <Typography gutterBottom>{handle}</Typography>
@@ -477,9 +482,9 @@ export default function PrimarySearchAppBar({ open, handleDrawerOpen }) {
             key={notification.id}
             onClick={() => setNotificationsMenu(null)}
             sx={{
-              "&:hover, &:focus": {
-                bgcolor: (theme) => theme.palette.background.default,
-              },
+              '&:hover, &:focus': {
+                bgcolor: (theme) => theme.palette.background.default
+              }
             }}
           >
             <Notification {...notification} />

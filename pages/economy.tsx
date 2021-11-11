@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider';
 import Card from '@mui/material/Card';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import ParameterTable from 'components/Parameters';
+import UserCard from 'components/UserCard';
 import { styled } from '@mui/material/styles';
 import { RedditTextField } from 'style/components/TextFields';
 import { Android12Switch } from 'style/components/Switches';

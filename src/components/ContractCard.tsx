@@ -1,25 +1,26 @@
-import React from "react";
-import { VariantType, useSnackbar } from "notistack";
-import { StyledLink } from "style/components/Link";
-import { ExpandMore } from "style/components/Buttons";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import CardHeader from "@mui/material/CardHeader";
-import Chip from "@mui/material/Chip";
-import Divider from "@mui/material/Divider";
-import CardContent from "@mui/material/CardContent";
-import Paper from "@mui/material/Paper";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { red, green } from "@mui/material/colors";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ReceiptIcon from "@mui/icons-material/Receipt";
-import { formatDateTime, shortenHex } from "../utils/stringUtils";
-import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import React from 'react';
+import { VariantType, useSnackbar } from 'notistack';
+import { StyledLink } from 'style/components/Link';
+import { ExpandMore } from 'style/components/Buttons';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import CardHeader from '@mui/material/CardHeader';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
+import CardContent from '@mui/material/CardContent';
+import Paper from '@mui/material/Paper';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red, green } from '@mui/material/colors';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import { formatDateTime, shortenHex, stringAvatar } from '../utils/stringUtils';
+import useCopyToClipboard from '../hooks/useCopyToClipboard';
+import { BootstrapTooltip } from 'style/components/Tooltip';
 
 // interface ExpandMoreProps extends IconButtonProps {
 //   expand: boolean;
@@ -51,18 +52,43 @@ export default function ContractCard({ contract }) {
   };
 
   return (
-    <Card sx={{ width: "100%" }} elevation={9}>
+    <Card sx={{ width: '100%' }} elevation={9}>
       <CardHeader
         avatar={
-          <Avatar aria-label="swap-initiator" sx={{ bgcolor: red[600] }}>
+          <Avatar aria-label="receipt-icon" sx={{ bgcolor: red[600] }}>
             <ReceiptIcon />
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <>
+            <BootstrapTooltip title="Initiator Profile" placement="top">
+              <IconButton aria-label="settings">
+                <Avatar
+                  alt={contract.initiatorData.alias}
+                  {...stringAvatar(contract.initiatorData)}
+                />
+              </IconButton>
+            </BootstrapTooltip>
+            <BootstrapTooltip title="Provider Profile" placement="top">
+              <IconButton aria-label="provider-profile">
+                <Avatar
+                  alt={contract.providerData.alias}
+                  {...stringAvatar(contract.providerData)}
+                />
+              </IconButton>
+            </BootstrapTooltip>
+          </>
         }
+        // avatar={
+        //   <Avatar aria-label="swap-initiator" sx={{ bgcolor: red[600] }}>
+        //     <ReceiptIcon />
+        //   </Avatar>
+        // }
+        // action={
+        //   <IconButton aria-label="settings">
+        //     <MoreVertIcon />
+        //   </IconButton>
+        // }
         title={`Contract for swap: ${shortenHex(contract.swapId)}`}
         subheader={formatDateTime(contract.timeOfAgreement)}
       />
@@ -113,8 +139,8 @@ export default function ContractCard({ contract }) {
                 onClick={() => {
                   copy(contract.initiator);
                   handleClickVariant(
-                    "success",
-                    "Copied address to clipboard"
+                    'success',
+                    'Copied address to clipboard'
                   )();
                 }}
               />
@@ -138,8 +164,8 @@ export default function ContractCard({ contract }) {
                 onClick={() => {
                   copy(contract.initiatorChainAddress);
                   handleClickVariant(
-                    "success",
-                    "Copied address to clipboard"
+                    'success',
+                    'Copied address to clipboard'
                   )();
                 }}
               />
@@ -161,14 +187,14 @@ export default function ContractCard({ contract }) {
                 label={
                   contract.initiatorChainMemo
                     ? shortenHex(contract.initiatorChainMemo)
-                    : "None"
+                    : 'None'
                 }
                 size="small"
                 onClick={() => {
                   copy(contract.initiatorChainMemo);
                   handleClickVariant(
-                    "success",
-                    "Copied address to clipboard"
+                    'success',
+                    'Copied address to clipboard'
                   )();
                 }}
               />
@@ -192,8 +218,8 @@ export default function ContractCard({ contract }) {
                 onClick={() => {
                   copy(contract.provider);
                   handleClickVariant(
-                    "success",
-                    "Copied address to clipboard"
+                    'success',
+                    'Copied address to clipboard'
                   )();
                 }}
               />
@@ -217,8 +243,8 @@ export default function ContractCard({ contract }) {
                 onClick={() => {
                   copy(contract.providerChainAddress);
                   handleClickVariant(
-                    "success",
-                    "Copied address to clipboard"
+                    'success',
+                    'Copied address to clipboard'
                   )();
                 }}
               />
@@ -240,14 +266,14 @@ export default function ContractCard({ contract }) {
                 label={
                   contract.providerChainMemo
                     ? shortenHex(contract.providerChainMemo)
-                    : "None"
+                    : 'None'
                 }
                 size="small"
                 onClick={() => {
                   copy(contract.providerChainMemo);
                   handleClickVariant(
-                    "success",
-                    "Copied address to clipboard"
+                    'success',
+                    'Copied address to clipboard'
                   )();
                 }}
               />
@@ -265,7 +291,7 @@ export default function ContractCard({ contract }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Chip label={contract.collateral + " DAI"} size="small" />
+              <Chip label={contract.collateral + ' DAI'} size="small" />
             </Grid>
           </Grid>
           <Grid
@@ -282,10 +308,10 @@ export default function ContractCard({ contract }) {
             <Grid item>
               <Chip
                 label={`${
-                  contract.initiatorReceipt ? "complete" : "incomplete"
+                  contract.initiatorReceipt ? 'complete' : 'incomplete'
                 }`}
                 size="small"
-                color={contract.initiatorReceipt ? "success" : "error"}
+                color={contract.initiatorReceipt ? 'success' : 'error'}
               />
             </Grid>
           </Grid>
@@ -303,10 +329,10 @@ export default function ContractCard({ contract }) {
             <Grid item>
               <Chip
                 label={`${
-                  contract.providerReceipt ? "complete" : "incomplete"
+                  contract.providerReceipt ? 'complete' : 'incomplete'
                 }`}
                 size="small"
-                color={contract.providerReceipt ? "success" : "error"}
+                color={contract.providerReceipt ? 'success' : 'error'}
               />
             </Grid>
           </Grid>
@@ -401,7 +427,7 @@ export default function ContractCard({ contract }) {
             </Grid>
             <Grid item>
               <Chip
-                label={contract.maxTimeToSend / 60 + " Minutes"}
+                label={contract.maxTimeToSend / 60 + ' Minutes'}
                 size="small"
               />
             </Grid>
@@ -419,7 +445,7 @@ export default function ContractCard({ contract }) {
             </Grid>
             <Grid item>
               <Chip
-                label={contract.maxTimeToReceive / 60 + " Minutes"}
+                label={contract.maxTimeToReceive / 60 + ' Minutes'}
                 size="small"
               />
             </Grid>
@@ -459,7 +485,7 @@ export default function ContractCard({ contract }) {
                   label={shortenHex(contract.swapId)}
                   size="small"
                   color="primary"
-                  sx={{ cursor: "pointer" }}
+                  sx={{ cursor: 'pointer' }}
                 />
               </StyledLink>
             </Grid>
@@ -481,7 +507,7 @@ export default function ContractCard({ contract }) {
                   label={shortenHex(contract.bidId)}
                   size="small"
                   color="primary"
-                  sx={{ cursor: "pointer" }}
+                  sx={{ cursor: 'pointer' }}
                 />
               </StyledLink>
             </Grid>
@@ -499,7 +525,7 @@ export default function ContractCard({ contract }) {
                 </Typography>
               </Grid>
               <Grid item>
-                <StyledLink href={`../dispute/${contract.disputeId}`}>
+                <StyledLink href={`../disputes/${contract.disputeId}`}>
                   <Chip
                     label={shortenHex(contract.disputeId)}
                     size="small"

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { VariantType, useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
@@ -37,6 +38,7 @@ import {
   queryBids
 } from '../api/peerswapAPI';
 import Modal from '@mui/material/Modal';
+import { stringAvatar } from '../utils/stringUtils';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -113,14 +115,28 @@ function SwapCard({ swap, opened }) {
       <Card sx={{ width: '100%' }} elevation={4}>
         <CardHeader
           avatar={
-            <Avatar aria-label="swap-initiator" sx={{ bgcolor: red[500] }}>
-              <LoopIcon />
-            </Avatar>
+            <BootstrapTooltip title="Swap Page" placement="top">
+              <span>
+                <Link href={`../swap/${swap.id}`}>
+                  <IconButton aria-label="swap-page-link">
+                    <Avatar aria-label="swap-icon" sx={{ bgcolor: red[500] }}>
+                      <LoopIcon />
+                    </Avatar>
+                  </IconButton>
+                </Link>
+              </span>
+            </BootstrapTooltip>
           }
           action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
+            <BootstrapTooltip title="User Profile" placement="right">
+              <IconButton aria-label="settings">
+                <Avatar
+                  alt={swap.initiatorAlias}
+                  {...stringAvatar(swap.initiatorData)}
+                />
+                {/* <MoreVertIcon /> */}
+              </IconButton>
+            </BootstrapTooltip>
           }
           title={swap.initiatorAlias}
           subheader={formatDateTime(swap.createdAt)}
@@ -492,7 +508,7 @@ function SwapCard({ swap, opened }) {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <StyledLink href={`../dispute/${swap.disputeId}`}>
+                  <StyledLink href={`../disputes/${swap.disputeId}`}>
                     <Chip
                       label={shortenHex(swap.disputeId)}
                       size="small"
@@ -604,9 +620,11 @@ function SwapCard({ swap, opened }) {
             variant="contained"
             sx={{ mt: 2 }}
             onClick={() => {
-              submitDisputeTx(explanation, swap, wallet).then(({ result }: any) => {
-                handleClickVariant(result.status, result.reason)();
-              });
+              submitDisputeTx(explanation, swap, wallet).then(
+                ({ result }: any) => {
+                  handleClickVariant(result.status, result.reason)();
+                }
+              );
             }}
           >
             Submit

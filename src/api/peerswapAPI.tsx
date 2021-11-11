@@ -434,6 +434,7 @@ export declare namespace Accounts {
     reputation: number;
     jurorReputation?: number;
     alias: string | null;
+    emoji: string | null;
     emailHash: string | null;
     verified: string | boolean;
     lastMaintenance: number;
@@ -892,13 +893,14 @@ export async function submitTransferTx(
   return injectTx(tx);
 }
 
-export async function registerAlias(handle: string, user: Wallet) {
+export async function registerAlias(handle: string, emoji: string, user: Wallet) {
   await useCrypto();
   const tx = {
     type: 'register',
     aliasHash: crypto.hash(handle),
     from: user.entry.address,
     alias: handle,
+    emoji,
     timestamp: Date.now()
   };
   crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
