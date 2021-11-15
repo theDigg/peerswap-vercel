@@ -129,13 +129,17 @@ function SwapCard({ swap, opened }) {
           }
           action={
             <BootstrapTooltip title="User Profile" placement="right">
-              <IconButton aria-label="settings">
-                <Avatar
-                  alt={swap.initiatorAlias}
-                  {...stringAvatar(swap.initiatorData)}
-                />
-                {/* <MoreVertIcon /> */}
-              </IconButton>
+              <span>
+                <Link href={`../users/${swap.initiator}`}>
+                  <IconButton aria-label="settings">
+                    <Avatar
+                      alt={swap.initiatorAlias}
+                      {...stringAvatar(swap.initiatorData)}
+                    />
+                    {/* <MoreVertIcon /> */}
+                  </IconButton>
+                </Link>
+              </span>
             </BootstrapTooltip>
           }
           title={swap.initiatorAlias}

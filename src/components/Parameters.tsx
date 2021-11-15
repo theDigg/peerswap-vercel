@@ -180,8 +180,7 @@ export default function Parameters({
             <StyledTableCell component="th" scope="row">
               Submitted by:
             </StyledTableCell>
-            <StyledTableCell align="center">
-            </StyledTableCell>
+            <StyledTableCell align="right"/>
             <StyledTableCell align="right">
               <Box sx={{ mr: -1, float: 'right' }}>
                 <UserCard user={parameters.proposedBy} />

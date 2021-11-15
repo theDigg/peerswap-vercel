@@ -32,12 +32,44 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 
 const data = [
-  { icon: <People />, stat: 'Reputation', value: 1000 },
-  { icon: <LoopIcon />, stat: 'Swaps', value: 23 },
-  { icon: <ThumbDownIcon />, stat: 'Convictions', value: 1 },
-  { icon: <ThumbUpIcon />, stat: 'Acquittals', value: 3 },
-  { icon: <GavelIcon />, stat: 'Jury Verdicts', value: 12 },
-  { icon: <TrackChangesIcon />, stat: 'Jury Accuracy', value: '100%' }
+  {
+    icon: <People />,
+    stat: 'Reputation',
+    statVariable: 'reputation',
+    value: 1000
+  },
+  {
+    icon: <LoopIcon />,
+    stat: 'Swaps',
+    statVariable: 'completedSwaps',
+    value: 23
+  },
+  {
+    icon: <ThumbDownIcon />,
+    stat: 'Convictions',
+    statVariable: 'convictions',
+    value: 1
+  },
+  {
+    icon: <ThumbUpIcon />,
+    stat: 'Acquittals',
+    statVariable: 'acquittals',
+    value: 3
+  },
+  {
+    icon: <GavelIcon />,
+    stat: 'Jury Verdicts',
+    statVariable: 'juryVerdicts',
+    value: 12
+  },
+  {
+    icon: <TrackChangesIcon />,
+    stat: 'Jury Accuracy',
+    statVariable: 'correctVerdicts',
+    value: '100%'
+  }
+  // totalValueSwapped: number
+  // winningProposals?: number
 ];
 
 const FireNav = styled(List)<{ component?: React.ElementType }>({
@@ -79,7 +111,9 @@ export default function UserCard({ user }) {
             <ListItem component="div" disablePadding>
               <BootstrapTooltip title="Profile" placement="bottom">
                 <ListItemButton sx={{ height: 56 }}>
-                  <ListItemIcon sx={{ fontSize: 20 }}>{user.emoji}</ListItemIcon>
+                  <ListItemIcon sx={{ fontSize: 20 }}>
+                    {user.emoji}
+                  </ListItemIcon>
                   <ListItemText
                     sx={{ my: 0 }}
                     primary={user.alias}
