@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link'
 import { VariantType, useSnackbar } from 'notistack';
 import { StyledLink } from 'style/components/Link';
 import { ExpandMore } from 'style/components/Buttons';
@@ -16,26 +17,11 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red, green } from '@mui/material/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { formatDateTime, shortenHex, stringAvatar } from '../utils/stringUtils';
 import useCopyToClipboard from '../hooks/useCopyToClipboard';
 import { BootstrapTooltip } from 'style/components/Tooltip';
-
-// interface ExpandMoreProps extends IconButtonProps {
-//   expand: boolean;
-// }
-
-// const ExpandMore = styled((props: ExpandMoreProps) => {
-//   const { expand, ...other } = props;
-//   return <IconButton {...other} />;
-// })(({ theme, expand }) => ({
-//   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-//   marginLeft: "auto",
-//   transition: theme.transitions.create("transform", {
-//     duration: theme.transitions.duration.shortest,
-//   }),
-// }));
 
 export default function ContractCard({ contract }) {
   const [, copy] = useCopyToClipboard();
@@ -62,33 +48,31 @@ export default function ContractCard({ contract }) {
         action={
           <>
             <BootstrapTooltip title="Initiator Profile" placement="top">
-              <IconButton aria-label="settings">
-                <Avatar
-                  alt={contract.initiatorData.alias}
-                  {...stringAvatar(contract.initiatorData)}
-                />
-              </IconButton>
+              <span>
+                <Link href={`../users/${contract.initiatorData.id}`}>
+                  <IconButton aria-label="user-profile">
+                    <Avatar
+                      alt={contract.initiatorData.alias}
+                      {...stringAvatar(contract.initiatorData)}
+                    />
+                  </IconButton>
+                </Link>
+              </span>
             </BootstrapTooltip>
             <BootstrapTooltip title="Provider Profile" placement="top">
-              <IconButton aria-label="provider-profile">
-                <Avatar
-                  alt={contract.providerData.alias}
-                  {...stringAvatar(contract.providerData)}
-                />
-              </IconButton>
+              <span>
+                <Link href={`../users/${contract.providerData.id}`}>
+                  <IconButton aria-label="user-profile">
+                    <Avatar
+                      alt={contract.providerData.alias}
+                      {...stringAvatar(contract.providerData)}
+                    />
+                  </IconButton>
+                </Link>
+              </span>
             </BootstrapTooltip>
           </>
         }
-        // avatar={
-        //   <Avatar aria-label="swap-initiator" sx={{ bgcolor: red[600] }}>
-        //     <ReceiptIcon />
-        //   </Avatar>
-        // }
-        // action={
-        //   <IconButton aria-label="settings">
-        //     <MoreVertIcon />
-        //   </IconButton>
-        // }
         title={`Contract for swap: ${shortenHex(contract.swapId)}`}
         subheader={formatDateTime(contract.timeOfAgreement)}
       />

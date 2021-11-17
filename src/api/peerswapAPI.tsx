@@ -1112,6 +1112,20 @@ export async function submitJoinDisputeTx(disputeId: string, user: Wallet) {
   return injectTx(tx);
 }
 
+export async function submitVoteDisputeTx(disputeId: string, verdict: boolean, user: Wallet) {
+  await useCrypto();
+  const tx = {
+    type: 'vote_dispute',
+    from: user.entry.address,
+    disputeId,
+    verdict,
+    timestamp: Date.now()
+  };
+  crypto.signObj(tx, user.entry.keys.secretKey, user.entry.keys.publicKey);
+  console.log(tx);
+  return injectTx(tx);
+}
+
 export async function submitProposalTx(parameters: any, user: Wallet) {
   await useCrypto();
   const issue = await getIssueCount();

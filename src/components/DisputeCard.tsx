@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import Link from 'next/link'
+import React from 'react';
+import Link from 'next/link';
 import { VariantType, useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
@@ -21,191 +21,33 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import GroupAvatars from 'components/GroupAvatars';
 import { red } from '@mui/material/colors';
-import AddIcon from '@mui/icons-material/Add';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import LoopIcon from '@mui/icons-material/Loop';
-import WarningIcon from '@mui/icons-material/Warning';
+// import AddIcon from '@mui/icons-material/Add';
+// import DoneAllIcon from '@mui/icons-material/DoneAll';
+// import LoopIcon from '@mui/icons-material/Loop';
+// import WarningIcon from '@mui/icons-material/Warning';
+import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+// import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import AttachmentIcon from '@mui/icons-material/Attachment';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import BidCard from './BidCard';
-import SwapCard from './SwapCard';
+// import BidCard from './BidCard';
+// import SwapCard from './SwapCard';
 import { formatDateTime, shortenHex, stringAvatar } from 'utils/stringUtils';
 import useCopyToClipboard from 'hooks/useCopyToClipboard';
-import { PlaygroundSpeedDial } from 'components/MUIDemo/SpeedDial';
+// import { PlaygroundSpeedDial } from 'components/MUIDemo/SpeedDial';
 import MarkdownPost from 'components/MarkdownPost';
 import {
-  submitReceiptTx,
-  submitDisputeTx,
-  queryBids,
-  submitJoinDisputeTx
+  // submitReceiptTx,
+  // submitDisputeTx,
+  // queryBids,
+  submitJoinDisputeTx,
+  submitVoteDisputeTx
 } from '../api/peerswapAPI';
-
-const statusColor = {
-  open: 'info',
-  exchanging: 'warning',
-  disputing: 'error',
-  complete: 'success'
-};
-
-interface Dispute {
-  id: string;
-  type: string;
-  prosecutor: string;
-  prosecutorAlias: string;
-  defendant: string;
-  defendantAlias: string;
-  reasonForDispute: string;
-  swapId: string;
-  bidId: string;
-  contractId: string;
-  prosecutorEvidence?: string; // Links of relevant documentation for making their case in the dispute
-  defendantEvidence?: string; // Links of relevant documentation for making their case in the dispute
-  jury: Array<{
-    id: string;
-    alias: string;
-    verdict?: boolean; // Verdict will be a boolean where true means the defendant was guilty, and false means the defendant was innocent
-  }>;
-  //   users: string[];
-  //   userVotes?: Array<{
-  //     userId: string; // AccountId of the juror
-  //     favor: string; // AccountId of the user who this juror voted in favor of
-  //   }>;
-  createdAt: number;
-  votingStarts: number;
-  votingEnds: number;
-  verdict?: boolean;
-  innocent?: string;
-  guilty?: string;
-  hash: string;
-  timestamp: number;
-}
-
-// const dispute: Dispute = {
-//   id: "39d1935b5740de7b81fccd923fb52d211941167497f118b4e569eb44f0c65e9d",
-//   type: "DisputeAccount",
-//   prosecutor:
-//     "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
-//   prosecutorAlias: "kyle",
-//   defendant: "5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7",
-//   defendantAlias: "aamir",
-//   swapId: "5d2862e10e2fc0ec3976915b12252b9ed0051a14dcf2215f6d37ecddd3cb7b9d",
-//   bidId: "14b218a052ec439b52fa6199f8bb5eed2b481290571092138a43db81271aa986",
-//   contractId:
-//     "01c02d4878ee6dff59605bb5231e82dd845c95c2c8f63752e364ab1ca8ea096e",
-//   reasonForDispute: "Aamir never sent me the offer he made in the contract.",
-//   prosecutorEvidence: "",
-//   defendantEvidence: "",
-//   jury: [],
-//   juryVotes: [],
-//   //   users: [],
-//   //   userVotes: [],
-//   createdAt: 1635377941270,
-//   votingStarts: 1635378941270,
-//   votingEnds: 1635379941270,
-//   verdict: false,
-//   innocent: "",
-//   guilty: "",
-//   timestamp: 1635377941270,
-//   hash: "14eab9b349d2a82a85dca5d4c78a6a122c91c8ab946049b61649b9f2ba9fab4d",
-// };
-
-const swap = {
-  id: '5d2862e10e2fc0ec3976915b12252b9ed0051a14dcf2215f6d37ecddd3cb7b9d',
-  type: 'SwapAccount',
-  swapType: 'offer',
-  status: 'disputing',
-  initiator: '5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7',
-  initiatorAlias: 'kyle',
-  provider: '5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7',
-  providerAlias: 'aamir',
-  tokenOffered: 'XRP',
-  amountOffered: 2345,
-  providerChainAddress:
-    'f6b13aef6878fa3ad064fc7e9bd55ad523e90c2e062cb968b29ffb48548dbd54',
-  providerChainMemo: 'None',
-  tokenRequested: 'DGB',
-  amountRequested: 4534,
-  initiatorChainAddress:
-    'f6b13aef6878fa3ad064fc7e9bd55ad523e90c2e062cb968b29ffb48548dbd54',
-  initiatorChainMemo: 'None',
-  fixed: false,
-  maxTimeToSend: 3600,
-  maxTimeToReceive: 3600,
-  collateral: 345,
-  timeOfAgreement: 1635377799089,
-  disputeId: '39d1935b5740de7b81fccd923fb52d211941167497f118b4e569eb44f0c65e9d',
-  contractId:
-    '01c02d4878ee6dff59605bb5231e82dd845c95c2c8f63752e364ab1ca8ea096e',
-  acceptedBid:
-    '14b218a052ec439b52fa6199f8bb5eed2b481290571092138a43db81271aa986',
-  bids: ['14b218a052ec439b52fa6199f8bb5eed2b481290571092138a43db81271aa986'],
-  createdAt: 1635377571111,
-  hash: '2865196047d5c509ba92ff988c14a1e2556bda9902c28a0538ca7cd96a1774e3',
-  timestamp: 1635377941270
-};
-
-const contract = {
-  id: '01c02d4878ee6dff59605bb5231e82dd845c95c2c8f63752e364ab1ca8ea096e',
-  type: 'ContractAccount',
-  contractDescription:
-    'kyle must send exactly 2345 XRP to aamir at this address: f6b13aef6878fa3ad064fc7e9bd55ad523e90c2e062cb968b29ffb48548dbd54\n' +
-    '  aamir must send exactly 4534 DGB to kyle at this address: f6b13aef6878fa3ad064fc7e9bd55ad523e90c2e062cb968b29ffb48548dbd54',
-  swapId: '5d2862e10e2fc0ec3976915b12252b9ed0051a14dcf2215f6d37ecddd3cb7b9d',
-  bidId: '14b218a052ec439b52fa6199f8bb5eed2b481290571092138a43db81271aa986',
-  disputeId: '39d1935b5740de7b81fccd923fb52d211941167497f118b4e569eb44f0c65e9d',
-  initiator: '5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7',
-  provider: '5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7',
-  tokenOffered: 'XRP',
-  amountOffered: 2345,
-  initiatorChainAddress:
-    'f6b13aef6878fa3ad064fc7e9bd55ad523e90c2e062cb968b29ffb48548dbd54',
-  initiatorChainMemo: '',
-  initiatorReceipt: false,
-  tokenRequested: 'DGB',
-  amountRequested: 4534,
-  providerChainAddress:
-    'f6b13aef6878fa3ad064fc7e9bd55ad523e90c2e062cb968b29ffb48548dbd54',
-  providerChainMemo: '',
-  providerReceipt: false,
-  fixed: false,
-  maxTimeToSend: 3600,
-  maxTimeToReceive: 3600,
-  collateral: 345,
-  timeOfAgreement: 1635377799089,
-  hash: '6d9aba1ffe235066958bf507d1731dc983ac2e828d6f442624b1974a5ed46454',
-  timestamp: 1635377941270
-};
-
-const bid = {
-  amountOffered: 4534,
-  amountRequested: 2345,
-  collateral: 345,
-  contractId:
-    '01c02d4878ee6dff59605bb5231e82dd845c95c2c8f63752e364ab1ca8ea096e',
-  createdAt: 1635377768407,
-  disputeId: '39d1935b5740de7b81fccd923fb52d211941167497f118b4e569eb44f0c65e9d',
-  hash: '1de0640a64ec5efb6d5d9aad351f534c234811b991c0d8c23a67f9d7d9f02e2e',
-  id: '14b218a052ec439b52fa6199f8bb5eed2b481290571092138a43db81271aa986',
-  pair: ['XRP', 'DGB'],
-  provider: '5b05aaa08ba44fc365b80c86ee9ef5e27b53a182d6ba666eff35ef036e12a2c7',
-  providerAlias: 'aamir',
-  providerChainAddress:
-    'f6b13aef6878fa3ad064fc7e9bd55ad523e90c2e062cb968b29ffb48548dbd54',
-  providerChainMemo: null,
-  rate: 0.5172033524481694,
-  status: 'disputing',
-  swapId: '5d2862e10e2fc0ec3976915b12252b9ed0051a14dcf2215f6d37ecddd3cb7b9d',
-  timestamp: 1635377941270,
-  tokenOffered: 'DGB',
-  tokenRequested: 'XRP',
-  type: 'BidAccount'
-};
 
 export default function DisputeCard({ dispute }) {
   const [, copy] = useCopyToClipboard();
@@ -241,47 +83,31 @@ export default function DisputeCard({ dispute }) {
         action={
           <>
             <BootstrapTooltip title="Prosecutor Profile" placement="top">
-              <IconButton aria-label="prosecutor-profile">
-                <Avatar
-                  alt={dispute.prosecutorData.alias}
-                  {...stringAvatar(dispute.prosecutorData)}
-                />
-              </IconButton>
+              <span>
+                <Link href={`../users/${dispute.prosecutorData.id}`}>
+                  <IconButton aria-label="prosecutor-profile">
+                    <Avatar
+                      alt={dispute.prosecutorData.alias}
+                      {...stringAvatar(dispute.prosecutorData)}
+                    />
+                  </IconButton>
+                </Link>
+              </span>
             </BootstrapTooltip>
             <BootstrapTooltip title="Defendant Profile" placement="top">
-              <IconButton aria-label="defendant-profile">
-                <Avatar
-                  alt={dispute.defendantData.alias}
-                  {...stringAvatar(dispute.defendantData)}
-                />
-              </IconButton>
+              <span>
+                <Link href={`../users/${dispute.defendantData.id}`}>
+                  <IconButton aria-label="defendant-profile">
+                    <Avatar
+                      alt={dispute.defendantData.alias}
+                      {...stringAvatar(dispute.defendantData)}
+                    />
+                  </IconButton>
+                </Link>
+              </span>
             </BootstrapTooltip>
           </>
         }
-        // action={
-        //   wallet.entry.address === dispute.prosecutor ||
-        //   wallet.entry.address === dispute.defendant ? (
-        //     <BootstrapTooltip title="Submit Evidence" placement="left">
-        //       <span>
-        //         <StyledLink href={`../disputes/${dispute.id}/evidence`}>
-        //           <IconButton aria-label="settings">
-        //             <PostAddIcon />
-        //           </IconButton>
-        //         </StyledLink>
-        //       </span>
-        //     </BootstrapTooltip>
-        //   ) : (
-        //     <BootstrapTooltip title="Submit Verdict" placement="left">
-        //       <span>
-        //         <StyledLink href={`../disputes/${dispute.id}/jury`}>
-        //           <IconButton aria-label="jury-page-link">
-        //             <GavelOutlinedIcon />
-        //           </IconButton>
-        //         </StyledLink>
-        //       </span>
-        //     </BootstrapTooltip>
-        //   )
-        // }
         title={dispute.prosecutorAlias}
         subheader={formatDateTime(dispute.createdAt)}
       />
@@ -416,11 +242,16 @@ export default function DisputeCard({ dispute }) {
       <CardActions disableSpacing>
         {/* <PlaygroundSpeedDial dir="right" /> */}
         <BootstrapTooltip title="Join the jury for this dispute" arrow>
-          <span>
+          <span
+            hidden={
+              wallet.entry.address === dispute.prosecutor ||
+              wallet.entry.address === dispute.defendant
+            }
+          >
             <IconButton
               aria-label="join-jury"
               disabled={
-                // ! Add this back in prod
+                //! Add this back in prod
                 // wallet.entry.address === dispute.prosecutor ||
                 // wallet.entry.address === dispute.defendant
                 false
@@ -449,48 +280,54 @@ export default function DisputeCard({ dispute }) {
             </span>
           </BootstrapTooltip>
         ) : (
-          <BootstrapTooltip title="Submit Verdict" placement="left">
-            <span>
-              <StyledLink href={`../disputes/${dispute.id}/jury`}>
-                <IconButton aria-label="jury-page-link">
-                  <GavelOutlinedIcon />
-                </IconButton>
-              </StyledLink>
-            </span>
-          </BootstrapTooltip>
-        )}
-        {/* <Tooltip title="mark swap as successful" arrow>
-          <span>
-            <IconButton
-              aria-label="mark swap as successful"
-              disabled={false}
-              onClick={() => {
-                submitReceiptTx(swap as any, wallet).then(({ result }: any) => {
-                  handleClickVariant(result.status, result.reason)();
-                });
-              }}
-            >
-              <DoneAllIcon />
-            </IconButton>
-          </span>
-        </Tooltip>
-        <Tooltip title="dispute this swap" arrow>
-          <span>
-            <IconButton
-              aria-label="dispute swap"
-              disabled={false}
-              onClick={() => {
-                submitJoinDisputeTx(dispute.id, wallet).then(
-                  ({ result }: any) => {
-                    handleClickVariant(result.status, result.reason)();
+          <>
+            <BootstrapTooltip title="Vote defendant guilty" placement="bottom">
+              <span>
+                <IconButton
+                  aria-label="vote-guilty"
+                  disabled={
+                    dispute.jury.some(
+                      (juror) => juror.id === wallet.entry.address
+                    ) === false
                   }
-                );
-              }}
+                  onClick={() => {
+                    submitVoteDisputeTx(dispute.id, true, wallet).then(
+                      ({ result }: any) => {
+                        handleClickVariant(result.status, result.reason)();
+                      }
+                    );
+                  }}
+                >
+                  <ThumbDownAltOutlinedIcon />
+                </IconButton>
+              </span>
+            </BootstrapTooltip>
+            <BootstrapTooltip
+              title="Vote defendant innocent"
+              placement="bottom"
             >
-              <WarningIcon />
-            </IconButton>
-          </span>
-        </Tooltip> */}
+              <span>
+                <IconButton
+                  aria-label="vote-innocent"
+                  disabled={
+                    dispute.jury.some(
+                      (juror) => juror.id === wallet.entry.address
+                    ) === false
+                  }
+                  onClick={() => {
+                    submitVoteDisputeTx(dispute.id, false, wallet).then(
+                      ({ result }: any) => {
+                        handleClickVariant(result.status, result.reason)();
+                      }
+                    );
+                  }}
+                >
+                  <ThumbUpAltOutlinedIcon />
+                </IconButton>
+              </span>
+            </BootstrapTooltip>
+          </>
+        )}
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
