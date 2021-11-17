@@ -86,7 +86,7 @@ function BidCard({ swap, bid }) {
             </BootstrapTooltip>
           }
           action={
-            <BootstrapTooltip title="User Profile" placement="right">
+            <BootstrapTooltip title="User Profile" placement="top">
               <span>
                 <Link href={`../users/${bid.providerData.id}`}>
                   <IconButton aria-label="user-profile">

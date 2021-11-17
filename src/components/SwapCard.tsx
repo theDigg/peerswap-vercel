@@ -128,7 +128,7 @@ function SwapCard({ swap, opened }) {
             </BootstrapTooltip>
           }
           action={
-            <BootstrapTooltip title="User Profile" placement="right">
+            <BootstrapTooltip title="User Profile" placement="top">
               <span>
                 <Link href={`../users/${swap.initiator}`}>
                   <IconButton aria-label="settings">
